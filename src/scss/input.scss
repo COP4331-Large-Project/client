@@ -1,0 +1,18 @@
+@import 'variables';
+
+.input {
+  font-size: 16px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #aaaaaa;
+  transition: border-color 0.2s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
+  // Removes the inner box shadow in Safari
+  appearance: none;
+
+  &:focus {
+    outline: none;
+    border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+  }
+}
