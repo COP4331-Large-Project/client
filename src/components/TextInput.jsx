@@ -1,8 +1,8 @@
-import '../scss/input.scss';
+import '../scss/text-input.scss';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function Input(props) {
+function TextInput(props) {
   const { className, placeHolder, type } = props;
   const [value, setValue] = useState(props.value);
 
@@ -15,7 +15,7 @@ function Input(props) {
   return (
     <input
       type={type}
-      className={`input ${className}`}
+      className={`text-input ${className}`}
       placeholder={placeHolder}
       onChange={onChange}
       value={value}
@@ -23,7 +23,7 @@ function Input(props) {
   );
 }
 
-Input.propTypes = {
+TextInput.propTypes = {
   className: PropTypes.string,
   placeHolder: PropTypes.string,
   value: PropTypes.string,
@@ -31,7 +31,7 @@ Input.propTypes = {
   type: PropTypes.oneOf(['email', 'password', 'text']),
 };
 
-Input.defaultProps = {
+TextInput.defaultProps = {
   className: '',
   placeHolder: '',
   value: '',
@@ -39,4 +39,4 @@ Input.defaultProps = {
   type: 'text',
 };
 
-export default Input;
+export default TextInput;
