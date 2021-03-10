@@ -2,14 +2,18 @@ import '../scss/text-input.scss';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function TextInput(props) {
-  const { className, placeHolder, type } = props;
-  const [value, setValue] = useState(props.value);
+function TextInput({
+  className,
+  placeHolder,
+  type,
+  value,
+  onChange,
+}) {
+  const [inputValue, setInputValue] = useState(value);
 
-  const onChange = event => {
-    const inputValue = event.target.value;
-    setValue(inputValue);
-    props.onChange(inputValue);
+  const onInputChange = event => {
+    setInputValue(event.target.value);
+    onChange(event.target.value);
   };
 
   return (
@@ -17,8 +21,8 @@ function TextInput(props) {
       type={type}
       className={`text-input ${className}`}
       placeholder={placeHolder}
-      onChange={onChange}
-      value={value}
+      onChange={onInputChange}
+      value={inputValue}
     />
   );
 }
