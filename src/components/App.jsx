@@ -5,8 +5,26 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Button from './Button.jsx';
 
-function goToGithub() {
-  window.location.href = 'https://github.com/COP4331-Large-Project';
+// function goToGithub() {
+//   window.location.href = 'https://github.com/COP4331-Large-Project';
+// }
+
+function createUser() {
+  const payload = {
+    FirstName: 'Billy',
+    LastName: 'Bob',
+    Username: 'Bobby',
+    Password: '12345',
+  };
+
+  fetch('http://api.imageus.io/users', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  }).then(response => console.log(response));
 }
 
 function App() {
@@ -20,7 +38,7 @@ function App() {
                 <div className="Card">
                   <h1>COP4331C Large Group #7</h1>
                 </div>
-                <Button variant="dark" onClick={goToGithub}>
+                <Button variant="dark" onClick={createUser}>
                   <i className="bi bi-github"> </i>
                   Visit Our Github
                 </Button>
