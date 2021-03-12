@@ -8,12 +8,13 @@
   width: $profile-length;
   height: $profile-length;
   border-radius: 50%;
-  background-color: gray;
+  background: linear-gradient(0deg, rgba(0,142,255,1) 21%, rgba(0,86,255,1) 83%);
   box-shadow: map-get($box-shadows, 'sm');
   overflow: hidden;
+  margin: 10px;
 
   .profile-text {
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
     text-transform: capitalize;
     color: white;

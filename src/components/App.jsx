@@ -27,6 +27,7 @@ function App() {
                 </Button>
               </div>
             </header>
+            <ProfileAvatar avatarData={{ firstName: 'Suneet', lastName: 'Tipirneni' } } />
           </div>
         </Route>
       </Switch>
