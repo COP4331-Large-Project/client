@@ -10,8 +10,8 @@ function Card({ children }) {
     <div
       className="card"
     >
-        {children}
-      </div>
+      {children}
+    </div>
   );
 }
 
