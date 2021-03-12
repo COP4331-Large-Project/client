@@ -17,7 +17,7 @@ function createUser() {
     Password: '12345',
   };
 
-  fetch('http://api.imageus.io/users', {
+  fetch('https://api.imageus.io/users', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
