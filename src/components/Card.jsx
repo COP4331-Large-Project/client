@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 
 function Card({ children }) {
   return (
-      <div
-        className="card"
-      >
+    <div
+      className="card"
+    >
         {children}
       </div>
   );
