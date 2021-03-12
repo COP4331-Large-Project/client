@@ -2,14 +2,6 @@ import React from 'react';
 import '../scss/profile-image.scss';
 import PropTypes from 'prop-types';
 
-/**
- * @typedef {Object} AvatarData
- * @property {String} firstName
- * @property {String} lastName
- * @property {String} imgURL
- * @property {String} imgAlt
- */
-
 function ProfileAvatar({ avatarData }) {
   let profileContent;
   if (avatarData.imgURL) {
@@ -28,7 +20,12 @@ function ProfileAvatar({ avatarData }) {
 }
 
 ProfileAvatar.propTypes = {
-  avatarData: PropTypes.objectOf('AvatarData').isRequired,
+  avatarData: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    imgURL: PropTypes.string,
+    imgAlt: PropTypes.string,
+  }).isRequired,
 };
 
 export default ProfileAvatar;

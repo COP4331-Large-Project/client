@@ -4,6 +4,7 @@ import '../scss/button.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Button from './Button.jsx';
+import ProfileAvatar from './ProfileAvatar.jsx';
 
 function goToGithub() {
   window.location.href = 'https://github.com/COP4331-Large-Project';
