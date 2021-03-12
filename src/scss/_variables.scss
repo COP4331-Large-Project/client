@@ -10,3 +10,9 @@ $variant-colors: (
   'warning': #e3c010,
   'dark': black,
 );
+
+$box-shadows: (
+  'sm': rgba(0, 0, 0, 0.35) 0px 5px 15px,
+);
+
+$profile-length: 70px;
