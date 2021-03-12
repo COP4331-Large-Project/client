@@ -15,7 +15,7 @@ function Card({ children }) {
   );
 }
 
-Card.PropTypes = {
+Card.propTypes = {
   children: PropTypes.element,
 };
 
