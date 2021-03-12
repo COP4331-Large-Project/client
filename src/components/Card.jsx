@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 
 function Card({ children }) {
   return (
-        <div
-          className = 'card'
-        >
-            {children}
-        </div>
+      <div
+        className="card"
+      >
+        {children}
+      </div>
   );
 }
 
