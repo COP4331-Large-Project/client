@@ -5,10 +5,10 @@ import '../scss/card.scss';
 // Importing PropTypes, defines the props for this component.
 import PropTypes from 'prop-types';
 
-function Card({ children }) {
+function Card({ className, children }) {
   return (
     <div
-      className="card"
+      className={`card ${className}`}
     >
       {children}
     </div>
@@ -16,10 +16,12 @@ function Card({ children }) {
 }
 
 Card.propTypes = {
+  className: PropTypes.string,
   children: PropTypes.element,
 };
 
 Card.defaultProps = {
+  className: '',
   children: [],
 };
 
