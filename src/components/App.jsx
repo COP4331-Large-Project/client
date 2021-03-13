@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Button from './Button.jsx';
 
 function goToGithub() {
-  window.location.href = 'https://github.com/COP4331-Large-Project';
+  window.location.href = 'https://github.com/Imageus-OSS';
 }
 
 function App() {
