@@ -4,13 +4,9 @@ import PropTypes from 'prop-types';
 
 function ProfileAvatar({ avatarData }) {
   let profileContent;
-  if (avatarData.imgURL) {
-    profileContent = <img className="profile-image" src={avatarData.imgURL} alt={avatarData.imgAlt} />;
-  } else {
-    profileContent = <div className="profile-text">
+  profileContent = avatarData.imgURL ? <img className="profile-image" src={avatarData.imgURL} alt={avatarData.imgAlt} /> : <div className="profile-text">
       {avatarData.firstName[0] + avatarData.lastName[0]}
     </div>;
-  }
 
   return (
     <div className="profile-container">
