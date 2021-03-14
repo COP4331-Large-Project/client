@@ -4,13 +4,18 @@ import PropTypes from 'prop-types';
 
 function ProfileAvatar({ avatarData }) {
   const profileContent = avatarData.imgURL
-    ? (<img
-      className="profile-image"
-      src={avatarData.imgURL}
-      alt={avatarData.imgAlt} />)
-    : (<div className="profile-text">
-         {avatarData.firstName[0] + avatarData.lastName[0]}
-       </div>);
+    ? (
+      <img
+        className="profile-image"
+        src={avatarData.imgURL}
+        alt={avatarData.imgAlt}
+      />
+    )
+    : (
+      <div className="profile-text">
+        {avatarData.firstName[0] + avatarData.lastName[0]}
+      </div>
+    );
 
   return (
     <div className="profile-container">
