@@ -7,7 +7,7 @@ import Button from './Button.jsx';
 import ProfileAvatar from './ProfileAvatar.jsx';
 
 function goToGithub() {
-  window.location.href = 'https://github.com/COP4331-Large-Project';
+  window.location.href = 'https://github.com/Imageus-OSS';
 }
 
 function App() {

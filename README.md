@@ -1,5 +1,5 @@
 [![Client Node.js CI](https://github.com/COP4331-Large-Project/client/actions/workflows/CI-client.yml/badge.svg)](https://github.com/COP4331-Large-Project/client/actions/workflows/CI-client.yml)
-[![DeepSource](https://deepsource.io/gh/COP4331-Large-Project/client.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/COP4331-Large-Project/client/?ref=repository-badge)
+[![DeepSource](https://deepsource.io/gh/Imageus-OSS/client.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/Imageus-OSS/client/?ref=repository-badge)
 
 
 ## Before you start...
