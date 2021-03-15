@@ -19,6 +19,10 @@ body {
   }
 }
 
+.card.drop-shadow-lg.display {
+  min-width: 700px;
+}
+
 .accent {
   background-color: rgba(0, 129, 255, 0.21);
   padding: 10px;

@@ -4,7 +4,6 @@ import '../scss/button.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Button from './Button.jsx';
-import ProfileAvatar from './ProfileAvatar.jsx';
 
 function goToGithub() {
   window.location.href = 'https://github.com/Imageus-OSS';
@@ -19,15 +18,14 @@ function App() {
             <header className="App-header">
               <div className="Rotated-Container Gradient Box">
                 <div className="Card">
-                  <h1>COP4331C Large Group #7</h1>
+                  <h1>ImageUs</h1>
                 </div>
                 <Button variant="dark" onClick={goToGithub}>
                   <i className="bi bi-github"> </i>
-                  Visit Our Github
+                  Visit Our GitHub
                 </Button>
               </div>
             </header>
-            <ProfileAvatar avatarData={{ firstName: 'Suneet', lastName: 'Tipirneni' } } />
           </div>
         </Route>
       </Switch>

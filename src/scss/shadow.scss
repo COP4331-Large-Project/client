@@ -1,0 +1,21 @@
+@import "variables";
+
+@mixin shadow-hover($boxShadow) {
+  transition: 0.5s;
+
+  &:hover {
+    transition: 0.5s;
+    box-shadow: $boxShadow;
+  }
+}
+
+// Iterate over the shadow map and construct variants from it's keys and values.
+@each $size, $value in $box-shadows {
+  .drop-shadow-#{$size} {
+    box-shadow: $value;
+  }
+
+  .hover-shadow-#{$size} {
+    @include shadow-hover($value);
+  }
+}
