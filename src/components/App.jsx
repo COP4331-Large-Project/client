@@ -16,15 +16,13 @@ function App() {
         <Route exact path="/">
           <div className="App">
             <header className="App-header">
-              <div className="Rotated-Container Gradient Box">
-                <div className="Card">
-                  <h1>ImageUs</h1>
-                </div>
-                <Button variant="dark" onClick={goToGithub}>
-                  <i className="bi bi-github"> </i>
-                  Visit Our GitHub
-                </Button>
+              <div className="Card">
+                <h1>ImageUs</h1>
               </div>
+              <Button variant="dark" onClick={goToGithub}>
+                <i className="bi bi-github"> </i>
+                Visit Our GitHub
+              </Button>
             </header>
           </div>
         </Route>
