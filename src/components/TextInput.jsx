@@ -48,11 +48,7 @@ TextInput.defaultProps = {
   className: '',
   placeHolder: '',
   value: '',
-  /**
-   * @param {string} text The current input value
-   */
-  // eslint-disable-next-line no-unused-vars
-  onChange: text => {},
+  onChange: () => {},
   type: 'text',
   error: false,
   errorMessage: '',
