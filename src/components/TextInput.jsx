@@ -19,10 +19,10 @@ function TextInput({
   };
 
   return (
-    <div className="text-input-container">
+    <div className={`text-input-container ${className}`}>
       <input
         type={type}
-        className={`text-input ${className} ${error ? 'has-error' : ''}`}
+        className={`text-input ${error ? 'has-error' : ''}`}
         placeholder={placeHolder}
         onChange={onInputChange}
         value={inputValue}
