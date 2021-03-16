@@ -8,6 +8,8 @@ function TextInput({
   type,
   value,
   onChange,
+  error,
+  errorMessage,
 }) {
   const [inputValue, setInputValue] = useState(value);
 
@@ -17,13 +19,18 @@ function TextInput({
   };
 
   return (
-    <input
-      type={type}
-      className={`text-input ${className}`}
-      placeholder={placeHolder}
-      onChange={onInputChange}
-      value={inputValue}
-    />
+    <div className="text-input-container">
+      <input
+        type={type}
+        className={`text-input ${className} ${error ? 'has-error' : ''}`}
+        placeholder={placeHolder}
+        onChange={onInputChange}
+        value={inputValue}
+      />
+      {errorMessage && error && (
+        <p className="text-input-error">{errorMessage}</p>
+      )}
+    </div>
   );
 }
 
@@ -33,14 +40,22 @@ TextInput.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.oneOf(['email', 'password', 'text']),
+  error: PropTypes.bool,
+  errorMessage: PropTypes.string,
 };
 
 TextInput.defaultProps = {
   className: '',
   placeHolder: '',
   value: '',
-  onChange: () => {},
+  /**
+   * @param {string} text The current input value
+   */
+  // eslint-disable-next-line no-unused-vars
+  onChange: text => {},
   type: 'text',
+  error: false,
+  errorMessage: '',
 };
 
 export default TextInput;

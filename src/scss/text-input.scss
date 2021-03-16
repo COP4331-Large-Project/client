@@ -1,18 +1,34 @@
 @import 'variables';
 
-.text-input {
-  font-size: 16px;
-  padding: 10px 14px;
-  border-radius: 6px;
-  border: 1px solid #aaaaaa;
-  transition: border-color 0.2s ease-in-out;
+.text-input-container {
   width: 100%;
-  box-sizing: border-box;
-  // Removes the inner box shadow in Safari
-  appearance: none;
 
-  &:focus {
-    outline: none;
-    border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+  .text-input {
+    font-size: 16px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #aaaaaa;
+    transition: border-color 0.2s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+    // Removes the inner box shadow in Safari
+    appearance: none;
+
+    &.has-error,
+    &.has-error:focus {
+      border-color: map-get($variant-colors, 'danger');
+    }
+
+    &:focus {
+      outline: none;
+      border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+    }
+  }
+
+  .text-input-error {
+    font-size: 15px;
+    margin: 8px 0 0 6px;
+    text-align: left;
+    color: map-get($variant-colors, 'danger');
   }
 }
