@@ -4,16 +4,18 @@ import '../../scss/landing.scss';
 import '../../scss/debug.scss';
 
 function LandingCard({ title, children }) {
-  return <div className="landing-card">
-    <h1>{title}</h1>
-    <div className="landing-card-content-container debug-container">
-      {children}
+  return (
+    <div className="landing-card">
+      <h1>{title}</h1>
+      <div className="landing-card-content-container debug-container">
+        {children}
+      </div>
     </div>
-  </div>;
+  );
 }
 
 LandingCard.defaultProps = {
-  children: <div className=""/>,
+  children: <div className="" />,
 };
 
 LandingCard.propTypes = {

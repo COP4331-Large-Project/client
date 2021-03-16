@@ -13,10 +13,10 @@ function App() {
   const [card, setCard] = useState(
     <LandingCard title="Title">
       <div className="card-form">
-        <TextInput/>
-        <TextInput/>
+        <TextInput />
+        <TextInput />
         <Button>Click Me</Button>
-    </div>
+      </div>
     </LandingCard>,
   );
 
