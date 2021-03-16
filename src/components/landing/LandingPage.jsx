@@ -7,7 +7,7 @@ function LandingPage({ card }) {
     <div className="landing-container">
       <div className="landing-body">
         <div className="landing-header-container">
-          <h1>Welcome to our app!</h1>
+          <h1 className="landing-header">Welcome back to our app!</h1>
         </div>
         {card}
       </div>

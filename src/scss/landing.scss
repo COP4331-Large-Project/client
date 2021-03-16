@@ -8,7 +8,6 @@
 }
 
 .landing-body {
-  background-color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,9 +20,10 @@
 }
 
 .landing-header {
-  font-size: 48px;
-  font-weight: 500;
+  font-size: 52px;
+  font-weight: 700;
   color: black;
+  max-width: 600px;
 }
 
 .landing-header-container {
@@ -50,7 +50,8 @@
   @extend .drop-shadow-lg;
 
   border-radius: 40px;
-  max-width: 300px;
+  max-width: 270px;
+  min-width: 270px;
   min-height: 100px;
   display: flex;
   flex-direction: column;

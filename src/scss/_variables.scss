@@ -14,7 +14,7 @@ $variant-colors: (
 $box-shadows: (
   'sm': rgba(0, 0, 0, 0.35) 0px 5px 15px,
   'md': (rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px),
-  'lg': (rgba(255, 255, 255, 0.1) 0 1px 1px 0 inset, rgba(50, 50, 93, 0.25) 0 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px),
+  'lg': rgba(0, 0, 0.9, 0.1) 2px 5px 60px,
 );
 
 $profile-length: 70px;
