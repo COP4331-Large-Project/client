@@ -7,20 +7,22 @@
     font-size: 16px;
     padding: 10px 14px;
     border-radius: 6px;
-    border: 1px solid #aaaaaa;
+    border: 1px solid hsl(0, 0%, 76%);
     transition: border-color 0.2s ease-in-out;
     width: 100%;
     box-sizing: border-box;
     // Removes the inner box shadow in Safari
     appearance: none;
 
-    &.has-error,
-    &.has-error:focus {
+    &:focus {
+      outline: none;
+    }
+
+    &:invalid {
       border-color: map-get($variant-colors, 'danger');
     }
 
-    &:focus {
-      outline: none;
+    &:focus:not(:invalid) {
       border-color: lighten(map-get($variant-colors, 'primary'), 20%);
     }
   }

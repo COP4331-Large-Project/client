@@ -1,5 +1,5 @@
 import '../scss/text-input.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function TextInput({
@@ -12,17 +12,25 @@ function TextInput({
   errorMessage,
 }) {
   const [inputValue, setInputValue] = useState(value);
+  const inputRef = useRef(null);
 
   const onInputChange = event => {
     setInputValue(event.target.value);
     onChange(event.target.value);
   };
 
+  useEffect(() => {
+    // Toggles the :invalid pseudo-class on the input. Setting an
+    // empty string removes the pseudo-class
+    inputRef.current.setCustomValidity(error ? errorMessage : '');
+  }, [error]);
+
   return (
     <div className={`text-input-container ${className}`}>
       <input
+        ref={inputRef}
         type={type}
-        className={`text-input ${error ? 'has-error' : ''}`}
+        className="text-input"
         placeholder={placeHolder}
         onChange={onInputChange}
         value={inputValue}
