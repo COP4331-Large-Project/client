@@ -7,6 +7,8 @@ import LandingPage from './landing/LandingPage.jsx';
 import TextInput from './TextInput.jsx';
 import Button from './Button.jsx';
 import LandingCard from './landing/LandingCard.jsx';
+// Leaving GroupLogin commented out.
+// import GroupLogin from './landing/GroupLogin.jsx';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
