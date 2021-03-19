@@ -28,7 +28,8 @@ function GroupLogin({ callBack }) {
             Enter Code
           </Button>
           <div
-            onClick={callBack}>
+            onClick={callBack}
+            onKeyDown={callBack}>
             Go back to login
           </div>
         </div>
