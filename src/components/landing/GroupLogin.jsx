@@ -11,7 +11,8 @@ import '../../scss/landing.scss';
 function GroupLogin({ callBack }) {
   let input;
 
-  function submitCode() {
+  function submitCode(event) {
+    event.preventDefault();
     // TODO: Make login request
   }
 
