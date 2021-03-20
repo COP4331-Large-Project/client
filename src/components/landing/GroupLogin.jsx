@@ -27,11 +27,12 @@ function GroupLogin({ callBack }) {
           <Button onClick={submitCode}>
             Enter Code
           </Button>
-          <a
+          <div
+            role="button"
             onClick={callBack}
             onKeyDown={callBack}>
             Go back to login
-          </a>
+          </div>
         </div>
       </LandingCard>
     </form>
