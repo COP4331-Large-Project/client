@@ -29,6 +29,7 @@ function GroupLogin({ callBack }) {
           </Button>
           <div
             role="button"
+            tabIndex="0"
             onClick={callBack}
             onKeyDown={callBack}>
             Go back to login
