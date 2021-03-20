@@ -16,8 +16,8 @@ function GroupLogin({ callBack }) {
   }
 
   return (
-    <form onSubmit={submitCode}>
-      <LandingCard title="No account? No problem">
+    <LandingCard title="No account? No problem">
+      <form onSubmit={submitCode}>
         <div className="card-form">
           <TextInput
             placeHolder="Group Code"
@@ -35,8 +35,8 @@ function GroupLogin({ callBack }) {
             Go back to login
           </div>
         </div>
-      </LandingCard>
-    </form>
+      </form>
+    </LandingCard>
   );
 }
 
