@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
