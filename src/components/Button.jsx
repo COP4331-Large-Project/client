@@ -32,7 +32,7 @@ Button.propTypes = {
   children: PropTypes.node,
   onClick: PropTypes.func,
   className: PropTypes.string,
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
 };
 
 export default Button;
