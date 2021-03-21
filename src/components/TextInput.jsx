@@ -8,6 +8,7 @@ function TextInput({
   type,
   value,
   onChange,
+  key,
 }) {
   const [inputValue, setInputValue] = useState(value);
 
@@ -23,6 +24,7 @@ function TextInput({
       placeholder={placeHolder}
       onChange={onInputChange}
       value={inputValue}
+      key={key}
     />
   );
 }
@@ -33,6 +35,7 @@ TextInput.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   type: PropTypes.oneOf(['email', 'password', 'text']),
+  key: PropTypes.string,
 };
 
 TextInput.defaultProps = {
@@ -41,6 +44,7 @@ TextInput.defaultProps = {
   value: '',
   onChange: () => {},
   type: 'text',
+  key: null,
 };
 
 export default TextInput;
