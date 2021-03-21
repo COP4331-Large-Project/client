@@ -13,8 +13,8 @@ function LoginCard() {
   return (
     <LandingCard title="Welcome Back">
       <form onSubmit={login}>
-        <TextInput placeHolder="username" key="Username" />
-        <TextInput placeHolder="password" key="Password" type="password" />
+        <TextInput placeHolder="username" name="Username" />
+        <TextInput placeHolder="password" name="Password" type="password" />
         <Button type="submit">Login</Button>
       </form>
     </LandingCard>
