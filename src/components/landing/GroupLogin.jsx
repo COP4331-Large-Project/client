@@ -18,7 +18,7 @@ function GroupLogin({ onLoginClick }) {
 
   return (
     <LandingCard title="No account? No problem.">
-      <form onSubmit={submitCode}>
+      <form>
         <div className="card-form">
           <TextInput
             placeHolder="Group Code"
