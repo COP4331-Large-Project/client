@@ -8,7 +8,7 @@ import '../../scss/landing.scss';
 /// callBack should be passed from landing page. Used to re-render the landing page
 /// with the default landing page card, which should be the login card.
 
-function GroupLogin({ callBack }) {
+function GroupLogin({ onLoginClick }) {
   let input;
 
   function submitCode(event) {
@@ -17,7 +17,7 @@ function GroupLogin({ callBack }) {
   }
 
   return (
-    <LandingCard title="No account? No problem">
+    <LandingCard title="No account? No problem.">
       <form onSubmit={submitCode}>
         <div className="card-form">
           <TextInput
@@ -31,8 +31,8 @@ function GroupLogin({ callBack }) {
           <div
             role="button"
             tabIndex="0"
-            onClick={callBack}
-            onKeyDown={callBack}>
+            onClick={onLoginClick}
+            onKeyDown={onLoginClick}>
             Go back to login
           </div>
         </div>
@@ -42,11 +42,11 @@ function GroupLogin({ callBack }) {
 }
 
 GroupLogin.propTypes = {
-  callBack: PropTypes.func,
+  onLoginClick: PropTypes.func,
 };
 
 GroupLogin.defaultProps = {
-  callBack: () => {},
+  onLoginClick: () => {},
 };
 
 export default GroupLogin;
