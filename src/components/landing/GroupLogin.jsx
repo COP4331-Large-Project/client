@@ -8,10 +8,10 @@ import '../../scss/landing.scss';
 /// callBack should be passed from landing page. Used to re-render the landing page
 /// with the default landing page card, which should be the login card.
 
-function GroupLogin({ onLoginClick }) {
+function GroupLogin({ switchCard }) {
   let input;
 
-  function submitCode(event) {
+  function login(event) {
     event.preventDefault();
     // TODO: Make login request
   }
@@ -25,16 +25,10 @@ function GroupLogin({ onLoginClick }) {
             // eslint-disable-next-line no-unused-vars
             onChange={(c) => { input = c; }}
           />
-          <Button onClick={submitCode}>
+          <Button onClick={login}>
             Enter Code
           </Button>
-          <div
-            role="button"
-            tabIndex="0"
-            onClick={onLoginClick}
-            onKeyDown={onLoginClick}>
-            Go back to login
-          </div>
+          <Button onClick={() => switchCard('login')}>Back To Login</Button>
         </div>
       </form>
     </LandingCard>
@@ -42,11 +36,7 @@ function GroupLogin({ onLoginClick }) {
 }
 
 GroupLogin.propTypes = {
-  onLoginClick: PropTypes.func,
-};
-
-GroupLogin.defaultProps = {
-  onLoginClick: () => {},
+  switchCard: PropTypes.func.isRequired,
 };
 
 export default GroupLogin;

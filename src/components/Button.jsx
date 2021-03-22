@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Button({
-  className, variant, children, onClick, type,
+  className,
+  variant,
+  children,
+  onClick,
+  type,
 }) {
   return (
     <button
