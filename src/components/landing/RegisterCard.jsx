@@ -5,7 +5,7 @@ import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
 
-function RegisterCard({ onLoginClick }) {
+function RegisterCard({ switchCard }) {
   const onFormSubmit = event => {
     event.preventDefault();
   };
@@ -22,7 +22,7 @@ function RegisterCard({ onLoginClick }) {
         <TextInput placeHolder="Password" type="password" />
         <TextInput placeHolder="Confirm password" type="password" />
         <Button className="btn-submit">Register</Button>
-        <Button className="btn-login" onClick={onLoginClick}>
+        <Button className="btn-login" onClick={switchCard}>
           Back to login
         </Button>
       </form>
@@ -31,11 +31,11 @@ function RegisterCard({ onLoginClick }) {
 }
 
 RegisterCard.propTypes = {
-  onLoginClick: PropTypes.func,
+  switchCard: PropTypes.func,
 };
 
 RegisterCard.defaultProps = {
-  onLoginClick: () => {},
+  switchCard: () => {},
 };
 
 export default RegisterCard;
