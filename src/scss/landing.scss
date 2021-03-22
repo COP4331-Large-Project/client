@@ -46,6 +46,36 @@
   // text-align: center;
 }
 
+.fade-enter .landing-card {
+  opacity: 0;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transform: translateY(-100%) perspective(1000px);
+}
+.fade-enter-active .landing-card {
+  opacity: 1;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transform: translateY(0%);
+}
+.fade-exit .landing-card {
+  opacity: 1;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transform: translateY(0%) perspective(0px);
+}
+.fade-exit-active .landing-card {
+  opacity: 0;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transform: translateY(100%) perspective(1000px);
+}
+.fade-enter-active .landing-card,
+.fade-exit-active .landing-card {
+  transition: opacity 400ms, transform 400ms;
+}
+
+
 .landing-card {
   @extend .landing-card;
   @extend .drop-shadow-lg;
