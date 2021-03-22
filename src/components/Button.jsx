@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Button({
-  className, variant, children, onClick,
+  className, variant, children, onClick, type,
 }) {
   return (
     <button
       onClick={onClick}
-      type="button"
+      type={type}
       className={`btn btn-${variant} ${className}`}
     >
       {children}
@@ -20,6 +20,7 @@ Button.defaultProps = {
   children: [],
   onClick: () => {},
   className: '',
+  type: 'button',
 };
 
 Button.propTypes = {
@@ -27,6 +28,7 @@ Button.propTypes = {
   children: PropTypes.node,
   onClick: PropTypes.func,
   className: PropTypes.string,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
 };
 
 export default Button;
