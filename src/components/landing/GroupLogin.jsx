@@ -36,7 +36,7 @@ function GroupLogin({ switchCard }) {
 }
 
 GroupLogin.propTypes = {
-  switchCard: PropTypes.func,
+  switchCard: PropTypes.func.isRequired,
 };
 
 export default GroupLogin;
