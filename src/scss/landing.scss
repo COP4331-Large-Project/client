@@ -16,14 +16,24 @@
   max-width: 1500px;
   max-height: 800px;
   box-sizing: border-box;
-  margin: 40px;
+  margin: 100px;
 }
 
 .landing-header {
   font-size: 52px;
-  font-weight: 700;
+  font-weight: 600;
   color: black;
   max-width: 600px;
+}
+
+.title-header {
+  font-size: 52px;
+  font-weight: 700;
+  color: white;
+  display: inline;
+  background-color: black;
+  padding: 20px;
+  border-radius: 15px;
 }
 
 .landing-header-container {
@@ -34,9 +44,43 @@
 
 .landing-card-content-container {
   display: flex;
-  min-height: 150px;
+  min-height: 100px;
   min-width: 70px;
   flex: 1;
+
+  padding-left: 20px;
+  padding-right: 20px;
+
+  input {
+    margin-bottom: 12px;
+  }
+
+  .input-group {
+    display: flex;
+
+    input:first-child {
+      margin-right: 8px;
+    }
+
+    input:last-child {
+      margin-left: 8px;
+    }
+  }
+
+  .btn-submit,
+  .btn-link {
+    width: 100%;
+  }
+
+  .btn-link {
+    margin-top: 7px;
+    background-color: transparent;
+    padding: 2px;
+
+    &:hover {
+      color: map-get($variant-colors, 'primary');
+    }
+  }
 }
 
 .card-form {
@@ -45,36 +89,6 @@
   justify-content: space-between;
   // text-align: center;
 }
-
-.fade-enter .landing-card {
-  opacity: 0;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  transform: translateY(-100%) perspective(1000px);
-}
-.fade-enter-active .landing-card {
-  opacity: 1;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  transform: translateY(0%);
-}
-.fade-exit .landing-card {
-  opacity: 1;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  transform: translateY(0%) perspective(0px);
-}
-.fade-exit-active .landing-card {
-  opacity: 0;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  transform: translateY(100%) perspective(1000px);
-}
-.fade-enter-active .landing-card,
-.fade-exit-active .landing-card {
-  transition: opacity 400ms, transform 400ms;
-}
-
 
 .landing-card {
   @extend .landing-card;

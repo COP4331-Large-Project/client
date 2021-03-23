@@ -22,7 +22,7 @@ function RegisterCard({ switchCard }) {
         <TextInput placeHolder="Password" type="password" />
         <TextInput placeHolder="Confirm password" type="password" />
         <Button className="btn-submit">Register</Button>
-        <Button className="btn-login" onClick={switchCard}>
+        <Button className="btn-link" onClick={() => switchCard('login')}>
           Back to login
         </Button>
       </form>

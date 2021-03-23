@@ -19,17 +19,15 @@ function GroupLogin({ switchCard }) {
   return (
     <LandingCard title="No account? No problem.">
       <form>
-        <div className="card-form">
-          <TextInput
-            placeHolder="Group Code"
-            // eslint-disable-next-line no-unused-vars
-            onChange={(c) => { input = c; }}
-          />
-          <Button onClick={login}>
-            Enter Code
-          </Button>
-          <Button onClick={() => switchCard('login')}>Back To Login</Button>
-        </div>
+        <TextInput
+          placeHolder="Group Code"
+          // eslint-disable-next-line no-unused-vars
+          onChange={(c) => { input = c; }}
+        />
+        <Button onClick={login}>
+          Enter Code
+        </Button>
+        <Button className="btn-link" onClick={() => switchCard('login')}>Back To Login</Button>
       </form>
     </LandingCard>
   );
