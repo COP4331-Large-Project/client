@@ -11,7 +11,7 @@ function LoginCard({ switchCard }) {
   }
 
   return (
-    <LandingCard title="Welcome Back, Please Log In">
+    <LandingCard title="Please Log In">
       <form onSubmit={onSubmit}>
         <TextInput placeHolder="Username" name="Username" />
         <TextInput placeHolder="Password" name="Password" type="password" />

@@ -1,20 +1,27 @@
+$scaleFactor: 0.6;
+$YLength: 30%;
+
 .fade-enter {
   opacity: 0;
-  transform: translateY(-30%) scaleX(0.6) scaleY(0.6);
+  filter: blur(15px);
+  transform: translateY(-$YLength) scaleX($scaleFactor) scaleY($scaleFactor);
 }
 .fade-enter-active {
   opacity: 1;
+  filter: blur(0px);
   transform: translateY(0%) scaleX(1) scaleX(1);
 }
 .fade-exit {
   opacity: 1;
+  filter: blur(0px);
   transform: translateY(0%) scaleX(1) scaleY(1);
 }
 .fade-exit-active {
   opacity: 0;
-  transform: translateY(30%) scaleX(0.6) scaleY(0.6);
+  filter: blur(15px);
+  transform: translateY($YLength) scaleX($scaleFactor) scaleY($scaleFactor);
 }
 .fade-enter-active,
 .fade-exit-active {
-  transition: opacity 350ms, transform 350ms;
+  transition: filter 350ms, opacity 350ms, transform 350ms;
 }

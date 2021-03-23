@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import '../../scss/landing.scss';
-import LoginCard from './LoginCard.jsx';
-import GroupLogin from './GroupLogin.jsx';
-import RegisterCard from './RegisterCard.jsx';
-import '../../scss/animation.scss';
+import LoginCard from '../components/landing/LoginCard.jsx';
+import GroupLogin from '../components/landing/GroupLogin.jsx';
+import RegisterCard from '../components/landing/RegisterCard.jsx';
+
+import '../scss/animation.scss';
+import '../scss/landing.scss';
 
 function LandingPage() {
   const nodeRef = React.useRef(null);
@@ -21,8 +22,8 @@ function LandingPage() {
       <div className="landing-body">
         <div className="landing-header-container">
           <div>
-            <h1 className="title-header">ImageUs</h1>
-            <h1 className="landing-header">Welcome back to our app!</h1>
+            <h1 className="title-header drop-shadow-md">ImageUs</h1>
+            <h1 className="landing-header">Image sharing made simple and easy</h1>
           </div>
         </div>
         <SwitchTransition>
