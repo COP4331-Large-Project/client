@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './scss/index.scss';
-import App from './components/App.jsx';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import LandingPage from './pages/LandingPage.jsx';
 import reportWebVitals from './reportWebVitals';
+
+import './scss/index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <LandingPage />
+        </Route>
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root'),
 );
