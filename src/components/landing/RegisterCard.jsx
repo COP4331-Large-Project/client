@@ -1,4 +1,3 @@
-import '../../scss/register-card.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import LandingCard from './LandingCard.jsx';
@@ -11,7 +10,7 @@ function RegisterCard({ switchCard }) {
   };
 
   return (
-    <LandingCard title="Register" className="register-card">
+    <LandingCard title="Register">
       <form onSubmit={onFormSubmit}>
         <div className="input-group">
           <TextInput placeHolder="First name" />

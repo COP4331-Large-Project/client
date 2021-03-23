@@ -11,10 +11,12 @@ function LoginCard({ switchCard }) {
   }
 
   return (
-    <LandingCard title="Please Log In">
+    <LandingCard title="Log In">
       <form onSubmit={onSubmit}>
-        <TextInput placeHolder="Username" name="Username" />
-        <TextInput placeHolder="Password" name="Password" type="password" />
+        <div className="vertical-input-group">
+          <TextInput placeHolder="Username" name="Username" />
+          <TextInput placeHolder="Password" name="Password" type="password" />
+        </div>
         <Button type="submit">Login</Button>
         <Button className="btn-link" onClick={() => switchCard('groupLogin')}>Have a group code?</Button>
         <Button className="btn-link" onClick={() => switchCard('register')}>Don&apos;t have an Account?</Button>

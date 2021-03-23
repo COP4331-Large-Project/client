@@ -67,6 +67,31 @@
     }
   }
 
+  .vertical-input-group {
+    display: flex;
+    flex-direction: column;
+    margin: 12px;
+
+    input {
+      margin: 0;
+    }
+
+    input:focus {
+      z-index: 1;
+    }
+
+    input:first-child {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    input:last-child {
+      margin-top: -2px;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+
   .btn-submit,
   .btn-link {
     width: 100%;
@@ -75,7 +100,7 @@
   .btn-link {
     margin-top: 7px;
     background-color: transparent;
-    padding: 2px;
+    padding: 8px;
     color: map-get($variant-colors, 'primary');
 
     &:hover {
