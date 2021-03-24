@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
 import '../../scss/landing.scss';
+import API from '../../api/API';
 
 function LoginCard({ switchCard }) {
-  // eslint-disable-next-line no-unused-vars
+  const history = useHistory();
   const [err, setError] = useState(null);
 
   async function onSubmit(event) {
     event.preventDefault();
-    setError('Not Implemented.');
+    const data = new FormData(event.target);
+
+    try {
+      await API.login(data.get('Username'), data.get('Password'));
+    } catch (e) {
+      setError(e.message);
+      return;
+    }
+
+    // Move to next page
+    history.push('/main');
   }
 
   return (
