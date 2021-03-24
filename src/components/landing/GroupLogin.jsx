@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
@@ -10,14 +10,16 @@ import '../../scss/landing.scss';
 
 function GroupLogin({ switchCard }) {
   let input;
+  const [err, setError] = useState(null);
 
   function login(event) {
     event.preventDefault();
     // TODO: Make login request
+    setError('Not Implemented');
   }
 
   return (
-    <LandingCard title="No account? No problem.">
+    <LandingCard title="No account? No problem." error={err}>
       <form>
         <TextInput
           placeHolder="Group Code"

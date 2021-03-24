@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
@@ -6,12 +6,16 @@ import Button from '../Button.jsx';
 import '../../scss/landing.scss';
 
 function LoginCard({ switchCard }) {
+  // eslint-disable-next-line no-unused-vars
+  const [err, setError] = useState(null);
+
   async function onSubmit(event) {
     event.preventDefault();
+    setError('Not Implemented.');
   }
 
   return (
-    <LandingCard title="Log In">
+    <LandingCard title="Log In" error={err}>
       <form onSubmit={onSubmit}>
         <div className="vertical-input-group">
           <TextInput placeHolder="Username" name="Username" />
