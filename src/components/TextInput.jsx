@@ -24,7 +24,7 @@ function TextInput({
       placeholder={placeHolder}
       onChange={onInputChange}
       value={inputValue}
-      key={name}
+      name={name}
     />
   );
 }

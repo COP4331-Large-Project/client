@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '@primer/components';
 import LandingPage from './pages/LandingPage.jsx';
+import MainPage from './pages/MainPage.jsx';
 import reportWebVitals from './reportWebVitals';
 
 import './scss/index.scss';
@@ -15,6 +16,9 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <Route exact path="/">
             <LandingPage />
+          </Route>
+          <Route exact path="/main">
+            <MainPage />
           </Route>
         </ThemeProvider>
       </Switch>
