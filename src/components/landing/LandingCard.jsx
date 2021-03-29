@@ -16,7 +16,8 @@ function LandingCard({
               {error}
             </Flash> : <div />
       }
-      <h1 style={{
+      <h1
+style={{
         width: '100%',
       }} align="left">{title}</h1>
       <div className="landing-card-content-container">
