@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -15,17 +17,10 @@ function RegisterCard({ switchCard }) {
     const data = new FormData(event.target);
 
     try {
-      // Checking inputs
-      if (data.get('FirstName') === '') throw (new Error('First name is required.'));
-      if (data.get('LastName') === '') throw (new Error('Last name is required.'));
-      if (data.get('Username') === '') throw (new Error('Username is required.'));
-      if (data.get('Email') === '') throw (new Error('Email is required.'));
-      if (data.get('Password') === '') throw (new Error('Password cannot be empty.'));
-      if (data.get('ConfirmPassword') === '') throw (new Error('Please repeat entered password.'));
-
       // Checking if passwords match
       if (data.get('Password') !== data.get('ConfirmPassword')) throw (new Error('Passwords do not match.'));
 
+      
       // Calling register API
       await API.register(
         data.get('FirstName'),
@@ -46,13 +41,13 @@ function RegisterCard({ switchCard }) {
     <LandingCard title="Register" error={err}>
       <form onSubmit={onSubmit}>
         <div className="input-group">
-          <TextInput placeHolder="First name" name="FirstName" />
-          <TextInput placeHolder="Last name" name="LastName" />
+          <TextInput placeHolder="First name" name="FirstName" required/>
+          <TextInput placeHolder="Last name" name="LastName" required/>
         </div>
-        <TextInput placeHolder="Username" name="Username" />
-        <TextInput placeHolder="Email" type="email" name="Email" />
-        <TextInput placeHolder="Password" type="password" name="Password" />
-        <TextInput placeHolder="Confirm password" type="password" name="ConfirmPassword" />
+        <TextInput placeHolder="Username" name="Username" required/>
+        <TextInput placeHolder="Email" type="email" name="Email" required/>
+        <TextInput placeHolder="Password" type="password" name="Password" required/>
+        <TextInput placeHolder="Confirm password" type="password" name="ConfirmPassword" required/>
         <Button className="btn-submit" type="submit">Register</Button>
         <Button className="btn-link" onClick={() => switchCard('login')}>
           Back to login
