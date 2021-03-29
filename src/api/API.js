@@ -47,6 +47,28 @@ const API = {
     return fetch(relURL('/users/login'), postOptions(payload))
       .then(handleResponse);
   },
+
+  /**
+   * Logs user into account.
+   *
+   * @param {String} firstname
+   * @param {String} lastname
+   * @param {String} username
+   * @param {String} password
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  register: async (firstname, lastname, email, username, password) => {
+    const payload = {
+      firstname,
+      lastname,
+      email,
+      username,
+      password,
+    };
+    return fetch(relURL('/users/'), postOptions(payload))
+      .then(handleResponse);
+  },
 };
 
 export default API;

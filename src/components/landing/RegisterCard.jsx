@@ -1,30 +1,59 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
+import API from '../../api/API';
 
 function RegisterCard({ switchCard }) {
-  // eslint-disable-next-line no-unused-vars
+  const history = useHistory();
   const [err, setError] = useState(null);
 
-  const register = event => {
+  async function onSubmit(event) {
     event.preventDefault();
-    setError('Not Implemented');
-  };
+    const data = new FormData(event.target);
+
+    try {
+      // Checking inputs
+      if (data.get('FirstName') === '') throw (new Error('First name is required.'));
+      if (data.get('LastName') === '') throw (new Error('Last name is required.'));
+      if (data.get('Username') === '') throw (new Error('Username is required.'));
+      if (data.get('Email') === '') throw (new Error('Email is required.'));
+      if (data.get('Password') === '') throw (new Error('Password cannot be empty.'));
+      if (data.get('ConfirmPassword') === '') throw (new Error('Please repeat entered password.'));
+
+      // Checking if passwords match
+      if (data.get('Password') !== data.get('ConfirmPassword')) throw (new Error('Passwords do not match.'));
+
+      // Calling register API
+      await API.register(
+        data.get('FirstName'),
+        data.get('LastName'),
+        data.get('Email'),
+        data.get('Username'),
+        data.get('Password'),
+      );
+    } catch (e) {
+      setError(e.message);
+      return;
+    }
+    // Move to the home page after successfully registering
+    history.push('/main');
+  }
 
   return (
     <LandingCard title="Register" error={err}>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="input-group">
-          <TextInput placeHolder="First name" />
-          <TextInput placeHolder="Last name" />
+          <TextInput placeHolder="First name" name="FirstName" />
+          <TextInput placeHolder="Last name" name="LastName" />
         </div>
-        <TextInput placeHolder="Username" />
-        <TextInput placeHolder="Email" type="email" />
-        <TextInput placeHolder="Password" type="password" />
-        <TextInput placeHolder="Confirm password" type="password" />
-        <Button className="btn-submit" onClick={register}>Register</Button>
+        <TextInput placeHolder="Username" name="Username" />
+        <TextInput placeHolder="Email" type="email" name="Email" />
+        <TextInput placeHolder="Password" type="password" name="Password" />
+        <TextInput placeHolder="Confirm password" type="password" name="ConfirmPassword" />
+        <Button className="btn-submit" type="submit">Register</Button>
         <Button className="btn-link" onClick={() => switchCard('login')}>
           Back to login
         </Button>
@@ -38,7 +67,7 @@ RegisterCard.propTypes = {
 };
 
 RegisterCard.defaultProps = {
-  switchCard: () => {},
+  switchCard: () => { },
 };
 
 export default RegisterCard;
