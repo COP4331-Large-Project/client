@@ -5,7 +5,6 @@ import '../../scss/landing.scss';
 import 'antd/lib/alert/style/index.css';
 
 function LandingCard({
-  // eslint-disable-next-line no-unused-vars
   title, children, className, error,
 }) {
   return (
