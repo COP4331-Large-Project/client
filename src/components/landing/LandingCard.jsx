@@ -1,20 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Flash } from '@primer/components';
+import { Alert } from 'antd';
 import '../../scss/landing.scss';
-import { XIcon } from '@primer/octicons-react';
+import 'antd/lib/alert/style/index.css';
 
 function LandingCard({
+  // eslint-disable-next-line no-unused-vars
   title, children, className, error,
 }) {
   return (
     <div className={`landing-card ${className}`}>
       {
-        error
-          ? <Flash variant="danger">
-              <XIcon/>
-              {error}
-            </Flash> : <div />
+        error && (
+          <Alert
+            message="Error"
+            description={error}
+            type="error"
+            closable
+          />
+        )
       }
       <h1>{title}</h1>
       <div className="landing-card-content-container">

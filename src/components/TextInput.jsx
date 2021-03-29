@@ -1,6 +1,8 @@
+import 'antd/lib/input/style/index.css';
 import '../scss/text-input.scss';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Input } from 'antd';
 
 function TextInput({
   className,
@@ -18,13 +20,13 @@ function TextInput({
   };
 
   return (
-    <input
+    <Input
       type={type}
       className={`text-input ${className}`}
       placeholder={placeHolder}
       onChange={onInputChange}
-      value={inputValue}
       name={name}
+      value={inputValue}
     />
   );
 }
