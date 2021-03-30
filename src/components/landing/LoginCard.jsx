@@ -29,7 +29,7 @@ function LoginCard({ switchCard }) {
   return (
     <LandingCard title="Log In" error={err}>
       <form onSubmit={onSubmit}>
-        <div className="vertical-input-group">
+        <div>
           <TextInput placeHolder="Username" name="Username" />
           <TextInput placeHolder="Password" name="Password" type="password" />
         </div>
