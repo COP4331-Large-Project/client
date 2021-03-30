@@ -49,7 +49,7 @@ const API = {
   },
 
   /**
-   * Logs user into account.
+   * Registers a new user.
    *
    * @param {String} firstname
    * @param {String} lastname

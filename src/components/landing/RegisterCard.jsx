@@ -10,13 +10,25 @@ function RegisterCard({ switchCard }) {
   const history = useHistory();
   const [err, setError] = useState(null);
 
+  function isTrimmedEmpty(str) {
+    if (str.trim() === '') return true;
+    return false;
+  }
+
   async function onSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.target);
+    const formInfo = new FormData(event.target);
+    const data = Object.fromEntries(formInfo.entries());
 
     try {
       // Checking if passwords match
-      if (data.get('Password') !== data.get('ConfirmPassword')) throw (new Error('Passwords do not match.'));
+      if (data.Password !== data.ConfirmPassword) throw (new Error('Passwords do not match.'));
+      if (isTrimmedEmpty(data.FirstName)) throw (new Error('First name input required.'));
+      if (isTrimmedEmpty(data.LastName)) throw (new Error('Last name input required.'));
+      if (isTrimmedEmpty(data.Username)) throw (new Error('Username input required.'));
+      if (isTrimmedEmpty(data.Email)) throw (new Error('Email input required.'));
+      if (isTrimmedEmpty(data.Password)) throw (new Error('Password input required.'));
+      if (isTrimmedEmpty(data.ConfirmPassword)) throw (new Error('Confirm password input required.'));
 
       // Calling register API
       await API.register(
