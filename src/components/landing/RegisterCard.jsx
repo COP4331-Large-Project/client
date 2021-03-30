@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -20,7 +18,6 @@ function RegisterCard({ switchCard }) {
       // Checking if passwords match
       if (data.get('Password') !== data.get('ConfirmPassword')) throw (new Error('Passwords do not match.'));
 
-      
       // Calling register API
       await API.register(
         data.get('FirstName'),
