@@ -51,24 +51,12 @@ const API = {
   /**
    * Registers a new user.
    *
-   * @param {String} firstname
-   * @param {String} lastname
-   * @param {String} username
-   * @param {String} password
+   * @param {Object} payload
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  register: async (firstname, lastname, email, username, password) => {
-    const payload = {
-      firstname,
-      lastname,
-      email,
-      username,
-      password,
-    };
-    return fetch(relURL('/users/'), postOptions(payload))
-      .then(handleResponse);
-  },
+  register: async (payload) => fetch(relURL('/users/'), postOptions(payload))
+    .then(handleResponse),
 };
 
 export default API;

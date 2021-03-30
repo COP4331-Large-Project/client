@@ -31,13 +31,13 @@ function RegisterCard({ switchCard }) {
       if (isTrimmedEmpty(data.ConfirmPassword)) throw (new Error('Confirm password input required.'));
 
       // Calling register API
-      await API.register(
-        data.get('FirstName'),
-        data.get('LastName'),
-        data.get('Email'),
-        data.get('Username'),
-        data.get('Password'),
-      );
+      await API.register({
+        firstName: data.FirstName,
+        lastName: data.LastName,
+        email: data.Email,
+        username: data.Username,
+        password: data.Password,
+      });
     } catch (e) {
       setError(e.message);
       return;
