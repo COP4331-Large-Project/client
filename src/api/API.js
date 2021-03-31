@@ -47,6 +47,16 @@ const API = {
     return fetch(relURL('/users/login'), postOptions(payload))
       .then(handleResponse);
   },
+
+  /**
+   * Registers a new user.
+   *
+   * @param {Object} payload
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  register: async (payload) => fetch(relURL('/users/'), postOptions(payload))
+    .then(handleResponse),
 };
 
 export default API;

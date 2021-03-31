@@ -11,6 +11,7 @@ function TextInput({
   value,
   onChange,
   name,
+  required,
 }) {
   const [inputValue, setInputValue] = useState(value);
 
@@ -26,6 +27,7 @@ function TextInput({
       placeholder={placeHolder}
       onChange={onInputChange}
       name={name}
+      required={required}
       value={inputValue}
     />
   );
@@ -38,9 +40,11 @@ TextInput.propTypes = {
   onChange: PropTypes.func,
   type: PropTypes.oneOf(['email', 'password', 'text']),
   name: PropTypes.string,
+  required: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
+  required: false,
   className: '',
   placeHolder: '',
   value: '',
