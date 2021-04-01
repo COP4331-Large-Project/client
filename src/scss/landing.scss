@@ -36,7 +36,7 @@
 
 .title-header {
   font-size: 52px;
-  font-weight: 700;
+  font-weight: 600;
   color: black;
   //background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
   padding: 10px;
@@ -90,6 +90,10 @@
     input:last-child {
       margin-left: 8px;
     }
+  }
+
+  button {
+    width: 100%;
   }
 
   .btn-submit,
