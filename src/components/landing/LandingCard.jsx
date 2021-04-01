@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'antd';
 import '../../scss/landing.scss';
-import 'antd/lib/alert/style/index.css';
 
 function LandingCard({
   title, children, className, error,
@@ -19,7 +18,7 @@ function LandingCard({
           />
         )
       }
-      <h1>{title}</h1>
+      <h1 style={{ width: '100%' }} align="center">{title}</h1>
       <div className="landing-card-content-container">
         {children}
       </div>

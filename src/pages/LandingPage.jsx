@@ -20,25 +20,25 @@ function LandingPage() {
   return (
     <div className="landing-container">
       <div className="landing-body">
-        <div className="landing-header-container">
-          <div>
-            <h1 className="title-header drop-shadow-md">ImageUs</h1>
-            <h1 className="landing-header">Image sharing made simple and easy</h1>
-          </div>
-        </div>
         <SwitchTransition>
           <CSSTransition
             nodeRef={nodeRef}
             key={card}
-            in timeout={300}
-            classNames='fade'
+            in
+            timeout={450}
+            classNames="fade"
           >
-            <div ref={nodeRef}>
-              {cards[card]}
+            <div className="landing-header-container" ref={nodeRef}>
+              <div className="landing-title-container">
+                <h1 className="title-header">ImageUs</h1>
+                <h1 className="landing-header">
+                  Image sharing made simple and easy
+                </h1>
+                <div className="form-area">{cards[card]}</div>
+              </div>
             </div>
           </CSSTransition>
         </SwitchTransition>
-
       </div>
     </div>
   );
