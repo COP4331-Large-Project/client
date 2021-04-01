@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from '@primer/components';
 import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
 import reportWebVitals from './reportWebVitals';
@@ -12,14 +11,12 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <ThemeProvider>
           <Route exact path="/">
             <LandingPage />
           </Route>
           <Route exact path="/main">
             <MainPage />
           </Route>
-        </ThemeProvider>
       </Switch>
     </Router>
   </React.StrictMode>,

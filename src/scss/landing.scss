@@ -140,4 +140,10 @@
   align-items: center;
   //padding: 20px;
   text-align: center;
+
+  .ant-alert {
+    align-self: normal;
+    border-radius: 6px;
+    text-align: left;
+  }
 }
