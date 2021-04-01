@@ -14,9 +14,9 @@ function MainPage() {
       </Header>
       <Layout>
         <Sider theme="light" className="sidebar">
-          <Card className="sidebar-card"></Card>
+          <Card className="sidebar-card" />
         </Sider>
-        <Content className="main-content"></Content>
+        <Content className="main-content" />
       </Layout>
     </Layout>
   );
