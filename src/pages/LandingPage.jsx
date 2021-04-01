@@ -25,7 +25,7 @@ function LandingPage() {
             nodeRef={nodeRef}
             key={card}
             in
-            timeout={400}
+            timeout={450}
             classNames="fade"
           >
             <div className="landing-header-container" ref={nodeRef}>

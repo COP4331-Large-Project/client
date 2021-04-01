@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
 import reportWebVitals from './reportWebVitals';
 
+import 'antd/dist/antd.css';
 import './scss/index.scss';
 
 ReactDOM.render(
