@@ -1,17 +1,22 @@
 import 'antd/dist/antd.css';
 import '../scss/main-page.scss';
-import { Layout } from 'antd';
 import React from 'react';
+import { Layout } from 'antd';
+import Card from '../components/Card.jsx';
 
 const { Sider, Content, Header } = Layout;
 
 function MainPage() {
   return (
     <Layout className="main-page">
-      <Header></Header>
+      <Header className="header">
+        <h1 className="title">ImageUs</h1>
+      </Header>
       <Layout>
-        <Sider theme="light"></Sider>
-        <Content></Content>
+        <Sider theme="light" className="sidebar">
+          <Card className="sidebar-card"></Card>
+        </Sider>
+        <Content className="main-content"></Content>
       </Layout>
     </Layout>
   );
