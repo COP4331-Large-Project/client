@@ -1,0 +1,25 @@
+.main-page {
+  height: 100vh;
+
+  .ant-layout-content {
+    background-color: white;
+  }
+
+  .ant-layout-header {
+    height: 64px;
+  }
+
+  .ant-layout-sider {
+    $size: 300px;
+
+    // Need to use !important here since ant has inline styles
+    // with high specificity
+    flex: 0 0 $size !important;
+    max-width: $size !important;
+    min-width: $size !important;
+    width: $size !important;
+
+    // NOTE: This is only for debugging
+    background-color: gray;
+  }
+}
