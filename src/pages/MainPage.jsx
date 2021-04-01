@@ -1,4 +1,3 @@
-import 'antd/dist/antd.css';
 import '../scss/main-page.scss';
 import React from 'react';
 import { Layout } from 'antd';
