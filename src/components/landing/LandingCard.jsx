@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'antd';
 import '../../scss/landing.scss';
-import 'antd/lib/alert/style/index.css';
 
 function LandingCard({
   title, children, className, error,
