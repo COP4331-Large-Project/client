@@ -1,4 +1,3 @@
-import 'antd/lib/input/style/index.css';
 import '../scss/text-input.scss';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';

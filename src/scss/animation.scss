@@ -1,27 +1,30 @@
 $scaleFactor: 0.6;
-$YLength: 30%;
+$XLength: 80%;
+$fadeTiming: 400ms;
 
 .fade-enter {
   opacity: 0;
   filter: blur(15px);
-  transform: translateY(-$YLength) scaleX($scaleFactor) scaleY($scaleFactor);
+  backdrop-filter: none;
+  transform: translateX(-$XLength) scaleX($scaleFactor) scaleY($scaleFactor);
 }
 .fade-enter-active {
   opacity: 1;
   filter: blur(0px);
-  transform: translateY(0%) scaleX(1) scaleX(1);
+  transform: translateX(0%) scaleX(1) scaleX(1);
 }
 .fade-exit {
   opacity: 1;
   filter: blur(0px);
-  transform: translateY(0%) scaleX(1) scaleY(1);
+  transform: translateX(0%) scaleX(1) scaleY(1);
 }
 .fade-exit-active {
   opacity: 0;
   filter: blur(15px);
-  transform: translateY($YLength) scaleX($scaleFactor) scaleY($scaleFactor);
+  backdrop-filter: none;
+  transform: translateX($XLength) scaleX($scaleFactor) scaleY($scaleFactor);
 }
 .fade-enter-active,
 .fade-exit-active {
-  transition: filter 350ms, opacity 350ms, transform 350ms;
+  transition: filter $fadeTiming, opacity $fadeTiming, transform $fadeTiming;
 }

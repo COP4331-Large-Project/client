@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { Divider } from 'antd';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
@@ -29,11 +30,12 @@ function LoginCard({ switchCard }) {
   return (
     <LandingCard title="Log In" error={err}>
       <form onSubmit={onSubmit}>
-        <div className="vertical-input-group">
+        <div>
           <TextInput placeHolder="Username" name="Username" />
           <TextInput placeHolder="Password" name="Password" type="password" />
         </div>
         <Button type="submit">Login</Button>
+        <Divider>OR</Divider>
         <Button className="btn-link" onClick={() => switchCard('groupLogin')}>Have a group code?</Button>
         <Button className="btn-link" onClick={() => switchCard('register')}>Don&apos;t have an Account?</Button>
       </form>
