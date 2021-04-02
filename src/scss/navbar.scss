@@ -2,27 +2,36 @@
 
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   display: flex;
   align-items: center;
+  justify-items: center;
   justify-content: space-between;
+  padding: 20px !important;
+  z-index: 5;
+  top: 0;
 
   .title {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 32px;
     margin: 0;
   }
 
+  margin-bottom: 10px;
+
   // Override ant's default styling
   &.ant-layout-header {
     background-color: white;
+    margin-bottom: 0 !important;
     height: $navbar-height;
+    width: 100%;
 
     @supports (backdrop-filter: blur(1px)) {
       background-color: rgba(255, 255, 255, 0.7);
-       backdrop-filter: blur(5px);
+       backdrop-filter: blur(15px);
     }
   }
+}
+
+.invisible-backing {
+  height: $navbar-height;
 }
