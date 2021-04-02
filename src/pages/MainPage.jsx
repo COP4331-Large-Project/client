@@ -11,7 +11,8 @@ function MainPage() {
       <div className="body-content">
         <Sidebar />
         <div className="main-content">
-          Content Goes here...
+          <h1>Group Name</h1>
+          <div style={{ height: '1000px', backgroundColor: 'red' }} />
         </div>
       </div>
     </div>
