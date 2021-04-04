@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tooltip } from 'antd';
-import { QuestionCircle } from 'react-bootstrap-icons';
+import { BsQuestionCircle } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
@@ -34,7 +34,7 @@ function GroupLogin({ switchCard }) {
         <Button className="btn-link" onClick={() => switchCard('login')}>Back To Login</Button>
         <Tooltip placement='bottom' title='A group code is used to log in anonymously as a guest. No groups will be saved.'>
           <h4 className='landing-hint'>
-            What is a group code <QuestionCircle/>
+            What is a group code <BsQuestionCircle/>
           </h4>
         </Tooltip>
       </form>
