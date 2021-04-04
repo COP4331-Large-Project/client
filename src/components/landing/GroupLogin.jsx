@@ -19,7 +19,7 @@ function GroupLogin({ switchCard }) {
   }
 
   return (
-    <LandingCard title="No account? No problem." error={err}>
+    <LandingCard title="Group code login" error={err}>
       <form>
         <TextInput
           placeHolder="Group Code"
