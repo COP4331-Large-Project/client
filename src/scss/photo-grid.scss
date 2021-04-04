@@ -12,4 +12,10 @@
     margin: 10px;
     object-fit: cover;
     border-radius: 20px;
+    transition: 400ms;
+
+    &:hover {
+        box-shadow: map-get($map: $box-shadows, $key: 'md');
+        transition: 400ms
+    }
 }
