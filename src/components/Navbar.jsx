@@ -1,6 +1,6 @@
 import '../scss/navbar.scss';
 import React from 'react';
-import { Layout } from 'antd';
+import { Avatar, Layout } from 'antd';
 
 const { Header } = Layout;
 
@@ -20,6 +20,7 @@ function Navbar() {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
+        <Avatar size={40}>U</Avatar>
       </Header>
     </div>
   );

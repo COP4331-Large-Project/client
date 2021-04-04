@@ -1,0 +1,16 @@
+@import 'variables';
+
+.photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.photo-thumbnail {
+    box-shadow: map-get($box-shadows, 'md');
+    width: 250px;
+    height: 200px;
+    overflow: hidden;
+    margin: 10px;
+    object-fit: cover;
+    border-radius: 20px;
+}
