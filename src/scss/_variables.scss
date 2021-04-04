@@ -12,9 +12,12 @@ $variant-colors: (
 );
 
 $box-shadows: (
+  'xs': rgba(0, 0, 0, 0.1) 0px 0px 9px,
   'sm': rgba(0, 0, 0, 0.35) 0px 5px 15px,
   'md': (rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px),
   'lg': (rgba(0, 0, 0, 0.1) 0px 30px 90px),
 );
 
 $profile-length: 70px;
+$sidebar-width: 330px;
+$navbar-height: 72px;

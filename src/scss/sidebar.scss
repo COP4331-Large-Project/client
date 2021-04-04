@@ -1,0 +1,28 @@
+@import 'variables';
+
+aside.sidebar {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 12px 16px;
+
+  // Need to use !important here since ant has inline styles
+  // with high specificity
+  flex: 1 !important;
+  max-width: $sidebar-width !important;
+  min-width: $sidebar-width !important;
+  width: $sidebar-width !important;
+
+  .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-card {
+    display: flex;
+    flex: 1;
+    border-radius: 16px;
+    box-shadow: map-get($box-shadows, 'lg');
+    overflow: auto;
+  }
+}

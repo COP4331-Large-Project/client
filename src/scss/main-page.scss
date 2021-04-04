@@ -1,0 +1,27 @@
+@import 'variables';
+
+.main-page-body {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  &.ant-layout {
+    background-color: white;
+  }
+
+  .body-content {
+    display: flex;
+    flex: 1 0;
+    overflow: auto;
+  }
+  
+  .main-content {
+    // This is only gray for viewability, it will be removed in future builds.
+    background-color: lightgray;
+    flex: 1 1;
+    padding: 20px;
+    overflow: auto;
+    margin: 20px;
+  }
+}
