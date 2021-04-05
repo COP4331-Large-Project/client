@@ -1,7 +1,7 @@
-import '../scss/sidebar.scss';
+import '../../scss/sidebar.scss';
 import React from 'react';
 import { Layout } from 'antd';
-import Card from './Card.jsx';
+import Card from '../Card.jsx';
 
 const { Sider } = Layout;
 
