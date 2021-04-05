@@ -11,7 +11,7 @@ import './scss/index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AnimatePresence exitBeforeEnter initial={false}></AnimatePresence>
+    <AnimatePresence exitBeforeEnter initial={false} />
     <Router>
       <Switch>
         <Route exact path="/">
