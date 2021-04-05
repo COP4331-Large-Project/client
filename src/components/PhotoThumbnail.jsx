@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 function PhotoThumbnail({ src }) {
   return (
     <motion.div
-    initial={{ y: 1000 }}
-    animate={{ y: 0 }}
     transition={{
       duration: 1, type: 'spring', bounce: 0.1,
     }}
