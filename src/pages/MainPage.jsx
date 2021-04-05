@@ -49,7 +49,8 @@ function MainPage() {
         <div className="main-content">
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <h1>Group Name</h1>
-            <Button type="primary" size="large" shape="circle" style={{
+            <Button
+type="primary" size="large" shape="circle" style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
