@@ -1,4 +1,4 @@
-import '../scss/navbar.scss';
+import '../../scss/navbar.scss';
 import React from 'react';
 import { Avatar, Layout } from 'antd';
 

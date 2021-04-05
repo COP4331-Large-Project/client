@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { Image } from 'antd';
 
 function PhotoThumbnail({ src }) {
   return (
@@ -21,7 +22,7 @@ function PhotoThumbnail({ src }) {
         duration: 0.4, type: 'spring', bounce: 0.5,
       },
     }}>
-      <img className="photo-thumbnail" src={src} />
+      <Image className="photo-thumbnail" src={src} />
     </motion.div>
   );
 }

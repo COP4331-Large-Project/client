@@ -41,6 +41,7 @@ function LandingPage() {
         </SwitchTransition>
       </div>
     </div>
+
   );
 }
 

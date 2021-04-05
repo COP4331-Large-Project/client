@@ -13,9 +13,26 @@
     object-fit: cover;
     border-radius: 20px;
     transition: 400ms;
+}
 
-    &:hover {
-        box-shadow: map-get($map: $box-shadows, $key: 'md');
-        transition: 400ms
-    }
+.ant-image {
+    background-color: transparent !important;
+    transition: 400ms;
+}
+
+.ant-image:hover {
+    box-shadow: map-get($map: $box-shadows, $key: 'md');
+    margin-left: 20px;
+    margin-right: 20px;
+    transition: 400ms;
+    background-color: transparent !important;
+}
+
+.ant-image-mask {
+    background-color: transparent !important;
+}
+
+.ant-image-mask-info {
+    background-color: transparent !important;
+    display: none;
 }
