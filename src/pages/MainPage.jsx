@@ -51,10 +51,10 @@ function MainPage() {
             <h1>Group Name</h1>
             <Button
 type="primary" size="large" shape="circle" style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+}}
             >
               <BsThreeDots />
             </Button>
