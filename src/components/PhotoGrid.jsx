@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import '../scss/photo-grid.scss';
+import { HiUpload } from 'react-icons/hi';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
+import FloatingButton from './FloatingButton.jsx';
+
+import '../scss/photo-grid.scss';
 
 const container = {
   hidden: { opacity: 0 },
@@ -27,13 +30,18 @@ function PhotoGrid({ photos }) {
       animate="show"
       layout
     >
+      <div className="photo-grid-container">
         <div className="photo-grid">
             {photos.map(photo => (
               <motion.div key={photo} variants={item}>
                 <PhotoThumbnail key={photo} src={photo} />
               </motion.div>
             ))}
+            <FloatingButton>
+              <HiUpload size={35} />
+            </FloatingButton>
         </div>
+      </div>
       </motion.div>
   );
 }
