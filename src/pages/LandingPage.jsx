@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import LoginCard from '../components/landing/LoginCard.jsx';
-import GroupLogin from '../components/landing/GroupLogin.jsx';
+import ForgotPassword from '../components/landing/ForgotPassword.jsx';
 import RegisterCard from '../components/landing/RegisterCard.jsx';
 
 import '../scss/animation.scss';
@@ -14,7 +14,7 @@ function LandingPage() {
   const cards = {
     login: <LoginCard switchCard={setCard} />,
     register: <RegisterCard switchCard={setCard} />,
-    groupLogin: <GroupLogin switchCard={setCard} />,
+    forgotPassword: <ForgotPassword switchCard={setCard} />,
   };
 
   return (
