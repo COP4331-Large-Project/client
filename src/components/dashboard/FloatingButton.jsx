@@ -5,9 +5,9 @@ import '../../scss/floating-button.scss';
 
 function FloatingButton({ onClick, children }) {
   return (
-        <div onClick={onClick} className="floating-button">
+        <button onClick={onClick} className="floating-button">
             {children}
-        </div>
+        </button>
   );
 }
 
