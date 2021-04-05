@@ -35,8 +35,8 @@ function LoginCard({ switchCard }) {
           <TextInput placeHolder="Password" name="Password" type="password" />
         </div>
         <Button type="submit">Login</Button>
+        <Button className="btn-link" onClick={() => switchCard('forgotPassword')}>Forgot password?</Button>
         <Divider>OR</Divider>
-        <Button className="btn-link" onClick={() => switchCard('groupLogin')}>Have a group code?</Button>
         <Button className="btn-link" onClick={() => switchCard('register')}>Don&apos;t have an Account?</Button>
       </form>
     </LandingCard>
