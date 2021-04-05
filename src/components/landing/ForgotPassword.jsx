@@ -10,7 +10,7 @@ import '../../scss/landing.scss';
 /// callBack should be passed from landing page. Used to re-render the landing page
 /// with the default landing page card, which should be the login card.
 
-function GroupLogin({ switchCard }) {
+function ForgotPassword({ switchCard }) {
   let input;
   const [err, setError] = useState(null);
 
@@ -42,8 +42,8 @@ function GroupLogin({ switchCard }) {
   );
 }
 
-GroupLogin.propTypes = {
+ForgotPassword.propTypes = {
   switchCard: PropTypes.func.isRequired,
 };
 
-export default GroupLogin;
+export default ForgotPassword;
