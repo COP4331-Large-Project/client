@@ -5,7 +5,6 @@ import { IoClipboardOutline } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 import TextInput from '../TextInput.jsx';
 
-// Prevent prettier from fighting with eslint when formatting is run
 // prettier-ignore
 const copyToClipboard = text => new Promise((resolve, reject) => {
   // Fallback in case navigator.clipboard isn't available
@@ -21,6 +20,7 @@ const copyToClipboard = text => new Promise((resolve, reject) => {
       document.execCommand('copy');
     } catch (err) {
       reject(err);
+      return;
     }
 
     document.body.removeChild(textArea);
@@ -32,9 +32,11 @@ const copyToClipboard = text => new Promise((resolve, reject) => {
 });
 
 function InviteArea({ inviteCode }) {
+  const inviteLink = `imageus.io/invite/${inviteCode}`;
+
   const copyCode = () => {
-    copyToClipboard(inviteCode)
-      .then(() => message.success('Code copied to clipboard.'))
+    copyToClipboard(inviteLink)
+      .then(() => message.success('Link copied to clipboard.'))
       .catch(() => message.error('Error copying code.'));
   };
 
@@ -42,7 +44,11 @@ function InviteArea({ inviteCode }) {
     <div className="invite-area">
       <p className="title">Invite Link</p>
       <div className="input-wrapper">
-        <TextInput className="invite-link-input" value={inviteCode} readOnly />
+        <TextInput
+          className="invite-link-input"
+          value={inviteCode ? inviteLink : ''}
+          readOnly
+        />
         <Button className="clipboard-btn" onClick={copyCode}>
           <IoClipboardOutline className="clipboard-icon" size={20} />
         </Button>
