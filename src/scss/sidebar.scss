@@ -24,5 +24,7 @@ aside.sidebar {
     border-radius: 16px;
     box-shadow: map-get($box-shadows, 'lg');
     overflow: auto;
+    flex-direction: column;
+    padding: 24px;
   }
 }

@@ -11,6 +11,7 @@ function TextInput({
   onChange,
   name,
   required,
+  readOnly,
 }) {
   const [inputValue, setInputValue] = useState(value);
 
@@ -28,6 +29,7 @@ function TextInput({
       name={name}
       required={required}
       value={inputValue}
+      readOnly={readOnly}
     />
   );
 }
@@ -40,6 +42,7 @@ TextInput.propTypes = {
   type: PropTypes.oneOf(['email', 'password', 'text']),
   name: PropTypes.string,
   required: PropTypes.bool,
+  readOnly: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
@@ -50,6 +53,7 @@ TextInput.defaultProps = {
   onChange: () => {},
   type: 'text',
   name: null,
+  readOnly: false,
 };
 
 export default TextInput;

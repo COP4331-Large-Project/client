@@ -1,0 +1,50 @@
+@import 'variables';
+
+.invite-area {
+  width: 100%;
+
+  .title {
+    font-weight: 700;
+    font-size: 16px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    margin: 0;
+  }
+
+  .input-wrapper {
+    display: flex;
+    border: 1px solid lighten(map-get($variant-colors, 'primary'), 20%);
+    border-radius: 6px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+
+  .invite-link-input {
+    border: none;
+    padding-top: 9px;
+    padding-right: 8px;
+    padding-bottom: 9px;
+    font-family: Menlo, consolas, monospace;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .clipboard-btn {
+    border: none;
+    background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: unset;
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+  }
+
+  .clipboard-icon {
+    color: darken(map-get($variant-colors, 'primary'), 10%);
+  }
+
+  .description {
+    color: hsl(0, 0, 40%);
+    font-size: 15px;
+  }
+}
