@@ -2,12 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { message } from 'antd';
 import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
 import reportWebVitals from './reportWebVitals';
 
 import 'antd/dist/antd.css';
 import './scss/index.scss';
+
+message.config({ maxCount: 1 });
 
 ReactDOM.render(
   <React.StrictMode>
