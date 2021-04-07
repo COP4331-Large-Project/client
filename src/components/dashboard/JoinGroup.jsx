@@ -25,6 +25,7 @@ function JoinGroup() {
     setConfirmLoading(true);
 
     try {
+      // TODO: Hook up join group api
       // Dummy time out to simulate async
       setTimeout(() => {
         setCode('');
