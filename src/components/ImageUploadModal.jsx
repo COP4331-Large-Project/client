@@ -19,7 +19,7 @@ function ImageUploadModal({ visible, onClose }) {
 
   // Adds a custom input below ant's list item component
   const renderListItem = originNode => (
-    <React.Fragment>
+    <>
       {originNode}
       <div className="input-wrapper">
         <p className="input-title">
@@ -27,7 +27,7 @@ function ImageUploadModal({ visible, onClose }) {
         </p>
         <TextInput className="caption-input" onChange={setImageCaption} />
       </div>
-    </React.Fragment>
+    </>
   );
 
   const onBeforeUpload = inputFile => {

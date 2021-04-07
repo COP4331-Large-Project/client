@@ -35,8 +35,8 @@ function PhotoGrid({ photos }) {
       <div className="photo-grid-container">
         <Image.PreviewGroup>
           <div className="photo-grid">
-            {photos.map((photo, index) => (
-              <motion.div key={index + photo} variants={item}>
+            {photos.map((photo) => (
+              <motion.div key={photo} variants={item}>
                 <PhotoThumbnail key={photo} src={photo} />
               </motion.div>
             ))}
