@@ -1,8 +1,7 @@
 import React from 'react';
-import { Modal } from 'antd';
+import { Modal, Input } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group.scss';
-import TextInput from '../TextInput.jsx';
 // import { func } from 'prop-types';
 
 function JoinGroup() {
@@ -12,10 +11,12 @@ function JoinGroup() {
   const [code, setCode] = React.useState('');
 
   function showModal() {
+    setCode('');
     setVisible(true);
   }
 
   function handleCancel() {
+    setCode('');
     setVisible(false);
   }
 
@@ -26,11 +27,10 @@ function JoinGroup() {
     try {
       // Dummy time out to simulate async
       setTimeout(() => {
-        alert(code);
         setCode('');
         setVisible(false);
         setConfirmLoading(false);
-      }, 2000);
+      }, 1000);
     } catch (e) {
       setErrorText(e);
     }
@@ -49,9 +49,10 @@ function JoinGroup() {
       >
         <form onSubmit={submitCode}>
             <p>Enter an eight character group code.</p>
-            <TextInput
+            <Input
               placeHolder='Example: xJwY394p'
-              onChange={(c) => { setCode(c); }}
+              onChange={(c) => { setCode(code + c.nativeEvent.data); }}
+              value={code}
             />
             <p>
               {errorText}
