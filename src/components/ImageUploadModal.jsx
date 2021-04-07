@@ -2,7 +2,7 @@ import '../scss/image-upload-modal.scss';
 import React, { useState } from 'react';
 import { Modal, Upload, Alert } from 'antd';
 import PropTypes from 'prop-types';
-import { AiOutlineInbox } from 'react-icons/ai';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 import TextInput from './TextInput.jsx';
 
 const { Dragger } = Upload;
@@ -119,7 +119,7 @@ function ImageUploadModal({ visible, onClose }) {
         accept="image/png, image/jpeg, image/jpg"
       >
         <p className="ant-upload-frag-icon">
-          <AiOutlineInbox size={64} color="#525252" />
+          <AiOutlineCloudUpload size={64} color="#525252" />
         </p>
         <p className="ant-upload-text">
           Click or drag an image to this area to upload it.
