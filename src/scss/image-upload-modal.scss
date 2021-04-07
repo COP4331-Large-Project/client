@@ -3,6 +3,15 @@
     font-weight: 600;
   }
 
+  .ant-modal-content,
+  .ant-modal-header {
+    border-radius: 12px;
+  }
+
+  .ant-modal-header {
+    padding-top: 24px;
+  }
+
   // The icon that ant renderers to the right of
   // the image file preview
   span.anticon.anticon-delete {
@@ -19,6 +28,8 @@
 
   .ant-modal-footer {
     border-top: none;
+    padding-top: 0;
+    padding-bottom: 24px;
   }
 
   .ant-alert {
