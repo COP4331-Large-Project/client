@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { HiUpload } from 'react-icons/hi';
 import { Image } from 'antd';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
+import ImageUploadModal from '../ImageUploadModal.jsx';
 
 import '../../scss/photo-grid.scss';
 
@@ -24,28 +25,32 @@ const item = {
 };
 
 function PhotoGrid({ photos }) {
+  const [isUploadModalVisible, setUploadModalVisible] = useState(false);
+
+  const openUploadModal = () => setUploadModalVisible(true);
+  const closeUploadModal = () => setUploadModalVisible(false);
+
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      layout
-    >
+    <motion.div variants={container} initial="hidden" animate="show" layout>
       <div className="photo-grid-container">
-      <Image.PreviewGroup>
-        <div className="photo-grid">
-            {photos.map(photo => (
+        <Image.PreviewGroup>
+          <div className="photo-grid">
+            {photos.map((photo) => (
               <motion.div key={photo} variants={item}>
                 <PhotoThumbnail key={photo} src={photo} />
               </motion.div>
             ))}
-            <FloatingButton>
+            <FloatingButton onClick={openUploadModal}>
               <HiUpload size={35} />
             </FloatingButton>
-        </div>
+          </div>
         </Image.PreviewGroup>
       </div>
-      </motion.div>
+      <ImageUploadModal
+        visible={isUploadModalVisible}
+        onClose={closeUploadModal}
+      />
+    </motion.div>
   );
 }
 
