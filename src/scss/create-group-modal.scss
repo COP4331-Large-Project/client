@@ -54,11 +54,14 @@
   }
 
   .ant-input-group-addon > .ant-input-search-button {
-    background-color: lighten(map-get($variant-colors, 'primary'), 58%);
     box-shadow: none;
     display: flex;
     align-items: center;
     height: 36px;
+
+    &:not(:disabled) {
+      background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    }
   }
 
   .ant-list-footer {
@@ -66,7 +69,7 @@
   }
 
   .ant-input-wrapper.ant-input-group input,
-  .group-input {
+  .ant-input {
     padding: 6px 12px;
     border-radius: 2px;
     border-color: hsl(0, 0%, 78%);
@@ -96,6 +99,7 @@
 
   .description {
     margin-top: 8px;
+    font-size: 14px;
     color: hsl(0, 0%, 50%);
   }
 
@@ -114,7 +118,6 @@
 
     &::-webkit-scrollbar {
       width: 8px;
-      height: 9px;
     }
 
     &::-webkit-scrollbar-track,
@@ -132,18 +135,28 @@
   }
 
   .group-member-list-footer {
-    cursor: pointer;
-    transition: 0.5s;
-    text-align: center;
-    margin-top: 0;
-    &:hover {
-      background-color: lighten(map-get($variant-colors, 'primary'), 58%);
-      color: darken(map-get($variant-colors, 'primary'), 10%);
-    }
+    margin: 0;
+    padding: 0;
   }
 
   .delete-member-btn {
     background-color: transparent;
     border: none;
+  }
+
+  .remove-all-btn {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    height: unset;
+    font-size: 16px;
+    color: hsl(0, 0%, 30%);
+
+    &:hover:not(:disabled) {
+      background-color: lighten(map-get($variant-colors, 'danger'), 45%);
+      color: darken(map-get($variant-colors, 'danger'), 10%);
+    }
   }
 }

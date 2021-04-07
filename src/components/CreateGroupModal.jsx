@@ -8,9 +8,9 @@ import {
   Button,
   List,
   Input,
+  notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import TextInput from './TextInput.jsx';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -31,12 +31,14 @@ function CreateGroupModal({ visible, onClose }) {
     }
   };
 
-  const deleteMember = email => {
+  const removeMember = email => {
     const copy = new Set(members);
     copy.delete(email);
 
     setMembers(copy);
   };
+
+  const removeAllMembers = () => setMembers(new Set());
 
   const createGroup = () => {
     if (isLoading) {
@@ -44,13 +46,21 @@ function CreateGroupModal({ visible, onClose }) {
     }
 
     setLoading(true);
-    // TODO: Make API request Here
+
+    // TODO: Make API request Here - The below is just testing
+    setTimeout(() => {
+      setLoading(false);
+      notification.error({
+        message: 'Error creating group',
+        description: "Yikes, this feature hasn't been implemented yet",
+      });
+    }, 3000);
   };
 
   const renderDeleteButton = index => (
     <Button
       className="delete-member-btn"
-      onClick={() => deleteMember(index)}
+      onClick={() => removeMember(index)}
       disabled={isLoading}
     >
       <AiOutlineDelete size={20} />
@@ -69,11 +79,14 @@ function CreateGroupModal({ visible, onClose }) {
     }
 
     return (
-      <List.Item
-        onClick={() => setMembers(new Set())}
-        className="group-member-list-footer"
-      >
-        <List.Item.Meta title="Remove all" />
+      <List.Item className="group-member-list-footer">
+        <Button
+          className="remove-all-btn"
+          disabled={isLoading}
+          onClick={removeAllMembers}
+        >
+          Remove all
+        </Button>
       </List.Item>
     );
   };
@@ -91,8 +104,9 @@ function CreateGroupModal({ visible, onClose }) {
           onInput={event => setMemberEmail(event.target.value)}
           value={memberEmail}
           placeHolder="johndoe@example.com"
+          disabled={isLoading}
           enterButton={
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" disabled={isLoading}>
               <AiOutlinePlus size={20} className="input-icon" />
             </Button>
           }
@@ -122,10 +136,16 @@ function CreateGroupModal({ visible, onClose }) {
       okText={isLoading ? 'Creating group...' : 'Create'}
     >
       <p className="input-title">Group Name</p>
-      <TextInput className="group-input" onChange={setGroupName} />
+      <Input
+        onInput={event => setGroupName(event.target.value)}
+        disabled={isLoading}
+      />
       {renderMemberInput()}
       <div className="checkbox-wrapper">
-        <Checkbox onChange={event => setPrivateChecked(event.target.checked)}>
+        <Checkbox
+          onChange={event => setPrivateChecked(event.target.checked)}
+          disabled={isLoading}
+        >
           Private
         </Checkbox>
         <p className="description">
