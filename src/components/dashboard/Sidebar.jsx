@@ -12,7 +12,7 @@ function Sidebar() {
     <Sider theme="light" className="sidebar">
       <Card className="sidebar-card">
         <InviteArea inviteCode="xJwY394p" />
-        <JoinGroup></JoinGroup>
+        <JoinGroup/>
       </Card>
     </Sider>
   );
