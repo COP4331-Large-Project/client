@@ -1,0 +1,149 @@
+@import 'variables';
+
+.create-group-modal {
+  .ant-modal-title {
+    font-weight: 600;
+  }
+
+  .ant-modal-content,
+  .ant-modal-header {
+    border-radius: 12px;
+  }
+
+  .ant-modal-header {
+    padding-top: 24px;
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+    padding-top: 0;
+    padding-bottom: 24px;
+  }
+
+  .ant-list-empty-text {
+    display: none;
+  }
+
+  .ant-list-item-meta-title {
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+  }
+
+  .ant-list-item-meta-avatar {
+    align-self: center;
+  }
+
+  .ant-list-items > li:first-child {
+    margin-top: 12px;
+  }
+
+  .ant-list-item {
+    border: none;
+    margin-left: 4px;
+    margin-right: 0;
+    padding: 8px 0;
+  }
+
+  .ant-list-item-action > li {
+    padding: 0;
+  }
+
+  .ant-checkbox-wrapper span {
+    font-size: 16px;
+  }
+
+  .ant-input-group-addon > .ant-input-search-button {
+    background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    height: 36px;
+  }
+
+  .ant-list-footer {
+    padding-bottom: 0;
+  }
+
+  .ant-input-wrapper.ant-input-group input,
+  .group-input {
+    padding: 6px 12px;
+    border-radius: 2px;
+    border-color: hsl(0, 0%, 78%);
+    box-shadow: none;
+
+    &::placeholder {
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+      font-size: 16px;
+    }
+
+    &:focus {
+      border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+    }
+  }
+
+  .input-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  }
+
+  .checkbox-wrapper {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+
+  .description {
+    margin-top: 8px;
+    color: hsl(0, 0%, 50%);
+  }
+
+  .input-icon {
+    color: darken(map-get($variant-colors, 'primary'), 10%);
+  }
+
+  .group-member-container {
+    margin-top: 12px;
+  }
+
+  .group-member-list {
+    max-height: 200px;
+    overflow: auto;
+    padding-top: 8px;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 9px;
+    }
+
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-corner {
+      background: white;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: hsl(0, 0%, 82%);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #6e6e6e;
+    }
+  }
+
+  .group-member-list-footer {
+    cursor: pointer;
+    transition: 0.5s;
+    text-align: center;
+    margin-top: 0;
+    &:hover {
+      background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+      color: darken(map-get($variant-colors, 'primary'), 10%);
+    }
+  }
+
+  .delete-member-btn {
+    background-color: transparent;
+    border: none;
+  }
+}
