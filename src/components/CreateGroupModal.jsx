@@ -98,7 +98,9 @@ function CreateGroupModal({ visible, onClose }) {
 
     return (
       <form className="group-member-container" onSubmit={addMember}>
-        <p className="input-title">Add Members</p>
+        <p className="input-title">
+          Add Members <span className="subtitle">(Optional)</span>
+        </p>
         <Input.Search
           type="email"
           onInput={event => setMemberEmail(event.target.value)}
