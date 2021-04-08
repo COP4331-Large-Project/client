@@ -4,7 +4,6 @@ import 'antd/dist/antd.css';
 import React from 'react';
 import { Button } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
-import { motion } from 'framer-motion';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
@@ -31,41 +30,41 @@ const photos = [
 
 function MainPage() {
   return (
-    <motion.div
-      initial={{ scale: 0.5, opacity: 1 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{
-        scale: 0.5,
-        opacity: 0,
-        transition: { duration: 1.5 },
-      }}
-      transition={{ duration: 2, type: 'spring' }}
-    >
-      <div className="main-page-body">
-        <Navbar />
-        <div className="body-content">
-          <Sidebar />
-          <div className="main-content">
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h1>Group Name</h1>
-              <Button
-                type="primary"
-                size="large"
-                shape="circle"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <BsThreeDots />
-              </Button>
-            </div>
-            <PhotoGrid photos={photos} />
+    // <motion.div
+    //   initial={{ scale: 0.5, opacity: 1 }}
+    //   animate={{ scale: 1, opacity: 1 }}
+    //   exit={{
+    //     scale: 0.5,
+    //     opacity: 0,
+    //     transition: { duration: 1.5 },
+    //   }}
+    //   transition={{ duration: 2, type: 'spring' }}
+    // >
+    <div className="main-page-body">
+      <Navbar />
+      <div className="body-content">
+        <Sidebar />
+        <div className="main-content">
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <h1>Group Name</h1>
+            <Button
+              type="primary"
+              size="large"
+              shape="circle"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <BsThreeDots />
+            </Button>
           </div>
+          <PhotoGrid photos={photos} />
         </div>
       </div>
-    </motion.div>
+    </div>
+    // </motion.div>
   );
 }
 
