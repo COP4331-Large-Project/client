@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { message } from 'antd';
 import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
@@ -14,7 +13,7 @@ message.config({ maxCount: 1 });
 
 ReactDOM.render(
   <React.StrictMode>
-    <AnimatePresence exitBeforeEnter initial={false} />
+    {/* <AnimatePresence exitBeforeEnter initial={false} />
     <Router>
       <Switch>
         <Route exact path="/">
@@ -45,8 +44,17 @@ ReactDOM.render(
         </Route>
       </Switch>
     </Router>
-    <AnimatePresence />
-
+    <AnimatePresence /> */}
+    <Router>
+      <Switch>
+        <Route exact path="/">
+            <LandingPage />
+        </Route>
+        <Route exact path="/main">
+            <MainPage />
+        </Route>
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root'),
 );
