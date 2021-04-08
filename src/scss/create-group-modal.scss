@@ -30,9 +30,14 @@
     align-items: center;
     height: 37px;
     box-sizing: content-box;
+    border: 1px solid #1890ff;
 
     &:not(:disabled) {
       background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    }
+
+    &:disabled {
+      border: 1px solid rgb(199, 199, 199);
     }
   }
 
