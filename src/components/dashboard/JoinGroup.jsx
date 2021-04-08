@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Input } from 'antd';
+import { Modal, Input, Alert } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group.scss';
 // import { func } from 'prop-types';
@@ -7,6 +7,7 @@ import '../../scss/join-group.scss';
 function JoinGroup() {
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [hasError, setHasError] = React.useState(false);
   const [errorText, setErrorText] = React.useState('');
   const [code, setCode] = React.useState('');
 
@@ -17,7 +18,14 @@ function JoinGroup() {
 
   function handleCancel() {
     setCode('');
+    setHasError(false);
+    setConfirmLoading(false);
     setVisible(false);
+  }
+
+  function closeAlert() {
+    setErrorText('');
+    setHasError(false);
   }
 
   function submitCode(event) {
@@ -33,7 +41,9 @@ function JoinGroup() {
         setConfirmLoading(false);
       }, 1000);
     } catch (e) {
-      setErrorText(e);
+      setErrorText(e.message);
+      setConfirmLoading(false);
+      setHasError(true);
     }
   }
 
@@ -49,15 +59,23 @@ function JoinGroup() {
         okText='Join'
       >
         <form onSubmit={submitCode}>
-            <p>Enter an eight character group code.</p>
+            <p>Enter a group code.</p>
+            {hasError && (
+              <Alert
+              closable
+              message={errorText}
+              type='error'
+              onClose={ closeAlert }
+            />
+            )}
             <Input
               placeHolder='Example: xJwY394p'
               onChange={(c) => { setCode(code + c.nativeEvent.data); }}
               value={code}
             />
-            <p>
+            {/* <p>
               {errorText}
-            </p>
+            </p> */}
         </form>
       </Modal>
     </div>
