@@ -39,7 +39,7 @@ function JoinGroup() {
 
   return (
     <div className='center'>
-      <Button onClick={showModal}>Join Group</Button>
+      <Button className='joinButton' onClick={showModal}>Join Group</Button>
       <Modal
         title='Join group'
         visible={visible}
