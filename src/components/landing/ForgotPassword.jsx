@@ -14,7 +14,7 @@ function ForgotPassword({ switchCard }) {
 
   function sendResetEmail(event) {
     event.preventDefault();
-    // TODO: Make login request
+    // TODO: Make reset password request
     setError('Not Implemented');
   }
 

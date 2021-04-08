@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { HiUpload } from 'react-icons/hi';
 import { Image } from 'antd';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
 import ImageUploadModal from '../ImageUploadModal.jsx';
@@ -35,13 +35,13 @@ function PhotoGrid({ photos }) {
       <div className="photo-grid-container">
         <Image.PreviewGroup>
           <div className="photo-grid">
-            {photos.map((photo) => (
+            {photos.map(photo => (
               <motion.div key={photo} variants={item}>
                 <PhotoThumbnail key={photo} src={photo} />
               </motion.div>
             ))}
             <FloatingButton onClick={openUploadModal}>
-              <HiUpload size={35} />
+              <AiOutlineCloudUpload size={32} color="#525252" />
             </FloatingButton>
           </div>
         </Image.PreviewGroup>

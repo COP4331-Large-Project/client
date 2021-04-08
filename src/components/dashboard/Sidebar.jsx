@@ -1,9 +1,12 @@
 import '../../scss/sidebar.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from 'antd';
 import Card from '../Card.jsx';
 import InviteArea from './InviteArea.jsx';
 import GroupList from './GroupList.jsx';
+import JoinGroupButton from './JoinGroupButton.jsx';
+import Button from '../Button.jsx';
+import CreateGroupModal from '../CreateGroupModal.jsx';
 
 const { Sider } = Layout;
 
@@ -39,11 +42,22 @@ const groups = [
 ];
 
 function Sidebar() {
+  const [isGroupModalVisible, setGroupModalVisible] = useState(false);
+
+  const openGroupModal = () => setGroupModalVisible(true);
+  const closeGroupModal = () => setGroupModalVisible(false);
+
   return (
     <Sider theme="light" className="sidebar">
       <Card className="sidebar-card">
         <InviteArea inviteCode="xJwY394p" />
         <GroupList groups={groups} />
+        <JoinGroupButton />
+        <Button onClick={openGroupModal}>Create Group</Button>
+        <CreateGroupModal
+          visible={isGroupModalVisible}
+          onClose={closeGroupModal}
+        />
       </Card>
     </Sider>
   );

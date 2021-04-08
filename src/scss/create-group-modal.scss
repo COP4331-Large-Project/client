@@ -1,0 +1,123 @@
+@import 'variables';
+
+.create-group-modal {
+  .ant-list-empty-text {
+    display: none;
+  }
+
+  .ant-list-item-meta-avatar {
+    align-self: center;
+  }
+
+  .ant-list-items > li:first-child {
+    margin-top: 12px;
+  }
+
+  .ant-list-item {
+    border: none;
+    margin-left: 4px;
+    margin-right: 0;
+    padding: 8px 0;
+  }
+
+  .ant-list-item-action > li {
+    padding: 0;
+  }
+
+  .ant-input-group-addon > .ant-input-search-button {
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    height: 37px;
+    box-sizing: content-box;
+
+    &:not(:disabled) {
+      background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    }
+  }
+
+  .ant-list-footer {
+    padding-bottom: 0;
+  }
+
+  .input-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  }
+
+  .private-checkbox {
+    margin-top: 16px;
+  }
+
+  .description {
+    margin-top: 8px;
+    font-size: 14px;
+    color: hsl(0, 0%, 40%);
+  }
+
+  .subtitle {
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .input-icon {
+    color: darken(map-get($variant-colors, 'primary'), 10%);
+  }
+
+  .group-member-container {
+    margin-top: 12px;
+  }
+
+  .group-member-list {
+    max-height: 200px;
+    overflow: auto;
+    padding-top: 8px;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-corner {
+      background: white;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: hsl(0, 0%, 82%);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #6e6e6e;
+    }
+  }
+
+  .group-member-list-footer {
+    margin: 0;
+    padding: 0;
+  }
+
+  .delete-member-btn {
+    background-color: transparent;
+    border: none;
+  }
+
+  .remove-all-btn {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    height: unset;
+    font-size: 16px;
+    color: hsl(0, 0%, 30%);
+    border: 1px solid transparent;
+
+    &:hover:not(:disabled) {
+      background-color: lighten(map-get($variant-colors, 'danger'), 45%);
+      color: darken(map-get($variant-colors, 'danger'), 10%);
+      border-color: darken(map-get($variant-colors, 'danger'), 10%);
+    }
+  }
+}
