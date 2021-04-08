@@ -7,6 +7,7 @@ import MainPage from './pages/MainPage.jsx';
 import reportWebVitals from './reportWebVitals';
 
 import 'antd/dist/antd.css';
+import './scss/ant-overrides.scss';
 import './scss/index.scss';
 
 message.config({ maxCount: 1 });

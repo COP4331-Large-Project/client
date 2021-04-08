@@ -1,0 +1,92 @@
+// If the styling for any ant component needs to be overridden and should
+// stay consistent across the site, it should go in here. Any specific
+// styling should go in a separate scss file IMPORTANT: Any styling
+// put in here will affect every component of the app. Because
+// of specificity, some styles may need !important.
+@import 'variables';
+
+.ant-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.ant-modal-content,
+.ant-modal-header {
+  border-radius: 12px;
+}
+
+.ant-modal-header {
+  padding-top: 24px;
+}
+
+.ant-modal-footer {
+  border-top: none;
+  padding-top: 0;
+  padding-bottom: 24px;
+}
+
+.ant-modal-footer {
+  border-top: none;
+  padding-top: 0;
+  padding-bottom: 24px;
+}
+
+.ant-modal-body {
+  font-size: 16px;
+}
+
+// Slightly darken the border of the list item
+.ant-upload-list-item {
+  border-color: hsl(0, 0%, 78%) !important;
+}
+
+.ant-list-item-meta-title {
+  font-weight: 400;
+  font-size: 16px;
+  font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+}
+
+// The title for ant's Alert component
+.ant-alert-message {
+  font-weight: 600;
+}
+
+// The body of ant's Alert component
+.ant-alert-description {
+  font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+// Overrides ant's input style. Also applies to the
+// <Input.Search /> component
+.ant-input-wrapper.ant-input-group input,
+.ant-input {
+  padding: 6px 12px;
+  border-radius: 2px;
+  border-color: hsl(0, 0%, 78%);
+  box-shadow: none;
+  font-size: 16px;
+
+  &::placeholder {
+    // Darken the default placeholder text color
+    // to make it a bit more readable
+    color: hsl(0, 0%, 55%);
+    font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+  }
+
+  &:focus {
+    border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+  }
+}
+
+// The icon that ant renderers to the right of
+// the image file preview component
+span.anticon.anticon-delete {
+  font-size: 20px;
+}
+
+// Overrides the font size for ant's <Checkbox /> component
+.ant-checkbox-wrapper span {
+  font-size: 16px;
+}
