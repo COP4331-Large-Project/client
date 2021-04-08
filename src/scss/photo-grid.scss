@@ -21,9 +21,12 @@
 }
 
 .ant-image:hover {
-    box-shadow: map-get($map: $box-shadows, $key: 'md');
     transition: 400ms;
     background-color: transparent !important;
+    
+    img {
+        box-shadow: map-get($map: $box-shadows, $key: 'md');
+    }
 }
 
 .ant-image-mask {
