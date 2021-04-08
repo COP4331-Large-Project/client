@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Input, Alert } from 'antd';
 import Button from '../Button.jsx';
-import '../../scss/join-group.scss';
+import '../../scss/join-group-button.scss';
 // import { func } from 'prop-types';
 
 function JoinGroupButton() {
@@ -51,6 +51,7 @@ function JoinGroupButton() {
     <div className='center'>
       <Button className='joinButton' onClick={showModal}>Join Group</Button>
       <Modal
+        className="join-group-modal"
         title='Join group'
         visible={visible}
         onOk={submitCode}
@@ -69,6 +70,7 @@ function JoinGroupButton() {
             />
             )}
             <Input
+              className="group-code-input"
               placeHolder='Example: xJwY394p'
               onChange={event => setCode(event.target.value)}
               value={code}

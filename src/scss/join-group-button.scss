@@ -1,0 +1,49 @@
+@import 'variables';
+
+.center {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.joinButton {
+  width: 100%;
+}
+
+.join-group-modal {
+  .ant-modal-title {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .ant-modal-content,
+  .ant-modal-header {
+    border-radius: 12px;
+  }
+
+  .ant-modal-header {
+    padding-top: 24px;
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+    padding-top: 0;
+    padding-bottom: 24px;
+  }
+
+  .group-code-input {
+    padding: 6px 12px;
+    border-radius: 2px;
+    border-color: hsl(0, 0%, 78%);
+    box-shadow: none;
+    font-size: 16px;
+
+    &::placeholder {
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+      font-size: 16px;
+    }
+
+    &:focus {
+      border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+    }
+  }
+}
