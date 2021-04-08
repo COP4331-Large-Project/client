@@ -70,12 +70,9 @@ function JoinGroup() {
             )}
             <Input
               placeHolder='Example: xJwY394p'
-              onChange={(c) => { setCode(code + c.nativeEvent.data); }}
+              onChange={event => setCode(event.target.value)}
               value={code}
             />
-            {/* <p>
-              {errorText}
-            </p> */}
         </form>
       </Modal>
     </div>
