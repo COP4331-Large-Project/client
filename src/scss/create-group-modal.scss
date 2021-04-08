@@ -57,7 +57,8 @@
     box-shadow: none;
     display: flex;
     align-items: center;
-    height: 36px;
+    height: 37px;
+    box-sizing: content-box;
 
     &:not(:disabled) {
       background-color: lighten(map-get($variant-colors, 'primary'), 58%);
@@ -93,8 +94,7 @@
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
   }
 
-  .checkbox-wrapper {
-    font-size: 16px;
+  .private-checkbox {
     margin-top: 16px;
   }
 
@@ -159,10 +159,12 @@
     height: unset;
     font-size: 16px;
     color: hsl(0, 0%, 30%);
+    border: 1px solid transparent;
 
     &:hover:not(:disabled) {
       background-color: lighten(map-get($variant-colors, 'danger'), 45%);
       color: darken(map-get($variant-colors, 'danger'), 10%);
+      border-color: darken(map-get($variant-colors, 'danger'), 10%);
     }
   }
 }

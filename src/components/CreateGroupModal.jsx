@@ -25,7 +25,7 @@ function CreateGroupModal({ visible, onClose }) {
     const email = memberEmail.trim();
     const combined = new Set([...members, email]);
 
-    if (email) {
+    if (email && !members.has(email)) {
       setMembers(combined);
       setMemberEmail('');
     }
@@ -143,18 +143,17 @@ function CreateGroupModal({ visible, onClose }) {
         disabled={isLoading}
       />
       {renderMemberInput()}
-      <div className="checkbox-wrapper">
-        <Checkbox
-          onChange={event => setPrivateChecked(event.target.checked)}
-          disabled={isLoading}
-        >
-          Private
-        </Checkbox>
-        <p className="description">
-          Public groups can be joined through an invite link. Private groups can
-          only be joined with an invite link after the owner grants them access.
-        </p>
-      </div>
+      <Checkbox
+        className="private-checkbox"
+        onChange={event => setPrivateChecked(event.target.checked)}
+        disabled={isLoading}
+      >
+        Private
+      </Checkbox>
+      <p className="description">
+        Public groups can be joined through an invite link. Private groups can
+        only be joined with an invite link after the owner grants them access.
+      </p>
     </Modal>
   );
 }

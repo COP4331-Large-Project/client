@@ -7,9 +7,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
-
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
-import CreateGroupModal from '../components/CreateGroupModal.jsx';
 
 const photos = [
   'https://images.unsplash.com/photo-1617450599731-0ec86e189589?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
@@ -67,7 +65,6 @@ function MainPage() {
           </div>
         </div>
       </div>
-      <CreateGroupModal visible />
     </motion.div>
   );
 }
