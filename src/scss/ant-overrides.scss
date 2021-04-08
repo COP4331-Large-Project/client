@@ -25,6 +25,7 @@
   padding-bottom: 24px;
 }
 
+
 .ant-modal-footer {
   border-top: none;
   padding-top: 0;
@@ -76,7 +77,12 @@
   }
 
   &:focus {
+    box-shadow: none;
     border-color: lighten(map-get($variant-colors, 'primary'), 20%);
+  }
+
+  &:disabled:hover {
+    border-color: unset;
   }
 }
 
@@ -89,6 +95,17 @@ span.anticon.anticon-delete {
 // Overrides the font size for ant's <Checkbox /> component
 .ant-checkbox-wrapper span {
   font-size: 16px;
+}
+
+// Overrides the title of ant's notification message
+.ant-notification-notice-message {
+  font-weight: 600;
+}
+
+// Overrides the body of ant's notification message
+.ant-notification-notice-description {
+  font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+  font-size: 16px !important;
 }
 
 .ant-btn {

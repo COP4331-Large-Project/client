@@ -26,5 +26,17 @@ aside.sidebar {
     overflow: auto;
     flex-direction: column;
     padding: 24px;
+    margin: 0;
+  }
+
+  .sidebar-actions {
+    margin-top: 16px;
+
+    button {
+      width: 100%;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      margin: 5px 0;
+    }
   }
 }

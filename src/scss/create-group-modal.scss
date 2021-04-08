@@ -35,6 +35,10 @@
     &:not(:disabled) {
       background-color: lighten(map-get($variant-colors, 'primary'), 58%);
     }
+
+    &:disabled {
+      border: 1px solid rgb(199, 199, 199);
+    }
   }
 
   .ant-list-footer {
