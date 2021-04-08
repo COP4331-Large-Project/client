@@ -1,0 +1,70 @@
+.image-upload-modal {
+  .ant-modal-title {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .ant-modal-content,
+  .ant-modal-header {
+    border-radius: 12px;
+  }
+
+  .ant-modal-header {
+    padding-top: 24px;
+  }
+
+  // The icon that ant renderers to the right of
+  // the image file preview
+  span.anticon.anticon-delete {
+    font-size: 16px;
+  }
+
+  .ant-upload-list.ant-upload-list-picture {
+    margin-top: 24px;
+  }
+
+  .ant-upload-list-item {
+    border-color: hsl(0, 0%, 78%);
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+    padding-top: 0;
+    padding-bottom: 24px;
+  }
+
+  .ant-alert {
+    margin-bottom: 16px;
+  }
+
+  .ant-alert-message {
+    font-weight: 600;
+  }
+
+  .ant-alert-description {
+    font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+  }
+
+  .input-wrapper {
+    margin-top: 16px;
+  }
+
+  .caption-input {
+    padding: 6px 12px;
+    border-radius: 2px;
+    border-color: hsl(0, 0%, 78%);
+  }
+
+  .subtitle {
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .input-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  }
+}
