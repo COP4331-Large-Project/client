@@ -33,7 +33,7 @@ const groups = [
   },
   {
     title: 'This is a group with a title that should show ellipses',
-    imageURL: 'https://unsplash.com/photos/IGfIGP5ONV0',
+    imageURL: 'bad-url',
     members: 420,
   },
 ];
