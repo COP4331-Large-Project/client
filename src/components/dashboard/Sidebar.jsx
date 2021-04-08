@@ -10,6 +10,7 @@ import CreateGroupModal from '../CreateGroupModal.jsx';
 
 const { Sider } = Layout;
 
+// eslint-disable-next-line no-unused-vars
 const groups = [
   {
     title: 'Group TBA',
@@ -52,8 +53,10 @@ function Sidebar() {
       <Card className="sidebar-card">
         <InviteArea inviteCode="xJwY394p" />
         <GroupList groups={groups} />
-        <JoinGroupButton />
-        <Button onClick={openGroupModal}>Create Group</Button>
+        <div className="sidebar-actions">
+          <JoinGroupButton />
+          <Button onClick={openGroupModal}>Create Group</Button>
+        </div>
         <CreateGroupModal
           visible={isGroupModalVisible}
           onClose={closeGroupModal}

@@ -51,6 +51,7 @@ function JoinGroupButton() {
     <div className='center'>
       <Button className='joinButton' onClick={showModal}>Join Group</Button>
       <Modal
+        centered
         title='Join group'
         visible={visible}
         onOk={submitCode}

@@ -20,10 +20,27 @@
 }
 
 .ant-modal-footer {
+  $primary: map-get($variant-colors, 'primary');
   border-top: none;
   padding-top: 0;
   padding-bottom: 24px;
+
+  // Overrides the color of the cancel button on hover
+  // in ant's modal footers
+  .ant-btn:hover:not(.ant-btn-primary):not(:disabled) {
+    border-color: $primary;
+    color: $primary;
+  }
+
+  // Overrides the color of the primary action button
+  // in ant's modal footers to match the color of our
+  // custom buttons
+  .ant-btn.ant-btn-primary:not(:disabled) {
+    background-color: lighten(rgba($primary, 0.2), 35%);
+    color: $primary;
+  }
 }
+
 
 .ant-modal-footer {
   border-top: none;
@@ -76,6 +93,7 @@
   }
 
   &:focus {
+    box-shadow: none;
     border-color: lighten(map-get($variant-colors, 'primary'), 20%);
   }
 }
@@ -89,4 +107,15 @@ span.anticon.anticon-delete {
 // Overrides the font size for ant's <Checkbox /> component
 .ant-checkbox-wrapper span {
   font-size: 16px;
+}
+
+// Overrides the title of ant's notification message
+.ant-notification-notice-message {
+  font-weight: 600;
+}
+
+// Overrides the body of ant's notification message
+.ant-notification-notice-description {
+  font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+  font-size: 16px !important;
 }
