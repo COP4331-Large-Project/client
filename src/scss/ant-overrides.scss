@@ -62,7 +62,7 @@
 .ant-input-wrapper.ant-input-group input,
 .ant-input {
   padding: 6px 12px;
-  border-radius: 2px;
+  border-radius: 5px;
   border-color: hsl(0, 0%, 78%);
   box-shadow: none;
   font-size: 16px;
@@ -89,4 +89,34 @@ span.anticon.anticon-delete {
 // Overrides the font size for ant's <Checkbox /> component
 .ant-checkbox-wrapper span {
   font-size: 16px;
+}
+
+.ant-btn {
+  transition: 0.5s;
+  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+  font-weight: bold;
+
+  &:hover {
+    background-color: rgba(211, 211, 211, 0.452);
+    color: black;
+    transition: 0.5s;
+  }
+}
+
+// Iterate over the color map and construct variants from it's keys and values.
+@each $color, $value in $variant-colors {
+  .ant-btn.ant-btn-#{$color} {
+    color: $value;
+    background-color: lighten(rgba($value, 0.2), 35%);
+    
+
+    &:hover {
+      background-color: $value;
+      color: white;
+      transition: 0.5s;
+    }
+  }
 }
