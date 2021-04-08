@@ -20,6 +20,10 @@
   text-decoration: none;
   border: none;
   cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 // Iterate over the color map and construct variants from it's keys and values.
