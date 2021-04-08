@@ -4,7 +4,7 @@ import Button from '../Button.jsx';
 import '../../scss/join-group.scss';
 // import { func } from 'prop-types';
 
-function JoinGroup() {
+function JoinGroupButton() {
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [hasError, setHasError] = React.useState(false);
@@ -79,4 +79,4 @@ function JoinGroup() {
   );
 }
 
-export default JoinGroup;
+export default JoinGroupButton;
