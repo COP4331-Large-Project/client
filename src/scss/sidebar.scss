@@ -22,7 +22,6 @@ aside.sidebar {
     display: flex;
     flex: 1;
     border-radius: 16px;
-    box-shadow: map-get($box-shadows, 'lg');
     overflow: auto;
     flex-direction: column;
     padding: 24px;
