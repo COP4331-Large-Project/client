@@ -79,23 +79,6 @@
     max-height: 200px;
     overflow: auto;
     padding-top: 8px;
-
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    &::-webkit-scrollbar-track,
-    &::-webkit-scrollbar-corner {
-      background: white;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: hsl(0, 0%, 82%);
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #6e6e6e;
-    }
   }
 
   .group-member-list-footer {
