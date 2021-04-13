@@ -14,17 +14,19 @@ const DEBUG_GROUP = {
   profileIconURL:
     'https://images.unsplash.com/photo-1617516202907-ff75846e6667?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1828&q=80',
 };
+
+// TODO: Dummy debug function, will remove later
 const debugWait = time => new Promise(resolve => setTimeout(resolve, time));
 
-const getMemberText = members => {
-  if (members === 1) {
-    return `${members} member`;
-  }
-
-  return `${members} members`;
-};
-
 function GroupInfo({ profileIconURL, name, members }) {
+  const getMemberText = members => {
+    if (members === 1) {
+      return `${members} member`;
+    }
+
+    return `${members} members`;
+  };
+
   return (
     <>
       <Avatar src={profileIconURL} size={128}>
@@ -59,9 +61,10 @@ const animationOpts = {
 function GroupInvitePage({ groupCode }) {
   const history = useHistory();
   const [accepted, setAccepted] = useState(false);
-  const [group, setGroup] = useState(DEBUG_GROUP);
-  const [loading, setLoading] = useState(true);
+  const [group, setGroup] = useState(null);
+  const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isLinkInvalid, setIsLinkInvalid] = useState(false);
 
   // TODO: Implement this/handle errors
   const acceptInvite = async () => {
@@ -75,6 +78,7 @@ function GroupInvitePage({ groupCode }) {
     setAccepted(true);
 
     await debugWait(1500);
+
     // Replace the URL so the user can't go back to this page
     // after they accept the invitation
     history.replace('/main');
@@ -83,18 +87,19 @@ function GroupInvitePage({ groupCode }) {
   const cardActions = (
     <>
       <Button onClick={acceptInvite}>Accept Invite</Button>
-      <Button variant="link" onClick={() => history.push('/')}>
-        Decline
-      </Button>
+      {!isLoading && (
+        <Button variant="link" onClick={() => history.push('/')}>
+          Decline
+        </Button>
+      )}
     </>
   );
 
   const alert = hasError ? (
     <Alert
       type="error"
-      className="invalid-code-alert"
-      message="Invalid Invite Link"
-      description="The group you’re looking for doesn’t exist. Make sure this invite link is valid.."
+      message="Unexpected Error"
+      description="An error occurred while joining this group. Please refresh the page and try again."
     />
   ) : (
     <Alert
@@ -112,11 +117,16 @@ function GroupInvitePage({ groupCode }) {
 
     // TODO: Get the group info here
     // Dummy code to emulate async
-    await debugWait(1000);
-    setGroup(DEBUG_GROUP);
+    await debugWait(500);
+
+    if (groupCode === 'debug') {
+      setGroup(DEBUG_GROUP);
+    } else {
+      setIsLinkInvalid(true);
+    }
   }, []);
 
-  if (!group) {
+  if (!group && !isLinkInvalid) {
     return (
       <div className="group-invite-page">
         <div className="card-container" />
@@ -134,7 +144,7 @@ function GroupInvitePage({ groupCode }) {
           variants={animationVariants}
         >
           <Card className="group-card">
-            {hasError ? (
+            {isLinkInvalid ? (
               <>
                 <h1 className="card-title">Group Not Found</h1>
                 <Alert
