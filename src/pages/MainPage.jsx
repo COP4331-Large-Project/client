@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
 import { Button } from 'antd';
@@ -29,17 +30,18 @@ const photos = [
   'https://images.unsplash.com/photo-1617505907947-9cb31eb80183?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80',
 ];
 
-let user;
-
 function MainPage() {
+  const [user, setUser] = useState(null);
+  const history = useHistory();
+
   async function getUser(token, id) {
     try {
       API.getInfo(token, id)
         .then((res) => {
-          user = res;
+          setUser(res);
         });
     } catch (e) {
-      // need to handle this error state.
+      history.replaceState('/');
     }
   }
 
