@@ -59,6 +59,25 @@ const API = {
     .then(handleResponse),
 
   /**
+   * Fetches user info.
+   *
+   * @param {string} token
+   * @param {string} id
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  getInfo: async (token, id) => fetch(
+    relURL(`/users/${id}`),
+    {
+      method: 'GET',
+      headers: {
+        Authorization: token,
+      },
+    },
+  )
+    .then(handleResponse),
+
+  /**
    * Takes an email address and makes a request to send
    * a verification link to that email.
    *

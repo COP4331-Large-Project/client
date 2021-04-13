@@ -26,7 +26,14 @@ function LoginCard({ switchCard }) {
     const data = new FormData(event.target);
 
     try {
-      await API.login(data.get('Username'), data.get('Password'));
+      await API.login(data.get('Username'), data.get('Password'))
+        .then((res) => {
+          const { token, id } = res;
+          localStorage.setItem('token', token);
+          localStorage.setItem('id', id);
+        });
+
+      // TODO: Check if email is verified before logging in
     } catch (e) {
       // setError(e.message);
       // TODO: Handle email verification error here, this is for testing the modal
