@@ -57,6 +57,18 @@ const API = {
    */
   register: async (payload) => fetch(relURL('/users/'), postOptions(payload))
     .then(handleResponse),
+
+  /**
+   * Fetches user info.
+   *
+   * @param {string} id
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  fetch: async (id) => {
+    fetch(relURL(`/users/?id=${id}`))
+      .then(handleResponse);
+  },
 };
 
 export default API;

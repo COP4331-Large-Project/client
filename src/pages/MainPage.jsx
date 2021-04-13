@@ -29,6 +29,11 @@ const photos = [
 ];
 
 function MainPage() {
+  const tok = localStorage.getItem('token');
+  const id = localStorage.getItem('id');
+  console.log(tok);
+  console.log(id);
+
   return (
     // <motion.div
     //   initial={{ scale: 0.5, opacity: 1 }}

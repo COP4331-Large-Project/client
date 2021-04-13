@@ -19,7 +19,7 @@ function LoginCard({ switchCard }) {
     try {
       await API.login(data.get('Username'), data.get('Password'))
         .then((res) => {
-          const { token, id } = res.token;
+          const { token, id } = res;
           localStorage.setItem('token', token);
           localStorage.setItem('id', id);
         });
