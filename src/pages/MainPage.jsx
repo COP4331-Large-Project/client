@@ -41,7 +41,8 @@ function MainPage() {
           setUser(res);
         });
     } catch (e) {
-      history.replaceState('/');
+      // TODO: Will probably need better error handling
+      history.replace('/');
     }
   }
 
