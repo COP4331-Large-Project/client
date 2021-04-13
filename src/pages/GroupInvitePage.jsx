@@ -6,6 +6,7 @@ import { Alert, Avatar } from 'antd';
 import { useHistory } from 'react-router-dom';
 import Card from '../components/Card.jsx';
 import Button from '../components/Button.jsx';
+import { motion } from 'framer-motion';
 
 const DEBUG_GROUP = {
   name: 'Architecture',
@@ -13,6 +14,7 @@ const DEBUG_GROUP = {
   profileIconURL:
     'https://images.unsplash.com/photo-1617516202907-ff75846e6667?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1828&q=80',
 };
+const debugWait = time => new Promise(resolve => setTimeout(resolve, time));
 
 const getMemberText = members => {
   if (members === 1) {
@@ -37,6 +39,23 @@ function GroupInfo({ profileIconURL, name, members }) {
   );
 }
 
+const animationVariants = {
+  hidden: {
+    opacity: 0,
+    transform: 'translateY(50%)',
+  },
+  show: {
+    opacity: 1,
+    transform: 'translateY(0%)',
+  },
+};
+
+const animationOpts = {
+  delay: 0.3,
+  duration: 1.5,
+  ease: [0.16, 1, 0.3, 1],
+};
+
 function GroupInvitePage({ groupCode }) {
   const history = useHistory();
   const [accepted, setAccepted] = useState(false);
@@ -44,14 +63,21 @@ function GroupInvitePage({ groupCode }) {
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const acceptInvite = () => {
+  // TODO: Implement this/handle errors
+  const acceptInvite = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    setLoading(true);
+
+    await debugWait(1500);
     setAccepted(true);
-    // setHasError(true);
-    setTimeout(() => {
-      // Replace the URL so the user can't go back to this page
-      // after they accept the invitation
-      history.replace('/main');
-    }, 2500);
+
+    await debugWait(1500);
+    // Replace the URL so the user can't go back to this page
+    // after they accept the invitation
+    history.replace('/main');
   };
 
   const cardActions = (
@@ -78,38 +104,58 @@ function GroupInvitePage({ groupCode }) {
     />
   );
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!groupCode || !groupCode.trim()) {
       history.replace('/');
       return;
     }
+
+    // TODO: Get the group info here
+    // Dummy code to emulate async
+    await debugWait(1000);
+    setGroup(DEBUG_GROUP);
   }, []);
+
+  if (!group) {
+    return (
+      <div className="group-invite-page">
+        <div className="card-container" />
+      </div>
+    );
+  }
 
   return (
     <div className="group-invite-page">
       <div className="card-container">
-        <Card className="group-card">
-          {hasError ? (
-            <>
-              <h1 className="card-title">Group Not Found</h1>
-              <Alert
-                type="error"
-                className="invalid-code-alert"
-                message="Invalid Invite Link"
-                description="The group you’re looking for doesn’t exist. Make sure this invite link is valid.."
-              />
-            </>
-          ) : (
-            <>
-              <GroupInfo
-                profileIconURL={group.profileIconURL}
-                name={group.name}
-                members={group.members}
-              />
-              {accepted ? alert : cardActions}
-            </>
-          )}
-        </Card>
+        <motion.div
+          initial="hidden"
+          animate="show"
+          transition={animationOpts}
+          variants={animationVariants}
+        >
+          <Card className="group-card">
+            {hasError ? (
+              <>
+                <h1 className="card-title">Group Not Found</h1>
+                <Alert
+                  type="error"
+                  className="invalid-code-alert"
+                  message="Invalid Invite Link"
+                  description="The group you’re looking for doesn’t exist. Make sure this invite link is valid.."
+                />
+              </>
+            ) : (
+              <>
+                <GroupInfo
+                  profileIconURL={group.profileIconURL}
+                  name={group.name}
+                  members={group.members}
+                />
+                {accepted ? alert : cardActions}
+              </>
+            )}
+          </Card>
+        </motion.div>
       </div>
     </div>
   );

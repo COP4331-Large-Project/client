@@ -21,7 +21,7 @@
   .group-card {
     border-radius: 8px;
     margin: 8px;
-    padding: 36px;
+    padding: 30px 36px;
     width: 500px;
     max-width: 500px;
     display: flex;
@@ -59,7 +59,7 @@
 
   .btn-link {
     background-color: white;
-    margin-top: 4px;
+    margin-top: 8px;
     color: map-get($variant-colors, 'primary');
   }
 
