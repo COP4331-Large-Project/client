@@ -17,7 +17,12 @@ function LoginCard({ switchCard }) {
     const data = new FormData(event.target);
 
     try {
-      await API.login(data.get('Username'), data.get('Password'));
+      await API.login(data.get('Username'), data.get('Password'))
+        .then((res) => {
+          const { token, id } = res.token;
+          localStorage.setItem('token', token);
+          localStorage.setItem('id', id);
+        });
     } catch (e) {
       setError(e.message);
       return;
