@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { message } from 'antd';
 import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
+import GroupInvitePage from './pages/GroupInvitePage.jsx';
 import reportWebVitals from './reportWebVitals';
 
 import 'antd/dist/antd.css';
@@ -49,11 +50,18 @@ ReactDOM.render(
     <Router>
       <Switch>
         <Route exact path="/">
-            <LandingPage />
+          <LandingPage />
         </Route>
         <Route exact path="/main">
-            <MainPage />
+          <MainPage />
         </Route>
+        <Route
+          exact
+          path="/invite/:groupCode"
+          render={props => (
+            <GroupInvitePage groupCode={props.match.params.groupCode} />
+          )}
+        />
       </Switch>
     </Router>
   </React.StrictMode>,
