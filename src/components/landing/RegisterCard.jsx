@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Alert, message } from 'antd';
 import LandingCard from './LandingCard.jsx';
@@ -9,10 +7,10 @@ import Button from '../Button.jsx';
 import API from '../../api/API';
 
 function RegisterCard({ switchCard }) {
-  const history = useHistory();
   const [err, setError] = useState(null);
   const [isRegistered, setRegistered] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   function isTrimmedEmpty(str) {
     if (str.trim() === '') return true;
@@ -40,14 +38,16 @@ function RegisterCard({ switchCard }) {
       if (isTrimmedEmpty(data.password)) throw (new Error('Password input required.'));
       if (isTrimmedEmpty(data.confirmPassword)) throw (new Error('Confirm password input required.'));
 
+      setUserEmail(data.email);
+
       // Calling register API
-      // await API.register({
-      //   firstName: data.firstName,
-      //   lastName: data.lastName,
-      //   email: data.email,
-      //   username: data.username,
-      //   password: data.password,
-      // });
+      await API.register({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        username: data.username,
+        password: data.password,
+      });
     } catch (e) {
       setError(e.message);
       setLoading(false);
@@ -64,7 +64,7 @@ function RegisterCard({ switchCard }) {
 
     try {
       // TODO: Make request
-      await API.requestEmailVerificationLink('test@example.com');
+      await API.requestEmailVerificationLink(userEmail);
       message.success('An email was sent to your inbox');
     } catch (e) {
       setError(e);
@@ -73,7 +73,7 @@ function RegisterCard({ switchCard }) {
     setLoading(false);
   };
 
-  const renderForm = () => (
+  const registerForm = (
     <form onSubmit={onSubmit}>
       <div className="input-group">
         <TextInput placeHolder="First name" name="firstName" required />
@@ -102,11 +102,11 @@ function RegisterCard({ switchCard }) {
     </form>
   );
 
-  const renderSuccessMessage = () => (
+  const successMessage = (
     <div className="form-area-success">
       <Alert
         type="success"
-        message="Account created!"
+        message="Account Created!"
         description={`
           A verification email was sent to your inbox.
           Click the link to verify your email before
@@ -125,7 +125,7 @@ function RegisterCard({ switchCard }) {
 
   return (
     <LandingCard title="Register" error={err}>
-      {isRegistered ? renderSuccessMessage() : renderForm()}
+      {isRegistered ? successMessage : registerForm}
     </LandingCard>
   );
 }
