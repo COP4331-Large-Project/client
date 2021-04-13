@@ -57,6 +57,25 @@ const API = {
    */
   register: async (payload) => fetch(relURL('/users/'), postOptions(payload))
     .then(handleResponse),
+
+  /**
+   * Fetches user info.
+   *
+   * @param {string} token
+   * @param {string} id
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  getInfo: async (token, id) => fetch(
+    relURL(`/users/${id}`),
+    {
+      method: 'GET',
+      headers: {
+        Authorization: token,
+      },
+    },
+  )
+    .then(handleResponse),
 };
 
 export default API;
