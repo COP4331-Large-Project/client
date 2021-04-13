@@ -65,7 +65,7 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  fetch: async (id) => {
+  getInfo: async (id) => {
     fetch(relURL(`/users/?id=${id}`))
       .then(handleResponse);
   },
