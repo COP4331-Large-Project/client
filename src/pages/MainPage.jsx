@@ -1,12 +1,13 @@
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
+import API from '../api/API';
 
 const photos = [
   'https://images.unsplash.com/photo-1617450599731-0ec86e189589?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
@@ -29,10 +30,24 @@ const photos = [
 ];
 
 function MainPage() {
-  const tok = localStorage.getItem('token');
-  const id = localStorage.getItem('id');
-  console.log(tok);
-  console.log(id);
+  async function getUser(token, id) {
+    try {
+      API.getInfo(token, id)
+        .then((res) => {
+          console.log(res);
+          // const userInfo = res;
+          // Put userInfo into context
+        });
+    } catch (e) {
+      // need to handle this error state.
+    }
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
+    getUser(token, id);
+  }, []);
 
   return (
     // <motion.div
