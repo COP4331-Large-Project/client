@@ -61,7 +61,9 @@ function LoginCard({ switchCard }) {
           <TextInput placeHolder="Username" name="Username" />
           <TextInput placeHolder="Password" name="Password" type="password" />
         </div>
-        <Button type="submit" disabled={isLoading}>Login</Button>
+        <Button type="submit" disabled={isLoading}>
+          Login
+        </Button>
         <Button
           className="btn-link"
           onClick={() => switchCard('forgotPassword')}
@@ -76,6 +78,7 @@ function LoginCard({ switchCard }) {
       <Modal
         centered
         title="Verify Your Email"
+        className="verify-email-modal"
         okText={isLoading ? 'Sending' : 'Resend'}
         cancelText="Close"
         visible={isModalVisible}
@@ -86,11 +89,11 @@ function LoginCard({ switchCard }) {
         onOk={resendEmail}
         onCancel={() => setModalVisible(false)}
       >
-        <span>
+        <p className="modal-body">
           Looks like you haven&apos;t verified your email yet. Check your inbox
           or click resend if you didn&apos;t receive an email, then try logging
           in again.
-        </span>
+        </p>
       </Modal>
     </LandingCard>
   );
