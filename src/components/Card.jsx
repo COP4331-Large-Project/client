@@ -17,7 +17,7 @@ function Card({ className, children }) {
 
 Card.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.node,
 };
 
 Card.defaultProps = {

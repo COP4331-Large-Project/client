@@ -47,7 +47,7 @@ function VerifyEmailPage() {
         type="error"
         message="Unexpected Error"
         description={`
-          An unexpected error occurred. Make sure your email
+          An unexpected error occurred. Make sure your
           email link is valid and refresh to try again.
         `}
       />
