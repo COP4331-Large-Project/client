@@ -50,16 +50,6 @@ function MainPage() {
   }, []);
 
   return (
-    // <motion.div
-    //   initial={{ scale: 0.5, opacity: 1 }}
-    //   animate={{ scale: 1, opacity: 1 }}
-    //   exit={{
-    //     scale: 0.5,
-    //     opacity: 0,
-    //     transition: { duration: 1.5 },
-    //   }}
-    //   transition={{ duration: 2, type: 'spring' }}
-    // >
     <div className="main-page-body">
       <Navbar />
       <div className="body-content">
@@ -84,7 +74,6 @@ function MainPage() {
         </div>
       </div>
     </div>
-    // </motion.div>
   );
 }
 

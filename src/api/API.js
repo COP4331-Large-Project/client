@@ -66,18 +66,16 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  getInfo: async (token, id) => {
-    fetch(
-      relURL(`/users/${id}`),
-      {
-        method: 'GET',
-        headers: {
-          Authorization: token,
-        },
+  getInfo: async (token, id) => fetch(
+    relURL(`/users/${id}`),
+    {
+      method: 'GET',
+      headers: {
+        Authorization: token,
       },
-    )
-      .then(handleResponse);
-  },
+    },
+  )
+    .then(handleResponse),
 };
 
 export default API;
