@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Alert, message } from 'antd';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
@@ -9,6 +11,8 @@ import API from '../../api/API';
 function RegisterCard({ switchCard }) {
   const history = useHistory();
   const [err, setError] = useState(null);
+  const [isRegistered, setRegistered] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   function isTrimmedEmpty(str) {
     if (str.trim() === '') return true;
@@ -17,6 +21,12 @@ function RegisterCard({ switchCard }) {
 
   async function onSubmit(event) {
     event.preventDefault();
+
+    if (isLoading) {
+      return;
+    }
+
+    setLoading(true);
     const formInfo = new FormData(event.target);
     const data = Object.fromEntries(formInfo);
 
@@ -31,37 +41,91 @@ function RegisterCard({ switchCard }) {
       if (isTrimmedEmpty(data.confirmPassword)) throw (new Error('Confirm password input required.'));
 
       // Calling register API
-      await API.register({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        username: data.username,
-        password: data.password,
-      });
+      // await API.register({
+      //   firstName: data.firstName,
+      //   lastName: data.lastName,
+      //   email: data.email,
+      //   username: data.username,
+      //   password: data.password,
+      // });
     } catch (e) {
       setError(e.message);
+      setLoading(false);
       return;
     }
-    // Move to the home page after successfully registering
-    history.push('/main');
+
+    setRegistered(true);
+    setError(null);
+    setLoading(false);
   }
+
+  const resendEmail = async () => {
+    setLoading(true);
+
+    try {
+      // TODO: Make request
+      await API.requestEmailVerificationLink('test@example.com');
+      message.success('An email was sent to your inbox');
+    } catch (e) {
+      setError(e);
+    }
+
+    setLoading(false);
+  };
+
+  const renderForm = () => (
+    <form onSubmit={onSubmit}>
+      <div className="input-group">
+        <TextInput placeHolder="First name" name="firstName" required />
+        <TextInput placeHolder="Last name" name="lastName" required />
+      </div>
+      <TextInput placeHolder="Username" name="username" required />
+      <TextInput placeHolder="Email" type="email" name="email" required />
+      <TextInput
+        placeHolder="Password"
+        type="password"
+        name="password"
+        required
+      />
+      <TextInput
+        placeHolder="Confirm password"
+        type="password"
+        name="confirmPassword"
+        required
+      />
+      <Button className="btn-submit" type="submit" disabled={isLoading}>
+        Register
+      </Button>
+      <Button className="btn-link" onClick={() => switchCard('login')}>
+        Back to login
+      </Button>
+    </form>
+  );
+
+  const renderSuccessMessage = () => (
+    <div className="form-area-success">
+      <Alert
+        type="success"
+        message="Account created!"
+        description={`
+          A verification email was sent to your inbox.
+          Click the link to verify your email before
+          logging in.
+        `}
+      />
+      <p className="resend-text">Didn&apos;t get the email?</p>
+      <Button onClick={resendEmail} disabled={isLoading}>
+        {isLoading ? 'Sending...' : 'Resend'}
+      </Button>
+      <Button className="btn-link" onClick={() => switchCard('login')}>
+        Back to login
+      </Button>
+    </div>
+  );
 
   return (
     <LandingCard title="Register" error={err}>
-      <form onSubmit={onSubmit}>
-        <div className="input-group">
-          <TextInput placeHolder="First name" name="firstName" required/>
-          <TextInput placeHolder="Last name" name="lastName" required/>
-        </div>
-        <TextInput placeHolder="Username" name="username" required/>
-        <TextInput placeHolder="Email" type="email" name="email" required/>
-        <TextInput placeHolder="Password" type="password" name="password" required/>
-        <TextInput placeHolder="Confirm password" type="password" name="confirmPassword" required/>
-        <Button className="btn-submit" type="submit">Register</Button>
-        <Button className="btn-link" onClick={() => switchCard('login')}>
-          Back to login
-        </Button>
-      </form>
+      {isRegistered ? renderSuccessMessage() : renderForm()}
     </LandingCard>
   );
 }
@@ -71,7 +135,7 @@ RegisterCard.propTypes = {
 };
 
 RegisterCard.defaultProps = {
-  switchCard: () => { },
+  switchCard: () => {},
 };
 
 export default RegisterCard;

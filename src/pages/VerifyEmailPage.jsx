@@ -14,7 +14,7 @@ function VerifyEmailPage() {
   const verificationCode = params.get('code');
 
   const verifyEmail = () => {
-    // DEBUG: Dummy code to emulate async
+    // TODO: Make request here, dummy code to emulate async
     setLoading(true);
 
     setTimeout(() => {

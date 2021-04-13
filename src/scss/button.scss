@@ -26,6 +26,13 @@
   }
 }
 
+.btn:disabled,
+.btn:disabled:hover {
+  color: hsla(0, 0%, 0%, 0.2);
+  background-color: hsla(0, 0%, 83%, 0.452);
+  cursor: not-allowed;
+}
+
 // Iterate over the color map and construct variants from it's keys and values.
 @each $color, $value in $variant-colors {
   .btn-#{$color} {
