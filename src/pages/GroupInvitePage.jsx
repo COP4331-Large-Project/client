@@ -84,6 +84,12 @@ function GroupInvitePage({ groupCode }) {
     history.replace('/main');
   };
 
+  const goToHomePage = () => {
+    // Take the user back to the main page, but only if they were logged in
+    const id = localStorage.getItem('id');
+    history.push(id ? '/main' : '/')
+  }
+
   const cardActions = (
     <>
       <Button onClick={acceptInvite}>Accept Invite</Button>
@@ -153,6 +159,9 @@ function GroupInvitePage({ groupCode }) {
                   message="Invalid Invite Link"
                   description="The group you’re looking for doesn’t exist. Make sure this invite link is valid.."
                 />
+                <Button variant="link" onClick={goToHomePage}>
+                  Take me back
+                </Button>
               </>
             ) : (
               <>
