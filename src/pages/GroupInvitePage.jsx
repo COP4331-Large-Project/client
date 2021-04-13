@@ -146,18 +146,19 @@ function GroupInvitePage({ groupCode }) {
         <motion.div
           initial="hidden"
           animate="show"
+          className="group-card-wrapper"
           transition={animationOpts}
           variants={animationVariants}
         >
           <Card className="group-card">
             {isLinkInvalid ? (
               <>
-                <h1 className="card-title">Group Not Found</h1>
+                <h1 className="card-title">Invalid Invite</h1>
                 <Alert
                   type="error"
                   className="invalid-code-alert"
-                  message="Invalid Invite Link"
-                  description="The group you’re looking for doesn’t exist. Make sure this invite link is valid.."
+                  message="Group Not Found"
+                  description="The group you’re looking for doesn’t exist."
                 />
                 <Button variant="link" onClick={goToHomePage}>
                   Take me back

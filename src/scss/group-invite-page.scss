@@ -18,12 +18,15 @@
     backdrop-filter: blur(4px);
   }
 
-  .group-card {
-    border-radius: 8px;
-    margin: 8px;
-    padding: 30px 36px;
+  .group-card-wrapper {
     width: 500px;
     max-width: 500px;
+  }
+
+  .group-card {
+    margin: 8px;
+    border-radius: 8px;
+    padding: 30px 36px;
     display: flex;
     align-items: center;
     flex-direction: column;
