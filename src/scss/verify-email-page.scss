@@ -16,12 +16,15 @@
     backdrop-filter: blur(4px);
   }
 
+  .verify-card-wrapper {
+    width: 500px;
+    max-width: 500px;
+  }
+
   .verify-card {
     border-radius: 8px;
     margin: 8px;
-    padding: 36px;
-    width: 500px;
-    max-width: 500px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
   }
@@ -54,7 +57,7 @@
     from {
       transform: rotate(0deg);
     }
-  
+
     to {
       transform: rotate(360deg);
     }
