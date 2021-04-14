@@ -52,12 +52,19 @@ import Groups from '../models/groups'; // Dummy group list.
 function MainPage() {
   const [user, setUser] = useState({});
   const [groups, setGroups] = useState([]);
-  // const [curGroup, setCurGroup] = useState({});
+  const [curGroupIdx, setCurGroupIdx] = useState(0);
   const [photos, setPhotos] = useState([]);
   const history = useHistory();
 
   // Won't leave curGroup as a regular variable. Having issues with useEffect(). See line 97.
-  let curGroup;
+  // let curGroup;
+
+  function buildPhotoList() {
+    const { images } = groups[curGroupIdx];
+    const tempList = [];
+    images.forEach(img => tempList.push(img.URL));
+    setPhotos(tempList);
+  }
 
   async function getUser(token, id) {
     try {
@@ -74,52 +81,33 @@ function MainPage() {
     }
   }
 
-  function buildPhotoList() {
-    const { images } = curGroup;
-    const tempList = [];
-    images.forEach(img => tempList.push(img.URL));
-    setPhotos(tempList);
+  function changeGroup(index) {
+    setCurGroupIdx(index);
+    buildPhotoList();
   }
 
-  // Only want this to trigger once.
+  // Only want this to trigger once to grab user token and id.
   useEffect(() => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
     getUser(token, id);
-
-    // Setting the first group to be displayed on login
-    if (groups.length > 0) {
-      // setCurGroup(groups[0]);
-      [curGroup] = groups;
-      buildPhotoList();
-    }
   }, []);
 
   // Need this to trigger when group changes
   // Setting the first group as the default group to be displayed
-  //
-  // JK MIGHT NOT NEED THIS
-  // useEffect(() => {
-  //   if (groups.length > 0) {
-  //     // setCurGroup(groups[0]);
-  //     [curGroup] = groups;
-  //     buildPhotoList();
-  //   }
-  // }, [groups]);
-
-  // useEffect(() => {
-  //   if (curGroup.images.length !== 0) {
-  //     buildPhotoList();
-  //   }
-  // }, [curGroup]);
+  useEffect(() => {
+    if (groups.length > 0) {
+      buildPhotoList();
+    }
+  }, [groups]);
 
   return (
     <UserContext.Provider value={user}>
       <div className="main-page-body">
         <Navbar />
         <div className="body-content">
-          <Sidebar />
-          <GroupContext.Provider value={curGroup}>
+          <Sidebar changeGroup={changeGroup}/>
+          <GroupContext.Provider value={curGroupIdx}>
             <div className="main-content">
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <h1>Group Name</h1>

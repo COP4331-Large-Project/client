@@ -1,5 +1,6 @@
 import '../../scss/sidebar.scss';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import Card from '../Card.jsx';
 import InviteArea from './InviteArea.jsx';
@@ -42,7 +43,7 @@ const groups = [
   },
 ];
 
-function Sidebar() {
+function Sidebar({ changeGroup }) {
   const [isGroupModalVisible, setGroupModalVisible] = useState(false);
 
   const openGroupModal = () => setGroupModalVisible(true);
@@ -52,7 +53,7 @@ function Sidebar() {
     <Sider theme="light" className="sidebar">
       <Card className="sidebar-card">
         <InviteArea inviteCode="xJwY394p" />
-        <GroupList groups={groups} />
+        <GroupList onGroupClick={changeGroup} groups={groups} />
         <div className="sidebar-actions">
           <JoinGroupButton />
           <Button onClick={openGroupModal}>Create Group</Button>
@@ -65,5 +66,9 @@ function Sidebar() {
     </Sider>
   );
 }
+
+Sidebar.propTypes = {
+  changeGroup: PropTypes.func.isRequired,
+};
 
 export default Sidebar;
