@@ -4,6 +4,7 @@ import { Alert } from 'antd';
 import { Link } from 'react-router-dom';
 import { AiOutlineLoading } from 'react-icons/ai';
 import Card from '../components/Card.jsx';
+import API from '../api/API';
 
 function VerifyEmailPage() {
   const [isLoading, setLoading] = useState(false);
@@ -13,14 +14,19 @@ function VerifyEmailPage() {
   const userId = params.get('id');
   const verificationCode = params.get('code');
 
-  const verifyEmail = () => {
-    // TODO: Make request here, dummy code to emulate async
+  const verifyEmail = async () => {
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      setHasError(!!Math.round(Math.random()));
-    }, 3000);
+    try {
+      await API.verifyEmail(userId, verificationCode);
+    } catch (err) {
+      // TODO: Handle errors here
+    }
+
+    // TODO: Dummy code to test random errors, will be removed
+    setHasError(!!Math.round(Math.random()));
+
+    setLoading(false);
   };
 
   useEffect(() => {
