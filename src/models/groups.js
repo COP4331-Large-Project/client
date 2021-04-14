@@ -1,4 +1,4 @@
-const groups = [
+const Groups = [
   {
     id: '7834dfae4eb89145bc13b559',
     title: 'Group TBA',
@@ -279,4 +279,4 @@ const groups = [
   },
 ];
 
-export default groups;
+export default Groups;

@@ -9,6 +9,8 @@ import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API from '../api/API';
 import UserContext from '../contexts/UserContext.jsx';
+import GroupContext from '../contexts/GroupContext.jsx';
+import Groups from '../models/groups'; // Dummy group list.
 
 // Overall, will have to modify Sidebar and GroupList to take in the new groups
 //  array since it currently takes in arrays of different objects.
@@ -50,7 +52,9 @@ const photos = [
 ];
 
 function MainPage() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
+  const [groups, setGroups] = useState([]);
+  const [curGroup, setCurGroup] = useState({});
   const history = useHistory();
 
   async function getUser(token, id) {
@@ -58,6 +62,13 @@ function MainPage() {
       API.getInfo(token, id)
         .then((res) => {
           setUser(res);
+          // Leaving this for now. Later will need to set group to the group
+          // list returned.
+          setGroups(Groups);
+
+          if (groups.length !== 0) {
+            setCurGroup(groups[0]);
+          }
         });
     } catch (e) {
       // TODO: Will probably need better error handling
@@ -77,24 +88,26 @@ function MainPage() {
         <Navbar />
         <div className="body-content">
           <Sidebar />
-          <div className="main-content">
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h1>Group Name</h1>
-              <Button
-                type="primary"
-                size="large"
-                shape="circle"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <BsThreeDots />
-              </Button>
+          <GroupContext.Provider value={curGroup}>
+            <div className="main-content">
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1>Group Name</h1>
+                <Button
+                  type="primary"
+                  size="large"
+                  shape="circle"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <BsThreeDots />
+                </Button>
+              </div>
+              <PhotoGrid photos={photos} />
             </div>
-            <PhotoGrid photos={photos} />
-          </div>
+          </GroupContext.Provider>
         </div>
       </div>
     </UserContext.Provider>
