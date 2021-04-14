@@ -13,21 +13,9 @@ import GroupContext from '../contexts/GroupContext.jsx';
 
 import Groups from '../models/groups'; // Dummy group list.
 
-// Overall, will have to modify Sidebar and GroupList to take in the new groups
-//  array since it currently takes in arrays of different objects.
-//
-// TODO: Show curGroup images in main body content
-//
-// TODO: Modify the code in Sidebar and GroupList to work with the new groups
-//        array.
-//
-// TODO: Wrap the main-content div in a context that holds the current group
-//        being displayed. By default make it the first group if the group array
-//        isn't empty.
-//
-// TODO: Define the function for onGroupClick() in GroupList. Define it here since
-//        its meant to switch the current group in the main-content. Should change
-//        the value of the group context.
+// TODO: Make group title change in main-body-content
+// TODO: Change the sidebar info to reflect the group it has
+// TODO: Add border highlighting to the group card
 
 // const photos = [
 //   'https://images.unsplash.com/photo-1617450599731-0ec86e189589?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
@@ -56,14 +44,13 @@ function MainPage() {
   const [photos, setPhotos] = useState([]);
   const history = useHistory();
 
-  // Won't leave curGroup as a regular variable. Having issues with useEffect(). See line 97.
-  // let curGroup;
-
   function buildPhotoList() {
-    const { images } = groups[curGroupIdx];
-    const tempList = [];
-    images.forEach(img => tempList.push(img.URL));
-    setPhotos(tempList);
+    if (groups[curGroupIdx] !== undefined) {
+      const { images } = groups[curGroupIdx];
+      const tempList = [];
+      images.forEach(img => tempList.push(img.URL));
+      setPhotos(tempList);
+    }
   }
 
   async function getUser(token, id) {
@@ -81,11 +68,6 @@ function MainPage() {
     }
   }
 
-  function changeGroup(index) {
-    setCurGroupIdx(index);
-    buildPhotoList();
-  }
-
   // Only want this to trigger once to grab user token and id.
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -94,20 +76,27 @@ function MainPage() {
   }, []);
 
   // Need this to trigger when group changes
-  // Setting the first group as the default group to be displayed
+  // Builds photo array based on current group
   useEffect(() => {
     if (groups.length > 0) {
       buildPhotoList();
     }
   }, [groups]);
 
+  // Build a new photo list whenever group index changes.
+  useEffect(() => {
+    if (groups !== undefined) {
+      buildPhotoList();
+    }
+  }, [curGroupIdx]);
+
   return (
     <UserContext.Provider value={user}>
       <div className="main-page-body">
         <Navbar />
         <div className="body-content">
-          <Sidebar changeGroup={changeGroup}/>
-          <GroupContext.Provider value={curGroupIdx}>
+          <Sidebar changeGroup={setCurGroupIdx}/>
+          <GroupContext.Provider value={groups[curGroupIdx]}>
             <div className="main-content">
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <h1>Group Name</h1>
