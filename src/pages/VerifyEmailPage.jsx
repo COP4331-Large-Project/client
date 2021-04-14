@@ -49,6 +49,7 @@ function VerifyEmailPage() {
 
   useEffect(() => {
     if (!userId || !verificationCode) {
+      setLoading(false);
       return;
     }
     verifyEmail();

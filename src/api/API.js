@@ -111,6 +111,23 @@ const API = {
     await new Promise(resolve => setTimeout(resolve, 3000));
     return true;
   },
+
+  /**
+   * Joins a group with the given invite code.
+   *
+   * @param {string} userId
+   * @param {string} inviteCode
+   * @throws {APIError} On server error
+   * @returns {Promise<UserResponse>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  joinGroup: async (userId, inviteCode) => {
+    // TODO: Implement this
+    // Debug code to wait a few seconds before resolving
+    // (for testing only)
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    return true;
+  },
 };
 
 export default API;

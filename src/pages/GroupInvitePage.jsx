@@ -1,12 +1,12 @@
-/* eslint-disable */
 import '../scss/group-invite-page.scss';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Avatar } from 'antd';
-import { useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useHistory, Link } from 'react-router-dom';
 import Card from '../components/Card.jsx';
 import Button from '../components/Button.jsx';
-import { motion } from 'framer-motion';
+import API from '../api/API';
 
 const DEBUG_GROUP = {
   name: 'Architecture',
@@ -15,11 +15,8 @@ const DEBUG_GROUP = {
     'https://images.unsplash.com/photo-1617516202907-ff75846e6667?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1828&q=80',
 };
 
-// TODO: Dummy debug function, will remove later
-const debugWait = time => new Promise(resolve => setTimeout(resolve, time));
-
 function GroupInfo({ profileIconURL, name, members }) {
-  const getMemberText = members => {
+  const getMemberText = () => {
     if (members === 1) {
       return `${members} member`;
     }
@@ -66,6 +63,10 @@ function GroupInvitePage({ groupCode }) {
   const [hasError, setHasError] = useState(false);
   const [isLinkInvalid, setIsLinkInvalid] = useState(false);
 
+  // A value is giver here so we can visit this page regardless
+  const userId = localStorage.getItem('id') || 'debug';
+  const userToken = localStorage.getItem('token') || 'debug';
+
   // TODO: Implement this/handle errors
   const acceptInvite = async () => {
     if (isLoading) {
@@ -74,57 +75,78 @@ function GroupInvitePage({ groupCode }) {
 
     setLoading(true);
 
-    await debugWait(1500);
+    try {
+      await API.joinGroup();
+
+      // TODO: Dummy code - randomly throw an error to simulate random API errors
+      if (Math.round(Math.random())) {
+        throw new Error('Oops...');
+      }
+    } catch (err) {
+      setHasError(true);
+      return;
+    }
+
     setAccepted(true);
-
-    await debugWait(1500);
-
-    // Replace the URL so the user can't go back to this page
-    // after they accept the invitation
-    history.replace('/main');
   };
 
   const goToHomePage = () => {
     // Take the user back to the main page, but only if they were logged in
-    const id = localStorage.getItem('id');
-    history.push(id ? '/main' : '/')
-  }
+    history.push(userId && userToken ? '/main' : '/');
+  };
 
-  const cardActions = (
+  const cardButtons = (
     <>
-      <Button onClick={acceptInvite}>Accept Invite</Button>
+      <Button onClick={acceptInvite} disabled={isLoading}>
+        Accept Invite
+      </Button>
       {!isLoading && (
-        <Button variant="link" onClick={() => history.push('/')}>
+        <Button variant="link" onClick={goToHomePage}>
           Decline
         </Button>
       )}
     </>
   );
 
-  const alert = hasError ? (
-    <Alert
-      type="error"
-      message="Unexpected Error"
-      description="An error occurred while joining this group. Please refresh the page and try again."
-    />
-  ) : (
-    <Alert
-      type="success"
-      message="Success!"
-      description="You'll be redirected to the main page shortly."
-    />
-  );
+  const renderCardActions = () => {
+    if (accepted) {
+      return (
+        <Alert
+          type="success"
+          message="Success!"
+          description={
+            <span>
+              Welcome to your new group!{' '}
+              <Link to="/main" className="card-link" replace>
+                Click here
+              </Link>{' '}
+              to go to the main page.
+            </span>
+          }
+        />
+      );
+    }
+
+    if (hasError) {
+      return (
+        <Alert
+          type="error"
+          message="Unexpected Error"
+          description="An error occurred while joining this group. Please refresh the page and try again."
+        />
+      );
+    }
+
+    return cardButtons;
+  };
 
   useEffect(async () => {
-    if (!groupCode || !groupCode.trim()) {
+    if (!userId || !userToken) {
       history.replace('/');
       return;
     }
 
-    // TODO: Get the group info here
-    // Dummy code to emulate async
-    await debugWait(500);
-
+    // TODO: Get the group info here, this is just for testing
     if (groupCode === 'debug') {
       setGroup(DEBUG_GROUP);
     } else {
@@ -171,7 +193,7 @@ function GroupInvitePage({ groupCode }) {
                   name={group.name}
                   members={group.members}
                 />
-                {accepted ? alert : cardActions}
+                {renderCardActions()}
               </>
             )}
           </Card>
