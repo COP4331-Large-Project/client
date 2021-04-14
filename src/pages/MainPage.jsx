@@ -10,6 +10,25 @@ import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API from '../api/API';
 import UserContext from '../contexts/UserContext.jsx';
 
+// Overall, will have to modify Sidebar and GroupList to take in the new groups
+//  array since it currently takes in arrays of different objects.
+//
+// TODO: Create a dummy groups list that follows the group schema. Must include
+//        the group info from SideBar. Pass it to Sidebar.
+//        Basically have to unify the different arrays here but follow the format
+//        of groups returned from fetch group.
+//
+// TODO: Modify the code in Sidebar and GroupList to work with the new groups
+//        array.
+//
+// TODO: Wrap the main-content div in a context that holds the current group
+//        being displayed. By default make it the first group if the group array
+//        isn't empty.
+//
+// TODO: Define the function for onGroupClick() in GroupList. Define it here since
+//        its meant to switch the current group in the main-content. Should change
+//        the value of the group context.
+
 const photos = [
   'https://images.unsplash.com/photo-1617450599731-0ec86e189589?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
   'https://images.unsplash.com/photo-1617538781052-b49b1bc7cbe1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1866&q=80',
