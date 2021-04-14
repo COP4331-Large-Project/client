@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css';
 import './scss/ant-overrides.scss';
 import './scss/index.scss';
+import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
 
 message.config({ maxCount: 1 });
 
@@ -53,6 +54,9 @@ ReactDOM.render(
         </Route>
         <Route exact path="/main">
             <MainPage />
+        </Route>
+        <Route exact path="/verify">
+          <VerifyEmailPage />
         </Route>
       </Switch>
     </Router>
