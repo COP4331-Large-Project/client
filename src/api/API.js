@@ -90,7 +90,7 @@ const API = {
     // TODO: Implement this
     // Debug code to wait a few seconds before resolving
     // (for testing only)
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     return true;
   },
 
@@ -108,7 +108,7 @@ const API = {
     // TODO: Implement this
     // Debug code to wait a few seconds before resolving
     // (for testing only)
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     return true;
   },
 
@@ -125,7 +125,23 @@ const API = {
     // TODO: Implement this
     // Debug code to wait a few seconds before resolving
     // (for testing only)
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return true;
+  },
+
+  /**
+   * Gets a group with the given id.
+   *
+   * @param {string} id
+   * @throws {APIError} On server error
+   * @returns {Promise<UserResponse>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  getGroup: async id => {
+    // TODO: Implement this
+    // Debug code to wait a few seconds before resolving
+    // (for testing only)
+    await new Promise(resolve => setTimeout(resolve, 500));
     return true;
   },
 };

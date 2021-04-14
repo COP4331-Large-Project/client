@@ -61,9 +61,9 @@ ReactDOM.render(
         </Route>
         <Route
           exact
-          path="/invite/:groupCode"
+          path="/invite/:inviteCode"
           render={props => (
-            <GroupInvitePage groupCode={props.match.params.groupCode} />
+            <GroupInvitePage inviteCode={props.match.params.inviteCode} />
           )}
         />
       </Switch>

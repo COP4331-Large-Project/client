@@ -1,3 +1,4 @@
+/* eslint-disable */
 import '../scss/group-invite-page.scss';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -50,12 +51,11 @@ const animationVariants = {
 };
 
 const animationOpts = {
-  delay: 0.3,
   duration: 1.5,
   ease: [0.16, 1, 0.3, 1],
 };
 
-function GroupInvitePage({ groupCode }) {
+function GroupInvitePage({ inviteCode }) {
   const history = useHistory();
   const [accepted, setAccepted] = useState(false);
   const [group, setGroup] = useState(null);
@@ -63,7 +63,8 @@ function GroupInvitePage({ groupCode }) {
   const [hasError, setHasError] = useState(false);
   const [isLinkInvalid, setIsLinkInvalid] = useState(false);
 
-  // A value is giver here so we can visit this page regardless
+  // TODO: Remove the (|| 'debug') part, that's for testing
+  // A value is given here so we can visit this page regardless
   const userId = localStorage.getItem('id') || 'debug';
   const userToken = localStorage.getItem('token') || 'debug';
 
@@ -141,17 +142,28 @@ function GroupInvitePage({ groupCode }) {
   };
 
   useEffect(async () => {
+    const params = new URLSearchParams(window.location.search);
+    const groupId = params.get('id');
+
     if (!userId || !userToken) {
       history.replace('/');
       return;
     }
 
-    // TODO: Get the group info here, this is just for testing
-    if (groupCode === 'debug') {
-      setGroup(DEBUG_GROUP);
-    } else {
+    if (inviteCode !== 'debug' || !groupId) {
       setIsLinkInvalid(true);
+      return;
     }
+
+    // TODO: Get the group info here, this is just for testing
+    try {
+      await API.getGroup(groupId);
+    } catch (err) {
+      setIsLinkInvalid(true);
+      return;
+    }
+
+    setGroup(DEBUG_GROUP);
   }, []);
 
   if (!group && !isLinkInvalid) {
@@ -214,7 +226,7 @@ GroupInfo.defaultProps = {
 };
 
 GroupInvitePage.propTypes = {
-  groupCode: PropTypes.string.isRequired,
+  inviteCode: PropTypes.string.isRequired,
 };
 
 export default GroupInvitePage;
