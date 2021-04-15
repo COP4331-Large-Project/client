@@ -18,12 +18,12 @@ function GroupList({ groups, onGroupClick }) {
     </Avatar>
   );
 
-  const renderListItem = ({ title, imageURL, members }, index) => (
+  const renderListItem = ({ title, thumbnail, users }, index) => (
     <List.Item onClick={() => onGroupClick(index)} title={title}>
       <List.Item.Meta
-        avatar={renderGroupImage(imageURL, title)}
+        avatar={renderGroupImage(thumbnail.URL, title)}
         title={title}
-        description={getMemberText(members)}
+        description={getMemberText(users.length)}
       />
     </List.Item>
   );
