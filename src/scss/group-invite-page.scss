@@ -5,7 +5,6 @@
   background-size: contain;
 
   .card-container {
-    z-index: 9999;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -26,7 +25,7 @@
   .group-card {
     margin: 8px;
     border-radius: 8px;
-    padding: 30px 36px;
+    padding: 32px;
     display: flex;
     align-items: center;
     flex-direction: column;

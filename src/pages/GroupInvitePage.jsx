@@ -1,4 +1,3 @@
-/* eslint-disable */
 import '../scss/group-invite-page.scss';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -96,19 +95,6 @@ function GroupInvitePage({ inviteCode }) {
     history.push(userId && userToken ? '/main' : '/');
   };
 
-  const cardButtons = (
-    <>
-      <Button onClick={acceptInvite} disabled={isLoading}>
-        Accept Invite
-      </Button>
-      {!isLoading && (
-        <Button variant="link" onClick={goToHomePage}>
-          Decline
-        </Button>
-      )}
-    </>
-  );
-
   const renderCardActions = () => {
     if (accepted) {
       return (
@@ -133,12 +119,19 @@ function GroupInvitePage({ inviteCode }) {
         <Alert
           type="error"
           message="Unexpected Error"
-          description="An error occurred while joining this group. Please refresh the page and try again."
+          description={`
+            An error occurred while joining this group.
+            Please refresh the page and try again.
+          `}
         />
       );
     }
 
-    return cardButtons;
+    return (
+      <Button onClick={acceptInvite} disabled={isLoading}>
+        Accept Invite
+      </Button>
+    );
   };
 
   useEffect(async () => {
