@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Image } from 'antd';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
@@ -9,48 +9,48 @@ import ImageUploadModal from '../ImageUploadModal.jsx';
 
 import '../../scss/photo-grid.scss';
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.05,
-    },
-  },
-};
-
 const item = {
-  hidden: { opacity: 0, y: 20, scale: 1.1 },
-  show: { opacity: 1, y: 0, scale: 1 },
+  hidden: { opacity: 0, scale: 0.5 },
+  show: { opacity: 1, scale: 1 },
 };
 
 function PhotoGrid({ photos }) {
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);
-
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" layout>
+
       <div className="photo-grid-container">
         <Image.PreviewGroup>
+        <AnimatePresence exitBeforeEnter>
+        <motion.div initial={{ opacity: 0, y: '25%' }}
+        key={photos[0]} // Todo Change me later
+        animate={{ opacity: 1, y: 0 }}
+        exit={{
+          opacity: 0, y: '25%',
+        }} transition={{
+          ease: 'easeOut', duration: 0.3, type: 'spring', bounce: 0.25,
+        }}>
           <div className="photo-grid">
             {photos.map(photo => (
               <motion.div key={photo} variants={item}>
                 <PhotoThumbnail key={photo} src={photo} />
               </motion.div>
             ))}
-            <FloatingButton onClick={openUploadModal}>
+          </div>
+          </motion.div>
+          </AnimatePresence>
+          <FloatingButton onClick={openUploadModal}>
               <AiOutlineCloudUpload size={32} color="#525252" />
             </FloatingButton>
-          </div>
         </Image.PreviewGroup>
-      </div>
-      <ImageUploadModal
+        <ImageUploadModal
         visible={isUploadModalVisible}
         onClose={closeUploadModal}
       />
-    </motion.div>
+      </div>
+
   );
 }
 

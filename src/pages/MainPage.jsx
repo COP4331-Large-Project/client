@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
@@ -9,9 +9,10 @@ import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API from '../api/API';
 import UserContext from '../contexts/UserContext.jsx';
-import GroupContext from '../contexts/GroupContext.jsx';
+import GroupDispatchContext, { groupReducer } from '../contexts/GroupsContextDispatch.jsx';
 
 import Groups from '../models/groups'; // Dummy group list.
+import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 
 // TODO: Bring group context up and make it hold an object that contains the
 //        group list and the current index
@@ -40,19 +41,19 @@ import Groups from '../models/groups'; // Dummy group list.
 
 function MainPage() {
   const [user, setUser] = useState({});
-  const [groups, setGroups] = useState([]);
-  const [curGroupIdx, setCurGroupIdx] = useState(0);
-  const [groupInfo, setGroupInfo] = useState({});
+  const [groupData, dispatch] = useReducer(groupReducer, { groups: [], index: 0 });
+  const { groups, index } = groupData;
   const [photos, setPhotos] = useState([]);
   const history = useHistory();
 
   function buildPhotoList() {
-    if (groups[curGroupIdx] !== undefined) {
-      const { images } = groups[curGroupIdx];
-      const tempList = [];
-      images.forEach(img => tempList.push(img.URL));
-      setPhotos(tempList);
+    if (groups.length < 1) {
+      setPhotos([]);
+      return;
     }
+
+    const { images } = groupData.groups[groupData.index];
+    setPhotos(images.map(img => img.URL));
   }
 
   async function getUser(token, id) {
@@ -62,7 +63,7 @@ function MainPage() {
           setUser(res);
           // Leaving this for now. Later will need to set group to the group
           // list returned.
-          setGroups(Groups);
+          dispatch({ type: 'init', state: { groups: Groups } });
         });
     } catch (e) {
       // TODO: Will probably need better error handling
@@ -70,47 +71,45 @@ function MainPage() {
     }
   }
 
-  function buildGroupInfo(groupList, index) {
-    return { groupList, index };
-  }
+  // function buildGroupInfo(groupList, index) {
+  //   return { groupList, index };
+  // }
 
   // Only want this to trigger once to grab user token and id.
   useEffect(() => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
     getUser(token, id);
+    dispatch({ type: 'init', payload: Groups });
   }, []);
 
   // Need this to trigger when group changes
   // Builds photo array based on current group
-  useEffect(() => {
-    if (groups.length > 0) {
-      buildPhotoList();
-    }
-  }, [groups]);
+  useEffect(() => buildPhotoList(), [groupData]);
 
   // Build a new photo list whenever group index changes.
   useEffect(() => {
     if (groups !== undefined) {
       buildPhotoList();
     }
-  }, [curGroupIdx]);
+  }, [index]);
 
   // Updates when either the group list changes or current group.
-  useEffect(() => {
-    setGroupInfo(buildGroupInfo(groups, curGroupIdx));
-  }, [groups, curGroupIdx]);
+  // useEffect(() => {
+
+  // }, [groupData]);
 
   return (
     <UserContext.Provider value={user}>
-      <GroupContext.Provider value={groupInfo}>
+      <GroupDispatchContext.Provider value={dispatch}>
+        <GroupsStateContext.Provider value={groupData}>
         <div className="main-page-body">
           <Navbar />
           <div className="body-content">
-            <Sidebar changeGroup={setCurGroupIdx}/>
+            <Sidebar />
               <div className="main-content">
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <h1>{groups[curGroupIdx] === undefined ? '' : groups[curGroupIdx].title}</h1>
+                  <h1>{groups[index] === undefined ? '' : groups[index].title}</h1>
                   <Button
                     type="primary"
                     size="large"
@@ -128,7 +127,8 @@ function MainPage() {
               </div>
           </div>
         </div>
-      </GroupContext.Provider>
+        </GroupsStateContext.Provider>
+      </GroupDispatchContext.Provider>
     </UserContext.Provider>
   );
 }
