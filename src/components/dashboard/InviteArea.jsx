@@ -4,6 +4,7 @@ import { Button, message } from 'antd';
 import { IoClipboardOutline } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 import TextInput from '../TextInput.jsx';
+// import DisplayBox from '../DisplayBox.jsx';
 
 // prettier-ignore
 const copyToClipboard = text => new Promise((resolve, reject) => {

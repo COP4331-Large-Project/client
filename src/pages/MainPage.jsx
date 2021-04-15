@@ -55,6 +55,7 @@ function MainPage() {
       }
 
       const { images } = groupData.groups[groupData.index];
+      setGroupTitle(groups[index].title);
       setPhotos(images.map(img => img.URL));
     }
   }
