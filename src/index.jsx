@@ -5,49 +5,16 @@ import { message } from 'antd';
 import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
 import GroupInvitePage from './pages/GroupInvitePage.jsx';
+import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
 import reportWebVitals from './reportWebVitals';
-
 import 'antd/dist/antd.css';
 import './scss/ant-overrides.scss';
 import './scss/index.scss';
-import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
 
 message.config({ maxCount: 1 });
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <AnimatePresence exitBeforeEnter initial={false} />
-    <Router>
-      <Switch>
-        <Route exact path="/">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 1 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{
-                opacity: 0,
-              }}
-              transition={{ duration: 2, type: 'spring' }}
-            >
-              <LandingPage />
-          </motion.div>
-        </Route>
-        <Route exact path="/main">
-          <motion.div
-              initial={{ scale: 0.8, opacity: 1 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{
-                scale: 0.5,
-                opacity: 0,
-                transition: { duration: 1.5 },
-              }}
-              transition={{ duration: 2, type: 'spring' }}
-            >
-              <MainPage />
-          </motion.div>
-        </Route>
-      </Switch>
-    </Router>
-    <AnimatePresence /> */}
     <Router>
       <Switch>
         <Route exact path="/">

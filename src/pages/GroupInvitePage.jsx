@@ -8,36 +8,6 @@ import Card from '../components/Card.jsx';
 import Button from '../components/Button.jsx';
 import API from '../api/API';
 
-const DEBUG_GROUP = {
-  name: 'Architecture',
-  members: 7,
-  profileIconURL:
-    'https://images.unsplash.com/photo-1617516202907-ff75846e6667?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1828&q=80',
-};
-
-function GroupInfo({ profileIconURL, name, members }) {
-  const getMemberText = () => {
-    if (members === 1) {
-      return `${members} member`;
-    }
-
-    return `${members} members`;
-  };
-
-  return (
-    <>
-      <Avatar src={profileIconURL} size={128}>
-        {name[0]}
-      </Avatar>
-      <p className="text-muted avatar-title">
-        You&apos;ve been invited to join a group
-      </p>
-      <h1 className="card-title">{name}</h1>
-      <p className="text-muted">{getMemberText(members)}</p>
-    </>
-  );
-}
-
 const animationVariants = {
   hidden: {
     opacity: 0,
@@ -61,13 +31,18 @@ function GroupInvitePage({ inviteCode }) {
   const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isLinkInvalid, setIsLinkInvalid] = useState(false);
+  const params = new URLSearchParams(window.location.search);
+  const userId = params.get('userId');
+  const groupId = params.get('groupId');
 
-  // TODO: Remove the (|| 'debug') part, that's for testing
-  // A value is given here so we can visit this page regardless
-  const userId = localStorage.getItem('id') || 'debug';
-  const userToken = localStorage.getItem('token') || 'debug';
+  const getMemberText = numUsers => {
+    if (numUsers === 1) {
+      return `${numUsers} member`;
+    }
 
-  // TODO: Implement this/handle errors
+    return `${numUsers} members`;
+  };
+
   const acceptInvite = async () => {
     if (isLoading) {
       return;
@@ -76,23 +51,13 @@ function GroupInvitePage({ inviteCode }) {
     setLoading(true);
 
     try {
-      await API.joinGroup();
-
-      // TODO: Dummy code - randomly throw an error to simulate random API errors
-      if (Math.round(Math.random())) {
-        throw new Error('Oops...');
-      }
+      await API.joinGroup(userId, inviteCode);
     } catch (err) {
       setHasError(true);
       return;
     }
 
     setAccepted(true);
-  };
-
-  const goToHomePage = () => {
-    // Take the user back to the main page, but only if they were logged in
-    history.push(userId && userToken ? '/main' : '/');
   };
 
   const renderCardActions = () => {
@@ -134,38 +99,64 @@ function GroupInvitePage({ inviteCode }) {
     );
   };
 
-  useEffect(async () => {
-    const params = new URLSearchParams(window.location.search);
-    const groupId = params.get('id');
-
-    if (!userId || !userToken) {
-      history.replace('/');
-      return;
+  const renderContent = () => {
+    if (isLinkInvalid) {
+      return (
+        <Card className="group-card">
+          <h1 className="card-title">Invalid Invite</h1>
+          <Alert
+            type="error"
+            className="invalid-code-alert"
+            message="Group Not Found"
+            description="The group you’re looking for doesn’t exist."
+          />
+          <Button variant="link" onClick={() => history.push('/main')}>
+            Take me back
+          </Button>
+        </Card>
+      );
     }
 
-    if (inviteCode !== 'debug' || !groupId) {
+    if (!group) {
+      return null;
+    }
+
+    return (
+      <Card className="group-card">
+        <Avatar src={group.profileIconURL} size={128}>
+          {group.name[0]}
+        </Avatar>
+        <p className="text-muted avatar-title">
+          You&apos;ve been invited to join a group
+        </p>
+        <h1 className="card-title">{group.name}</h1>
+        <p className="text-muted">{getMemberText(group.users.length)}</p>
+        {renderCardActions()}
+      </Card>
+    );
+  };
+
+  useEffect(async () => {
+    if (!userId || !groupId) {
       setIsLinkInvalid(true);
       return;
     }
 
-    // TODO: Get the group info here, this is just for testing
     try {
-      await API.getGroup(groupId);
+      const groupInfo = await API.getGroup(groupId);
+
+      // Private groups need explicit invitation so we'll
+      // hide the group from the user if the group is private
+      if (!groupInfo.publicGroup) {
+        setIsLinkInvalid(true);
+        return;
+      }
+
+      setGroup(groupInfo);
     } catch (err) {
       setIsLinkInvalid(true);
-      return;
     }
-
-    setGroup(DEBUG_GROUP);
   }, []);
-
-  if (!group && !isLinkInvalid) {
-    return (
-      <div className="group-invite-page">
-        <div className="card-container" />
-      </div>
-    );
-  }
 
   return (
     <div className="group-invite-page">
@@ -177,46 +168,12 @@ function GroupInvitePage({ inviteCode }) {
           transition={animationOpts}
           variants={animationVariants}
         >
-          <Card className="group-card">
-            {isLinkInvalid ? (
-              <>
-                <h1 className="card-title">Invalid Invite</h1>
-                <Alert
-                  type="error"
-                  className="invalid-code-alert"
-                  message="Group Not Found"
-                  description="The group you’re looking for doesn’t exist."
-                />
-                <Button variant="link" onClick={goToHomePage}>
-                  Take me back
-                </Button>
-              </>
-            ) : (
-              <>
-                <GroupInfo
-                  profileIconURL={group.profileIconURL}
-                  name={group.name}
-                  members={group.members}
-                />
-                {renderCardActions()}
-              </>
-            )}
-          </Card>
+          {renderContent()}
         </motion.div>
       </div>
     </div>
   );
 }
-
-GroupInfo.propTypes = {
-  profileIconURL: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  members: PropTypes.number.isRequired,
-};
-
-GroupInfo.defaultProps = {
-  profileIconURL: '',
-};
 
 GroupInvitePage.propTypes = {
   inviteCode: PropTypes.string.isRequired,

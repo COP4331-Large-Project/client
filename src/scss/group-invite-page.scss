@@ -35,13 +35,13 @@
     color: darken(map-get($variant-colors, 'primary'), 10%);
     background-color: lighten(map-get($variant-colors, 'primary'), 58%);
     margin-bottom: 16px;
-    box-shadow: map-get($box-shadows, 'md');
   }
 
   .ant-avatar-string {
-    font-size: 2em;
+    font-size: 42px;
     font-weight: 800;
     text-transform: uppercase;
+    user-select: none;
   }
 
   .card-title {
