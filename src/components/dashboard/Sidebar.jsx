@@ -20,6 +20,13 @@ function Sidebar() {
   const openGroupModal = () => setGroupModalVisible(true);
   const closeGroupModal = () => setGroupModalVisible(false);
 
+  // const [groupList, setGroupList] = useState([]);
+
+  // useEffect(() => {
+  //   console.log(groups);
+  //   setGroupList(groups);
+  // }, [groups]);
+
   function changeGroup(toIndex) {
     dispatch({ type: 'setIndex', payload: toIndex });
   }

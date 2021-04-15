@@ -49,11 +49,11 @@ function GroupList({ groups, onGroupClick }) {
 GroupList.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
+      title: PropTypes.string,
       imageURL: PropTypes.string,
-      members: PropTypes.number.isRequired,
+      members: PropTypes.number,
     }),
-  ).isRequired,
+  ),
   onGroupClick: PropTypes.func,
 };
 

@@ -66,7 +66,7 @@ function MainPage() {
           setUser(res);
           // Leaving this for now. Later will need to set group to the group
           // list returned.
-          dispatch({ type: 'init', state: { groups: Groups } });
+          // dispatch({ type: 'init', state: { groups: Groups } });
         });
     } catch (e) {
       // TODO: Will probably need better error handling
@@ -94,9 +94,11 @@ function MainPage() {
   }, [index]);
 
   useEffect(() => {
-    console.log('groups updated');
-    if (groups !== undefined && groups[index] !== undefined) {
-      setGroupTitle(groups[index].title);
+    if (groups !== undefined) {
+      // dispatch({ type: 'update', payload: groups });
+      if (groups[index] !== undefined) {
+        setGroupTitle(groups[index].title);
+      }
     }
   }, [groups]);
 
