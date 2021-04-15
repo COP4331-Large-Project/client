@@ -13,9 +13,10 @@ import GroupContext from '../contexts/GroupContext.jsx';
 
 import Groups from '../models/groups'; // Dummy group list.
 
+// TODO: Bring group context up and make it hold an object that contains the
+//        group list and the current index
 // TODO: Make group title change in main-body-content
 // TODO: Change the sidebar info to reflect the group it has
-// TODO: Add border highlighting to the group card
 
 // const photos = [
 //   'https://images.unsplash.com/photo-1617450599731-0ec86e189589?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
@@ -41,6 +42,7 @@ function MainPage() {
   const [user, setUser] = useState({});
   const [groups, setGroups] = useState([]);
   const [curGroupIdx, setCurGroupIdx] = useState(0);
+  const [groupInfo, setGroupInfo] = useState({});
   const [photos, setPhotos] = useState([]);
   const history = useHistory();
 
@@ -68,6 +70,10 @@ function MainPage() {
     }
   }
 
+  function buildGroupInfo(groupList, index) {
+    return { groupList, index };
+  }
+
   // Only want this to trigger once to grab user token and id.
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -90,34 +96,39 @@ function MainPage() {
     }
   }, [curGroupIdx]);
 
+  // Updates when either the group list changes or current group.
+  useEffect(() => {
+    setGroupInfo(buildGroupInfo(groups, curGroupIdx));
+  }, [groups, curGroupIdx]);
+
   return (
     <UserContext.Provider value={user}>
-      <div className="main-page-body">
-        <Navbar />
-        <div className="body-content">
-          <Sidebar changeGroup={setCurGroupIdx}/>
-          <GroupContext.Provider value={groups[curGroupIdx]}>
-            <div className="main-content">
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <h1>Group Name</h1>
-                <Button
-                  type="primary"
-                  size="large"
-                  shape="circle"
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <BsThreeDots />
-                </Button>
+      <GroupContext.Provider value={groupInfo}>
+        <div className="main-page-body">
+          <Navbar />
+          <div className="body-content">
+            <Sidebar changeGroup={setCurGroupIdx}/>
+              <div className="main-content">
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <h1>Group Name</h1>
+                  <Button
+                    type="primary"
+                    size="large"
+                    shape="circle"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <BsThreeDots />
+                  </Button>
+                </div>
+                <PhotoGrid photos={photos} />
               </div>
-              <PhotoGrid photos={photos} />
-            </div>
-          </GroupContext.Provider>
+          </div>
         </div>
-      </div>
+      </GroupContext.Provider>
     </UserContext.Provider>
   );
 }
