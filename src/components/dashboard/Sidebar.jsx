@@ -1,6 +1,5 @@
 import '../../scss/sidebar.scss';
 import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import Card from '../Card.jsx';
 import InviteArea from './InviteArea.jsx';
@@ -42,9 +41,5 @@ function Sidebar() {
     </Sider>
   );
 }
-
-Sidebar.propTypes = {
-  changeGroup: PropTypes.func.isRequired,
-};
 
 export default Sidebar;

@@ -44,16 +44,19 @@ function MainPage() {
   const [groupData, dispatch] = useReducer(groupReducer, { groups: [], index: 0 });
   const { groups, index } = groupData;
   const [photos, setPhotos] = useState([]);
+  const [groupTitle, setGroupTitle] = useState('');
   const history = useHistory();
 
   function buildPhotoList() {
-    if (groups.length < 1) {
-      setPhotos([]);
-      return;
-    }
+    if (groups !== undefined) {
+      if (groups.length < 1) {
+        setPhotos([]);
+        return;
+      }
 
-    const { images } = groupData.groups[groupData.index];
-    setPhotos(images.map(img => img.URL));
+      const { images } = groupData.groups[groupData.index];
+      setPhotos(images.map(img => img.URL));
+    }
   }
 
   async function getUser(token, id) {
@@ -70,10 +73,6 @@ function MainPage() {
       history.replace('/');
     }
   }
-
-  // function buildGroupInfo(groupList, index) {
-  //   return { groupList, index };
-  // }
 
   // Only want this to trigger once to grab user token and id.
   useEffect(() => {
@@ -94,6 +93,13 @@ function MainPage() {
     }
   }, [index]);
 
+  useEffect(() => {
+    console.log('groups updated');
+    if (groups !== undefined && groups[index] !== undefined) {
+      setGroupTitle(groups[index].title);
+    }
+  }, [groups]);
+
   // Updates when either the group list changes or current group.
   // useEffect(() => {
 
@@ -109,7 +115,7 @@ function MainPage() {
             <Sidebar />
               <div className="main-content">
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <h1>{groups[index] === undefined ? '' : groups[index].title}</h1>
+                  <h1>{groupTitle}</h1>
                   <Button
                     type="primary"
                     size="large"
