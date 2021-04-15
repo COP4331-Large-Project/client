@@ -110,7 +110,7 @@ function MainPage() {
             <Sidebar changeGroup={setCurGroupIdx}/>
               <div className="main-content">
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <h1>Group Name</h1>
+                  <h1>{groups[curGroupIdx].title}</h1>
                   <Button
                     type="primary"
                     size="large"
