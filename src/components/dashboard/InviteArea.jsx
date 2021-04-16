@@ -1,4 +1,5 @@
 import '../../scss/invite-area.scss';
+import '../../scss/text-input.scss';
 import React from 'react';
 import { Button, message } from 'antd';
 import { IoClipboardOutline } from 'react-icons/io5';
@@ -47,7 +48,7 @@ function InviteArea({ inviteCode }) {
       <div className="input-wrapper">
         <TextInput
           className="invite-link-input"
-          value={inviteCode ? inviteLink : ''}
+          placeHolder={inviteCode ? inviteLink : ''}
           readOnly
         />
         <Button className="clipboard-btn" onClick={copyCode}>
