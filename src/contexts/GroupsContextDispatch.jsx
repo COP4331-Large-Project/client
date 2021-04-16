@@ -15,5 +15,4 @@ function groupReducer(state, action) {
   }
 }
 
-export default GroupsDispatchContext;
-export { groupReducer };
+export { GroupsDispatchContext as default, groupReducer };
