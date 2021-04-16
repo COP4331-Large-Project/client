@@ -22,7 +22,11 @@ function PhotoThumbnail({ src }) {
         duration: 0.4, type: 'spring', bounce: 0.5,
       },
     }}>
-      <Image className="photo-thumbnail" src={src} />
+      <Image
+        className="photo-thumbnail"
+        src={src}
+        fallback="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3hWNV2E6aTe_edfDRBjSKo4KvAWfzaXxHzw&usqp=CAU"
+      />
     </motion.div>
   );
 }
