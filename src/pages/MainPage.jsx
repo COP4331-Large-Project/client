@@ -23,12 +23,9 @@ function MainPage() {
   const history = useHistory();
 
   function buildPhotoList() {
-    if (groups !== undefined) {
-      if (groups.length < 1) {
-        setPhotos([]);
-        return;
-      }
-
+    if (groups !== undefined && groups.length < 1) {
+      setPhotos([]);
+    } else if (groups !== undefined) {
       const { images } = groupData.groups[groupData.index];
       setGroupTitle(groups[index].title);
       setPhotos(images.map(img => img.URL));
@@ -70,11 +67,9 @@ function MainPage() {
   }, [index]);
 
   useEffect(() => {
-    if (groups !== undefined) {
+    if (groups !== undefined && groups[index] !== undefined) {
       // dispatch({ type: 'update', payload: groups });
-      if (groups[index] !== undefined) {
-        setGroupTitle(groups[index].title);
-      }
+      setGroupTitle(groups[index].title);
     }
   }, [groups]);
 
