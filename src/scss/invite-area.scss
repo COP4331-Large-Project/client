@@ -38,6 +38,10 @@
     display: flex;
     align-items: center;
     padding: 4px 12px;
+
+    &:hover {
+      background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    }
   }
 
   .invite-link-input::placeholder {

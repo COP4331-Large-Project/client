@@ -8,12 +8,16 @@ function Button({
   children,
   onClick,
   type,
+  disabled,
 }) {
+  const noop = () => {};
+
   return (
     <button
-      onClick={onClick}
+      onClick={disabled ? noop : onClick}
       type={type}
       className={`btn btn-${variant} ${className}`}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -26,6 +30,7 @@ Button.defaultProps = {
   onClick: () => {},
   className: '',
   type: 'button',
+  disabled: false,
 };
 
 Button.propTypes = {
@@ -34,6 +39,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   className: PropTypes.string,
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  disabled: PropTypes.bool,
 };
 
 export default Button;

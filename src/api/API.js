@@ -76,6 +76,41 @@ const API = {
     },
   )
     .then(handleResponse),
+
+  /**
+   * Takes an email address and makes a request to send
+   * a verification link to that email.
+   *
+   * @param {string} email
+   * @throws {APIError} On server error
+   * @returns {Promise<UserResponse>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  requestEmailVerificationLink: async email => {
+    // TODO: Implement this
+    // Debug code to wait a few seconds before resolving
+    // (for testing only)
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    return true;
+  },
+
+  /**
+   * Verifies a users email. The verification code should match
+   * the code sent from the API.
+   *
+   * @param {string} userId
+   * @param {string} verificationCode
+   * @throws {APIError} On server error
+   * @returns {Promise<UserResponse>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  verifyEmail: async (userId, verificationCode) => {
+    // TODO: Implement this
+    // Debug code to wait a few seconds before resolving
+    // (for testing only)
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    return true;
+  },
 };
 
 export default API;

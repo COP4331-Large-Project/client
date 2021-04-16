@@ -1,0 +1,65 @@
+.verify-email-page {
+  background-image: url('../assets/Splash.png');
+  background-size: cover;
+
+  .card-container {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .verify-card-wrapper {
+    width: 500px;
+    max-width: 500px;
+  }
+
+  .verify-card {
+    border-radius: 8px;
+    margin: 8px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .ant-alert {
+    margin: 16px 0;
+  }
+
+  .card-link {
+    font-weight: 600;
+    color: #0000cf;
+  }
+
+  .card-title-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .loading-indicator {
+    margin-left: 24px;
+    animation: spin linear infinite 1s;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
