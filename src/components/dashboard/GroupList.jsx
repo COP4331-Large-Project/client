@@ -19,7 +19,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
   );
 
   const renderTitle = (title, index) => (
-    <div className={index === activeIndex ? 'selected' : ''}>
+    <div className={index === activeIndex ? 'selected ant-list-item-meta-title' : 'ant-list-item-meta-title '}>
       {title}
     </div>
   );
