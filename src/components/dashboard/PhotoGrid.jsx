@@ -24,31 +24,32 @@ function PhotoGrid({ photos }) {
       <div className="photo-grid-container">
         <Image.PreviewGroup>
         <AnimatePresence exitBeforeEnter>
-        <motion.div initial={{ opacity: 0, y: '25%' }}
-        key={photos[0]} // Todo Change me later
-        animate={{ opacity: 1, y: 0 }}
-        exit={{
-          opacity: 0, y: '25%',
-        }} transition={{
-          ease: 'easeOut', duration: 0.3, type: 'spring', bounce: 0.25,
-        }}>
-          <div className="photo-grid">
-            {photos.map(photo => (
-              <motion.div key={photo} variants={item}>
-                <PhotoThumbnail key={photo} src={photo} />
-              </motion.div>
-            ))}
-          </div>
-          </motion.div>
-          </AnimatePresence>
-          <FloatingButton onClick={openUploadModal}>
-              <AiOutlineCloudUpload size={32} color="#525252" />
-            </FloatingButton>
-        </Image.PreviewGroup>
-        <ImageUploadModal
-        visible={isUploadModalVisible}
-        onClose={closeUploadModal}
-      />
+        <motion.div
+          initial={{ opacity: 0, y: '25%' }}
+          key={photos[0]} // Todo Change me later
+          animate={{ opacity: 1, y: 0 }}
+          exit={{
+            opacity: 0, y: '25%',
+          }} transition={{
+            ease: 'easeOut', duration: 0.3, type: 'spring', bounce: 0.25,
+          }}>
+            <div className="photo-grid">
+              {photos.map(photo => (
+                <motion.div key={photo} variants={item}>
+                  <PhotoThumbnail key={photo} src={photo} />
+                </motion.div>
+              ))}
+            </div>
+            </motion.div>
+            </AnimatePresence>
+            <FloatingButton onClick={openUploadModal}>
+                <AiOutlineCloudUpload size={32} color="#525252" />
+              </FloatingButton>
+          </Image.PreviewGroup>
+          <ImageUploadModal
+          visible={isUploadModalVisible}
+          onClose={closeUploadModal}
+        />
       </div>
 
   );

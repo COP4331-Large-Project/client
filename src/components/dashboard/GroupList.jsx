@@ -66,6 +66,8 @@ GroupList.propTypes = {
 
 GroupList.defaultProps = {
   onGroupClick: () => {},
+  groups: [],
+  index: 0,
 };
 
 export default GroupList;
