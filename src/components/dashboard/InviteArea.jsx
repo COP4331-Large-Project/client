@@ -35,7 +35,11 @@ function InviteArea({ inviteCode }) {
   const inviteLink = `imageus.io/invite/${inviteCode}`;
 
   const copyCode = () => {
-    copyToClipboard(inviteLink)
+    if (!inviteCode) {
+      return;
+    }
+
+    copyToClipboard(`https://${inviteLink}`)
       .then(() => message.success('Link copied to clipboard.'))
       .catch(() => message.error('Error copying code.'));
   };

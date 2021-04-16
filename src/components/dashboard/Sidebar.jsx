@@ -21,8 +21,10 @@ function Sidebar() {
   const closeGroupModal = () => setGroupModalVisible(false);
 
   useEffect(() => {
-    if (groups[index] !== undefined) {
+    if (groups.length > 0) {
       setInviteCode(groups[index].inviteCode);
+    } else {
+      setInviteCode('');
     }
   }, [groups, index]);
 
