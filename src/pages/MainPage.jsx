@@ -48,10 +48,10 @@ function MainPage() {
   }
 
   // Only want this to trigger once to grab user token and id.
-  useEffect(() => {
+  useEffect(async () => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
-    getUser(token, id);
+    await getUser(token, id);
     dispatch({ type: 'init', payload: Groups });
   }, []);
 

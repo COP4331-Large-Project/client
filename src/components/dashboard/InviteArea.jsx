@@ -47,7 +47,7 @@ function InviteArea({ inviteCode }) {
       <div className="input-wrapper">
         <TextInput
           className="invite-link-input"
-          placeHolder={inviteCode ? inviteLink : ''}
+          value={inviteCode ? inviteLink : ''}
           readOnly
         />
         <Button className="clipboard-btn" onClick={copyCode}>
