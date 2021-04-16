@@ -9,7 +9,9 @@ import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API from '../api/API';
 import UserContext from '../contexts/UserContext.jsx';
-import GroupDispatchContext, { groupReducer } from '../contexts/GroupsContextDispatch.jsx';
+import GroupDispatchContext, {
+  groupReducer,
+} from '../contexts/GroupsContextDispatch.jsx';
 
 import Groups from '../models/groups'; // Dummy group list.
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
@@ -38,12 +40,11 @@ function MainPage() {
 
   async function getUser(token, id) {
     try {
-      API.getInfo(token, id).then(res => {
-        setUser(res);
-        // Leaving this for now. Later will need to set group to the group
-        // list returned.
-        // dispatch({ type: 'init', state: { groups: Groups } });
-      });
+      const res = await API.getInfo(token, id);
+      setUser(res);
+      // Leaving this for now. Later will need to set group to the group
+      // list returned.
+      // dispatch({ type: 'init', state: { groups: Groups } });
     } catch (e) {
       // TODO: Will probably need better error handling
       history.replace('/');
@@ -68,12 +69,14 @@ function MainPage() {
     <UserContext.Provider value={user}>
       <GroupDispatchContext.Provider value={dispatch}>
         <GroupsStateContext.Provider value={groupData}>
-        <div className="main-page-body">
-          <Navbar />
-          <div className="body-content">
-            <Sidebar />
+          <div className="main-page-body">
+            <Navbar />
+            <div className="body-content">
+              <Sidebar />
               <div className="main-content">
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
                   <h1>{groupTitle}</h1>
                   <Button
                     type="primary"
@@ -90,8 +93,8 @@ function MainPage() {
                 </div>
                 <PhotoGrid photos={photos} />
               </div>
+            </div>
           </div>
-        </div>
         </GroupsStateContext.Provider>
       </GroupDispatchContext.Provider>
     </UserContext.Provider>

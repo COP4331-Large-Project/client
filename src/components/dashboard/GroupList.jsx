@@ -18,17 +18,12 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
     </Avatar>
   );
 
-  const renderTitle = (title, index) => (
-    <div className={index === activeIndex ? 'selected ant-list-item-meta-title' : 'ant-list-item-meta-title '}>
-      {title}
-    </div>
-  );
-
   const renderListItem = ({ title, thumbnail, users }, index) => (
     <List.Item onClick={() => onGroupClick(index)} title={title}>
       <List.Item.Meta
+        className={index === activeIndex ? 'selected' : ''}
         avatar={renderGroupImage(thumbnail.URL, title)}
-        title={renderTitle(title, index)}
+        title={title}
         description={getMemberText(users.length)}
       />
     </List.Item>

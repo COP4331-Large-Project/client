@@ -16,7 +16,6 @@ function Sidebar() {
   const [isGroupModalVisible, setGroupModalVisible] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
   const dispatch = useContext(GroupDispatchContext);
-  // eslint-disable-next-line no-unused-vars
   const { groups, index } = useContext(GroupsStateContext);
   const openGroupModal = () => setGroupModalVisible(true);
   const closeGroupModal = () => setGroupModalVisible(false);
@@ -34,8 +33,12 @@ function Sidebar() {
   return (
     <Sider theme="light" className="sidebar">
       <Card className="sidebar-card">
-        <InviteArea inviteCode={inviteCode}/>
-        <GroupList onGroupClick={changeGroup} activeIndex={index} groups={groups} />
+        <InviteArea inviteCode={inviteCode} />
+        <GroupList
+          onGroupClick={changeGroup}
+          activeIndex={index}
+          groups={groups}
+        />
         <div className="sidebar-actions">
           <JoinGroupButton />
           <Button onClick={openGroupModal}>Create Group</Button>

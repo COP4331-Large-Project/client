@@ -7,21 +7,28 @@ import { Image } from 'antd';
 function PhotoThumbnail({ src }) {
   return (
     <motion.div
-    transition={{
-      duration: 1, type: 'spring', bounce: 0.1,
-    }}
-    whileHover={{
-      scale: 1.1,
-      transition: {
-        duration: 0.4, type: 'spring', bounce: 0.5,
-      },
-    }}
-    whileTap={{
-      scale: 1.1,
-      transition: {
-        duration: 0.4, type: 'spring', bounce: 0.5,
-      },
-    }}>
+      transition={{
+        duration: 1,
+        type: 'spring',
+        bounce: 0.1,
+      }}
+      whileHover={{
+        scale: 1.1,
+        transition: {
+          duration: 0.4,
+          type: 'spring',
+          bounce: 0.5,
+        },
+      }}
+      whileTap={{
+        scale: 1.1,
+        transition: {
+          duration: 0.4,
+          type: 'spring',
+          bounce: 0.5,
+        },
+      }}
+    >
       <Image
         className="photo-thumbnail"
         src={src}
