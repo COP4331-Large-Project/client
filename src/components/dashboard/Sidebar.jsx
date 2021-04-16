@@ -35,7 +35,7 @@ function Sidebar() {
     <Sider theme="light" className="sidebar">
       <Card className="sidebar-card">
         <InviteArea inviteCode={inviteCode}/>
-        <GroupList onGroupClick={changeGroup} index={index} groups={groups} />
+        <GroupList onGroupClick={changeGroup} activeIndex={index} groups={groups} />
         <div className="sidebar-actions">
           <JoinGroupButton />
           <Button onClick={openGroupModal}>Create Group</Button>
