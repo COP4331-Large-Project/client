@@ -105,7 +105,6 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise<UserResponse>}
    */
-  // eslint-disable-next-line no-unused-vars
   verifyEmail: async (userId, verificationCode) => fetch(
     relURL(`/users/${userId}/verify`),
     postOptions({ verificationCode }),
