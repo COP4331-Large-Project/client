@@ -59,7 +59,7 @@ function MainPage() {
     dispatch({ type: 'init', payload: Groups });
   }, []);
 
-  // Need this to trigger when group changes
+  // Triggers when group changes
   // Builds photo array based on current group
   useEffect(() => {
     buildPhotoList();
