@@ -25,7 +25,7 @@ const animationOpts = {
 };
 
 function VerifyEmailPage() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   const params = new URLSearchParams(window.location.search);
