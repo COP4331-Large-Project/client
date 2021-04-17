@@ -34,7 +34,7 @@ function LoginCard({ switchCard }) {
       localStorage.setItem('token', token);
       localStorage.setItem('id', id);
     } catch (e) {
-      if (e.message && e.message.toLowerCase().includes('not verified')) {
+      if (e.message.toLowerCase().includes('not verified')) {
         openEmailModal();
       } else {
         setError(e.message);

@@ -43,14 +43,7 @@ function VerifyEmailModal({ visible, onClose }) {
       destroyOnClose
       title="Verify Your Email"
       className="verify-email-modal"
-      okText={isLoading ? 'Sending' : 'Resend'}
-      cancelText="Close"
       visible={visible}
-      okButtonProps={{
-        loading: isLoading,
-        disabled: isLoading || !email.trim(),
-        htmlType: 'submit',
-      }}
       onOk={resendEmail}
       onCancel={onClose}
       footer={[
