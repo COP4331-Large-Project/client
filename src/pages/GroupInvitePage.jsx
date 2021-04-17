@@ -29,10 +29,10 @@ function GroupInvitePage({ inviteCode }) {
   const [accepted, setAccepted] = useState(false);
   const [group, setGroup] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState(null);
   const [isLinkInvalid, setIsLinkInvalid] = useState(false);
   const params = new URLSearchParams(window.location.search);
-  const userId = params.get('userId');
+  const userId = localStorage.getItem('id');
   const groupId = params.get('groupId');
 
   const getMemberText = numUsers => {
@@ -48,12 +48,58 @@ function GroupInvitePage({ inviteCode }) {
       return;
     }
 
+    // Prevent the user from accepting the invite
+    // if they aren't logged in
+    if (!userId) {
+      setError({
+        title: "Couldn't Join Group",
+        description: (
+          <span>
+            You&apos;ll need to{' '}
+            <Link to="/" className="card-link">
+              log in
+            </Link>{' '}
+            before you can accept this invite.
+          </span>
+        ),
+      });
+      return;
+    }
+
+    // Make sure the user can't join the group if they're
+    // already a member or the creator of the group.
+    if (
+      // prettier-ignore
+      group.users.find(({ id }) => userId === id)
+      || group.creator.id === userId
+    ) {
+      setError({
+        title: "Couldn't Join Group",
+        description: (
+          <span>
+            Well this is awkward. Looks like you&apos;re already a member of
+            this group.{' '}
+            <Link to="/main" className="card-link">
+              Click here
+            </Link>{' '}
+            to go back.
+          </span>
+        ),
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
       await API.joinGroup(userId, inviteCode);
     } catch (err) {
-      setHasError(true);
+      setError({
+        title: 'Unexpected Error',
+        description: `
+          An error occurred while joining this group.
+          Please refresh the page and try again.`,
+      });
       return;
     }
 
@@ -79,15 +125,12 @@ function GroupInvitePage({ inviteCode }) {
       );
     }
 
-    if (hasError) {
+    if (error) {
       return (
         <Alert
           type="error"
-          message="Unexpected Error"
-          description={`
-            An error occurred while joining this group.
-            Please refresh the page and try again.
-          `}
+          message={error.title}
+          description={error.description}
         />
       );
     }
@@ -99,10 +142,10 @@ function GroupInvitePage({ inviteCode }) {
     );
   };
 
-  const renderContent = () => {
+  const renderCardContent = () => {
     if (isLinkInvalid) {
       return (
-        <Card className="group-card">
+        <>
           <h1 className="card-title">Invalid Invite</h1>
           <Alert
             type="error"
@@ -113,16 +156,12 @@ function GroupInvitePage({ inviteCode }) {
           <Button variant="link" onClick={() => history.push('/main')}>
             Take me back
           </Button>
-        </Card>
+        </>
       );
     }
 
-    if (!group) {
-      return null;
-    }
-
     return (
-      <Card className="group-card">
+      <>
         <Avatar src={group.profileIconURL} size={128}>
           {group.name[0]}
         </Avatar>
@@ -132,12 +171,12 @@ function GroupInvitePage({ inviteCode }) {
         <h1 className="card-title">{group.name}</h1>
         <p className="text-muted">{getMemberText(group.users.length)}</p>
         {renderCardActions()}
-      </Card>
+      </>
     );
   };
 
   useEffect(async () => {
-    if (!userId || !groupId) {
+    if (!groupId) {
       setIsLinkInvalid(true);
       return;
     }
@@ -161,15 +200,17 @@ function GroupInvitePage({ inviteCode }) {
   return (
     <div className="group-invite-page">
       <div className="card-container">
-        <motion.div
-          initial="hidden"
-          animate="show"
-          className="group-card-wrapper"
-          transition={animationOpts}
-          variants={animationVariants}
-        >
-          {renderContent()}
-        </motion.div>
+        {group && (
+          <motion.div
+            initial="hidden"
+            animate="show"
+            className="group-card-wrapper"
+            transition={animationOpts}
+            variants={animationVariants}
+          >
+            <Card className="group-card">{renderCardContent()}</Card>
+          </motion.div>
+        )}
       </div>
     </div>
   );
