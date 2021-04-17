@@ -63,7 +63,6 @@ function RegisterCard({ switchCard }) {
     setLoading(true);
 
     try {
-      // TODO: Make request
       await API.requestEmailVerificationLink(userEmail);
       message.success('An email was sent to your inbox');
     } catch (e) {
