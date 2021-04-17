@@ -1,5 +1,5 @@
 import '../scss/text-input.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 
@@ -19,6 +19,10 @@ function TextInput({
     setInputValue(event.target.value);
     onChange(event.target.value);
   };
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   return (
     <Input

@@ -54,4 +54,13 @@
     font-size: 16px;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
   }
+
+  .selected .ant-list-item-meta-title,
+  .selected .ant-list-item-meta-description {
+    font-weight: 800;
+  }
+
+  .title {
+    text-overflow: ellipsis;
+  }
 }

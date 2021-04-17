@@ -3,7 +3,7 @@ import React from 'react';
 import { Avatar, List } from 'antd';
 import PropTypes from 'prop-types';
 
-function GroupList({ groups, onGroupClick }) {
+function GroupList({ groups, activeIndex, onGroupClick }) {
   const getMemberText = members => {
     if (members === 1) {
       return `${members} member`;
@@ -18,12 +18,13 @@ function GroupList({ groups, onGroupClick }) {
     </Avatar>
   );
 
-  const renderListItem = ({ title, imageURL, members }, index) => (
-    <List.Item onClick={() => onGroupClick(groups[index])} title={title}>
+  const renderListItem = ({ title, thumbnail, users }, index) => (
+    <List.Item onClick={() => onGroupClick(index)} title={title}>
       <List.Item.Meta
-        avatar={renderGroupImage(imageURL, title)}
+        className={index === activeIndex ? 'selected' : ''}
+        avatar={renderGroupImage(thumbnail.URL, title)}
         title={title}
-        description={getMemberText(members)}
+        description={getMemberText(users.length)}
       />
     </List.Item>
   );
@@ -49,16 +50,19 @@ function GroupList({ groups, onGroupClick }) {
 GroupList.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
+      title: PropTypes.string,
       imageURL: PropTypes.string,
-      members: PropTypes.number.isRequired,
+      members: PropTypes.number,
     }),
-  ).isRequired,
+  ),
+  activeIndex: PropTypes.number,
   onGroupClick: PropTypes.func,
 };
 
 GroupList.defaultProps = {
   onGroupClick: () => {},
+  groups: [],
+  activeIndex: 0,
 };
 
 export default GroupList;
