@@ -51,7 +51,14 @@ const API = {
   /**
    * Registers a new user.
    *
-   * @param {Object} payload
+   * @typedef {Object} RegistrationOptions
+   * @property {string} firstName
+   * @property {string} lasName
+   * @property {string} email
+   * @property {string} username
+   * @property {string} password
+   *
+   * @param {RegistrationOptions} payload
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
@@ -127,7 +134,6 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  // eslint-disable-next-line no-unused-vars
   createGroup: async payload => fetch(relURL('/groups'), postOptions(payload))
     .then(handleResponse),
 };
