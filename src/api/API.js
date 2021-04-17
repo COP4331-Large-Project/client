@@ -111,6 +111,25 @@ const API = {
     await new Promise(resolve => setTimeout(resolve, 3000));
     return true;
   },
+
+  /**
+   * Verifies a users email. The verification code should match
+   * the code sent from the API.
+   *
+   * @typedef {Object} GroupOptions
+   * @property {string} name
+   * @property {boolean} publicGroup
+   * @property {string} creator - The ID of the user creating the group
+   * @property {string[]} emails - A list of emails to send invitation links
+   * (if the group is private)
+   *
+   * @param {GroupOptions} payload
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  // eslint-disable-next-line no-unused-vars
+  createGroup: async payload => fetch(relURL('/groups'), postOptions(payload))
+    .then(handleResponse),
 };
 
 export default API;

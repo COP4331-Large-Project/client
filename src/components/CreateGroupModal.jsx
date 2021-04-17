@@ -1,5 +1,5 @@
 import '../scss/create-group-modal.scss';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 // prettier-ignore
 import {
@@ -11,6 +11,8 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
+import UserContext from '../contexts/UserContext.jsx';
+import API from '../api/API';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -18,6 +20,7 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
+  const user = useContext(UserContext);
 
   const addMember = event => {
     event.preventDefault();
@@ -40,21 +43,39 @@ function CreateGroupModal({ visible, onClose }) {
 
   const removeAllMembers = () => setMembers(new Set());
 
-  const createGroup = () => {
+  // Need to make sure the private checkbox and list
+  // of members gets reset when the modal is closed.
+  const closeModal = () => {
+    setPrivateChecked(false);
+    setMembers(new Set());
+    onClose();
+  };
+
+  const createGroup = async () => {
     if (isLoading) {
       return;
     }
 
     setLoading(true);
 
-    // TODO: Make API request Here - The below is just testing
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await API.createGroup({
+        name: groupName,
+        publicGroup: !isPrivateChecked,
+        creator: user.id,
+        emails: [...members],
+      });
+    } catch (err) {
       notification.error({
         message: 'Error creating group',
-        description: "Yikes, this feature hasn't been implemented yet",
+        description:
+          'An error occurred while creating this group. Pleas try again later.',
       });
-    }, 3000);
+    }
+
+    notification.success({ message: 'Group Created' });
+    closeModal();
+    setLoading(false);
   };
 
   const renderDeleteButton = index => (
@@ -126,10 +147,11 @@ function CreateGroupModal({ visible, onClose }) {
   return (
     <Modal
       centered
+      destroyOnClose
       visible={visible}
       title="Create Group"
       className="create-group-modal"
-      onCancel={onClose}
+      onCancel={closeModal}
       okButtonProps={{
         disabled: groupName.trim().length === 0,
         loading: isLoading,
