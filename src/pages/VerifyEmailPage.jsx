@@ -30,7 +30,7 @@ function VerifyEmailPage() {
 
   const params = new URLSearchParams(window.location.search);
   const userId = params.get('id');
-  const verificationCode = params.get('code');
+  const verificationCode = params.get('verificationCode');
 
   const verifyEmail = async () => {
     setLoading(true);
@@ -38,11 +38,8 @@ function VerifyEmailPage() {
     try {
       await API.verifyEmail(userId, verificationCode);
     } catch (err) {
-      // TODO: Handle errors here
+      setHasError(true);
     }
-
-    // TODO: Dummy code to test random errors, will be removed
-    setHasError(!!Math.round(Math.random()));
 
     setLoading(false);
   };
