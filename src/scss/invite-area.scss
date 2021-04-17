@@ -44,6 +44,10 @@
     }
   }
 
+  .invite-link-input::placeholder {
+    color: black;
+  }
+
   .clipboard-icon {
     color: darken(map-get($variant-colors, 'primary'), 10%);
   }
