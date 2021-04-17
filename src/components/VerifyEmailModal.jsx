@@ -13,6 +13,7 @@ import API from '../api/API';
 function VerifyEmailModal({ visible, onClose }) {
   const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [isEmailValid, setEmailValid] = useState(false);
 
   const resendEmail = async event => {
     event.preventDefault();
@@ -20,7 +21,7 @@ function VerifyEmailModal({ visible, onClose }) {
     setLoading(true);
 
     try {
-      await API.requestEmailVerificationLink(email);
+      await API.requestEmailVerificationLink(email.trim());
       notification.success({
         message: 'Success!',
         description: 'An email was sent to your inbox.',
@@ -47,20 +48,26 @@ function VerifyEmailModal({ visible, onClose }) {
       onOk={resendEmail}
       onCancel={onClose}
       footer={[
-        <Button onClick={onClose} key="close">Close</Button>,
+        <Button onClick={onClose} key="close">
+          Close
+        </Button>,
         <Button
           form="verify-email-form"
           key="submit"
           htmlType="submit"
           type="primary"
           loading={isLoading}
-          disabled={isLoading || !email.trim()}
+          disabled={isLoading || !isEmailValid || !email.trim()}
         >
           {isLoading ? 'Sending...' : 'Resend'}
         </Button>,
       ]}
     >
-      <form onSubmit={resendEmail} id="verify-email-form">
+      <form
+        onSubmit={resendEmail}
+        id="verify-email-form"
+        onChange={event => setEmailValid(event.target.validity.valid)}
+      >
         <p className="input-title">Email</p>
         <Input
           onInput={event => setEmail(event.target.value)}
