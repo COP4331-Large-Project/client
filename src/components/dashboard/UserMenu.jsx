@@ -5,10 +5,8 @@ import PropTypes from 'prop-types';
 function UserMenu({ logout }) {
   return (
     <Menu>
-      <Menu.Item key="0">
-        <div onClick={logout}>
+      <Menu.Item key="0" onClick={logout}>
           Logout
-        </div>
       </Menu.Item>
     </Menu>
   );
