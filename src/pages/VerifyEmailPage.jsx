@@ -25,24 +25,27 @@ const animationOpts = {
 };
 
 function VerifyEmailPage() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isLinkInvalid, setLinkInvalid] = useState(false);
 
   const params = new URLSearchParams(window.location.search);
   const userId = params.get('id');
-  const verificationCode = params.get('code');
+  const verificationCode = params.get('verificationCode');
 
   const verifyEmail = async () => {
     setLoading(true);
+    setLinkInvalid(false);
 
     try {
       await API.verifyEmail(userId, verificationCode);
     } catch (err) {
-      // TODO: Handle errors here
+      if (err.status === 404) {
+        setLinkInvalid(true);
+      } else {
+        setHasError(true);
+      }
     }
-
-    // TODO: Dummy code to test random errors, will be removed
-    setHasError(!!Math.round(Math.random()));
 
     setLoading(false);
   };
@@ -54,6 +57,17 @@ function VerifyEmailPage() {
     verifyEmail();
   }, []);
 
+  const invalidLinkAlert = (
+    <Alert
+      type="error"
+      message="Invalid Link"
+      description={`
+        This verification link is invalid. Make sure the
+        URL matches the link from your email.
+    `}
+    />
+  );
+
   const renderAlert = () => {
     if (isLoading) {
       return (
@@ -63,6 +77,10 @@ function VerifyEmailPage() {
           description="Just a sec while we verify your email..."
         />
       );
+    }
+
+    if (isLinkInvalid) {
+      return invalidLinkAlert;
     }
 
     return hasError ? (
@@ -108,18 +126,7 @@ function VerifyEmailPage() {
                 <AiOutlineLoading size={28} className="loading-indicator" />
               )}
             </div>
-            {!userId || !verificationCode ? (
-              <Alert
-                type="error"
-                message="Invalid Link"
-                description={`
-                  This verification link is invalid. Make sure the
-                  URL matches the link from your email.
-              `}
-              />
-            ) : (
-              renderAlert()
-            )}
+            {!userId || !verificationCode ? invalidLinkAlert : renderAlert()}
           </Card>
         </motion.div>
       </div>
