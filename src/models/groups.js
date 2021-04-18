@@ -72,7 +72,7 @@ const Groups = [
       fileName: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       creator: 'string',
       dateUploaded: '2021-04-14T14:01:41.058Z',
-      URL: '',
+      URL: 'bad-url',
     },
     publicGroup: true,
   },
