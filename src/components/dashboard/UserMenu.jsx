@@ -1,6 +1,4 @@
 import React from 'react';
-/* eslint no-unused-vars: */
-import { useHistory } from 'react-router-dom';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
 

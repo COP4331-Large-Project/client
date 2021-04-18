@@ -1,13 +1,19 @@
 import '../../scss/navbar.scss';
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Layout, Dropdown } from 'antd';
+import {
+  Avatar,
+  Layout,
+  Dropdown,
+  Image,
+} from 'antd';
 import UserMenu from './UserMenu.jsx';
+import UserContext from '../../contexts/UserContext.jsx';
 
 const { Header } = Layout;
 
 function Navbar({ logout }) {
-  const menu = <UserMenu logout={logout}/>;
+  const { imgURL } = useContext(UserContext);
 
   return (
     <div>
@@ -24,10 +30,12 @@ function Navbar({ logout }) {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Dropdown overlay={menu} trigger={['click']}>
+        <Dropdown overlay={<UserMenu logout={logout}/>} trigger={['click']}>
           <a onClick={e => e.preventDefault()}>
-            <Avatar size={40}>
-              U
+            <Avatar
+              size={40}
+              src={<Image src={imgURL}/>}
+            >
             </Avatar>
           </a>
         </Dropdown>
