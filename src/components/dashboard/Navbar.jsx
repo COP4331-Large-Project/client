@@ -5,16 +5,16 @@ import {
   Avatar,
   Layout,
   Dropdown,
-  Image,
 } from 'antd';
 import UserMenu from './UserMenu.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
-import fallback from '../../assets/errorimage.png';
+// import fallback from '../../assets/errorimage.png';
 
 const { Header } = Layout;
 
 function Navbar({ logout }) {
-  const { imgURL } = useContext(UserContext);
+  const { imgURL, firstName, lastName } = useContext(UserContext);
+  const initials = `${firstName[0]}${lastName[0]}`;
 
   return (
     <div>
@@ -35,13 +35,10 @@ function Navbar({ logout }) {
           <a onClick={e => e.preventDefault()}>
             <Avatar
               size={40}
-              src={
-                <Image
-                  src={imgURL}
-                  fallback={fallback}
-                />
-              }
-            >
+              src={imgURL}
+              alt={initials}
+              >
+              {initials}
             </Avatar>
           </a>
         </Dropdown>
