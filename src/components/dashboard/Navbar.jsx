@@ -1,6 +1,7 @@
 import '../../scss/navbar.scss';
 import React from 'react';
-import { Avatar, Layout } from 'antd';
+import { Avatar, Layout, Dropdown } from 'antd';
+import UserMenu from './UserMenu.jsx';
 
 const { Header } = Layout;
 
@@ -20,7 +21,13 @@ function Navbar() {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Avatar size={40}>U</Avatar>
+        <Dropdown overlay={UserMenu} trigger={['click']}>
+          <a onClick={e => e.preventDefault()}>
+            <Avatar size={40}>
+              U
+            </Avatar>
+          </a>
+        </Dropdown>
       </Header>
     </div>
   );
