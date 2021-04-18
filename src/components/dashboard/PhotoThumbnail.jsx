@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Image } from 'antd';
+import fallback from '../../assets/errorimage.png';
 
 function PhotoThumbnail({ src }) {
   return (
@@ -32,7 +33,7 @@ function PhotoThumbnail({ src }) {
       <Image
         className="photo-thumbnail"
         src={src}
-        fallback="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3hWNV2E6aTe_edfDRBjSKo4KvAWfzaXxHzw&usqp=CAU"
+        fallback={fallback}
       />
     </motion.div>
   );
