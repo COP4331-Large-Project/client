@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer } from 'react';
+// prettier-ignore
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
@@ -15,21 +21,44 @@ import GroupDispatchContext, {
 
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 
+function usePrevious(value) {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref.current;
+}
+
 function MainPage() {
   const [user, setUser] = useState({});
+  // Using an initial value of -1 here so that groupData can
+  // trigger updates when it's value is set to 0 on mount.
+  // (It'll be set to 0 even if there are no groups)
   const [groupData, dispatch] = useReducer(groupReducer, {
     groups: [],
-    index: 0,
+    index: -1,
   });
   const [photos, setPhotos] = useState([]);
   const [groupTitle, setGroupTitle] = useState('');
   const history = useHistory();
+  // Save the previously selected group index so that we don't
+  // unnecessarily reload a group when either the same group is
+  // clicked, or a new group is added
+  const prevIndex = usePrevious(groupData.index);
 
   async function buildPhotoList() {
     const { groups, index } = groupData;
 
     if (groups.length === 0) {
       setPhotos([]);
+      return;
+    }
+
+    // Don't reload the photos if the currently
+    // selected group hasn't changed
+    if (prevIndex === index) {
       return;
     }
 
@@ -53,10 +82,18 @@ function MainPage() {
     try {
       return await API.getInfo(token, userId);
     } catch (e) {
-      // The user isn't authenticated, take them back
-      // to the login page
       if (e.status === 403) {
+        // The user isn't authenticated, take them back
+        // to the login page
         history.replace('/');
+      } else {
+        notification.error({
+          message: 'Unexpected Error',
+          description: `
+          An unexpected error occurred while loading
+          your profile. Please try again later.
+        `,
+        });
       }
     }
 
@@ -79,13 +116,6 @@ function MainPage() {
     const userInfo = await getUser(token, id);
 
     if (!userInfo) {
-      notification.error({
-        message: 'Unexpected Error',
-        description: `
-          An unexpected error occurred while loading
-          your profile. Please try again later.
-        `,
-      });
       return;
     }
 

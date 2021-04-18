@@ -53,7 +53,9 @@ function CreateGroupModal({ visible, onClose }) {
     onClose();
   };
 
-  const createGroup = async () => {
+  const createGroup = async event => {
+    event.preventDefault();
+
     if (isLoading) {
       return;
     }
@@ -172,23 +174,30 @@ function CreateGroupModal({ visible, onClose }) {
       onOk={createGroup}
       okText={isLoading ? 'Creating group...' : 'Create'}
     >
-      <p className="input-title">Group Name</p>
-      <Input
-        onInput={event => setGroupName(event.target.value)}
-        disabled={isLoading}
-      />
-      {renderMemberInput()}
-      <Checkbox
-        className="private-checkbox"
-        onChange={event => setPrivateChecked(event.target.checked)}
-        disabled={isLoading}
-      >
-        Private
-      </Checkbox>
-      <p className="description">
-        Public groups can be joined through an invite link. Private groups can
-        only be joined with an invite link after the owner grants them access.
-      </p>
+      {/*
+        Wrapping the modal's body in a form allows us to
+        call `createGroup` when enter is pressed
+      */}
+      <form onSubmit={createGroup}>
+        <p className="input-title">Group Name</p>
+        <Input
+          onInput={event => setGroupName(event.target.value)}
+          disabled={isLoading}
+          autoFocus
+        />
+        {renderMemberInput()}
+        <Checkbox
+          className="private-checkbox"
+          onChange={event => setPrivateChecked(event.target.checked)}
+          disabled={isLoading}
+        >
+          Private
+        </Checkbox>
+        <p className="description">
+          Public groups can be joined through an invite link. Private groups can
+          only be joined with an invite link after the owner grants them access.
+        </p>
+      </form>
     </Modal>
   );
 }
