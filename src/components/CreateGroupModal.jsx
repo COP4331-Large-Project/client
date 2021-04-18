@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import UserContext from '../contexts/UserContext.jsx';
+import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
 function CreateGroupModal({ visible, onClose }) {
@@ -20,6 +21,7 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
+  const dispatch = useContext(GroupsContextDispatch);
   const user = useContext(UserContext);
 
   const addMember = event => {
@@ -59,23 +61,32 @@ function CreateGroupModal({ visible, onClose }) {
     setLoading(true);
 
     try {
-      await API.createGroup({
+      const group = await API.createGroup({
         name: groupName,
         publicGroup: !isPrivateChecked,
         creator: user.id,
         emails: [...members],
+      });
+
+      dispatch({
+        type: 'addGroup',
+        payload: group,
       });
     } catch (err) {
       notification.error({
         message: 'Error creating group',
         description:
           'An error occurred while creating this group. Pleas try again later.',
+        key: 'group-create-error',
       });
       setLoading(false);
       return;
     }
 
-    notification.success({ message: 'Group Created' });
+    notification.success({
+      message: 'Group Created',
+      key: 'group-create-success',
+    });
     closeModal();
     setLoading(false);
   };

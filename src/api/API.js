@@ -17,7 +17,7 @@ const handleResponse = async response => {
   }
 
   // There was an empty response from the server (no content)
-  // so we need to send an empty object
+  // so we need to return an empty object
   if (response.status === 204) {
     return {};
   }
@@ -37,6 +37,14 @@ const postOptions = body => ({
  * @property {String} firstName
  * @property {String} lastName
  * @property {String} email
+ */
+
+/**
+ * @typedef ImageObject
+ * @property {String} fileName
+ * @property {String} creator
+ * @property {String} dateUploaded
+ * @property {String} URL
  */
 
 const API = {
@@ -133,6 +141,26 @@ const API = {
    * @returns {Promise}
    */
   createGroup: async payload => fetch(relURL('/groups'), postOptions(payload))
+    .then(handleResponse),
+
+  /**
+   * Gets the list of groups that the user is in.
+   *
+   * @param {string} userId
+   * @throws {APIError} On server error.
+   * @returns {Promise}
+   */
+  getGroups: async userId => fetch(relURL(`/users/${userId}/groups`))
+    .then(handleResponse),
+
+  /**
+   * Gets the list of images for the given group.
+   *
+   * @param {string} groupId
+   * @throws {APIError} On server error.
+   * @returns {Promise<{ images: ImageObject[] }>}
+   */
+  getGroupImages: async groupId => fetch(relURL(`/groups/${groupId}/images`))
     .then(handleResponse),
 };
 

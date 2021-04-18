@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
@@ -13,7 +13,6 @@ import GroupDispatchContext, {
   groupReducer,
 } from '../contexts/GroupsContextDispatch.jsx';
 
-import Groups from '../models/groups'; // Dummy group list.
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 
 function MainPage() {
@@ -26,28 +25,49 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const history = useHistory();
 
-  function buildPhotoList() {
+  async function buildPhotoList() {
     const { groups, index } = groupData;
 
     if (groups.length === 0) {
       setPhotos([]);
-    } else {
-      const { images } = groups[index];
-      setGroupTitle(groups[index].title);
-      setPhotos(images.map(img => img.URL));
+      return;
+    }
+
+    setGroupTitle(groups[index].name);
+
+    try {
+      const res = await API.getGroupImages(groups[index].id);
+      setPhotos(res.images.map(img => img.URL));
+    } catch (err) {
+      notification.error({
+        message: 'Unexpected Error',
+        description: `
+          An error occurred while this group's images.
+          Please try again later.
+        `,
+      });
     }
   }
 
-  async function getUser(token, id) {
+  async function getUser(token, userId) {
     try {
-      const res = await API.getInfo(token, id);
-      setUser(res);
-      // Leaving this for now. Later will need to set group to the group
-      // list returned.
-      // dispatch({ type: 'init', state: { groups: Groups } });
+      return await API.getInfo(token, userId);
     } catch (e) {
-      // TODO: Will probably need better error handling
-      history.replace('/');
+      // The user isn't authenticated, take them back
+      // to the login page
+      if (e.status === 403) {
+        history.replace('/');
+      }
+    }
+
+    return null;
+  }
+
+  async function getGroups(userId) {
+    try {
+      return await API.getGroups(userId);
+    } catch (e) {
+      return null;
     }
   }
 
@@ -55,8 +75,36 @@ function MainPage() {
   useEffect(async () => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
-    await getUser(token, id);
-    dispatch({ type: 'init', payload: Groups });
+
+    const userInfo = await getUser(token, id);
+
+    if (!userInfo) {
+      notification.error({
+        message: 'Unexpected Error',
+        description: `
+          An unexpected error occurred while loading
+          your profile. Please try again later.
+        `,
+      });
+      return;
+    }
+
+    setUser(userInfo);
+
+    const groups = await getGroups(id);
+
+    if (!groups) {
+      notification.error({
+        message: 'Unexpected Error',
+        description: `
+          An error occurred while loading
+          your groups. Please try again later.
+        `,
+      });
+      return;
+    }
+
+    dispatch({ type: 'init', payload: groups });
   }, []);
 
   // Triggers when group changes

@@ -15,6 +15,7 @@ const { Sider } = Layout;
 function Sidebar() {
   const [isGroupModalVisible, setGroupModalVisible] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
+  const [groupId, setGroupId] = useState('');
   const dispatch = useContext(GroupDispatchContext);
   const { groups, index } = useContext(GroupsStateContext);
   const openGroupModal = () => setGroupModalVisible(true);
@@ -23,8 +24,10 @@ function Sidebar() {
   useEffect(() => {
     if (groups.length > 0) {
       setInviteCode(groups[index].inviteCode);
+      setGroupId(groups[index].id);
     } else {
       setInviteCode('');
+      setGroupId('');
     }
   }, [groups, index]);
 
@@ -35,7 +38,7 @@ function Sidebar() {
   return (
     <Sider theme="light" className="sidebar">
       <Card className="sidebar-card">
-        <InviteArea inviteCode={inviteCode} />
+        <InviteArea inviteCode={inviteCode} groupId={groupId} />
         <GroupList
           onGroupClick={changeGroup}
           activeIndex={index}
