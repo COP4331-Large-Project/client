@@ -1,5 +1,5 @@
 import '../../scss/navbar.scss';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -8,13 +8,30 @@ import {
 } from 'antd';
 import UserMenu from './UserMenu.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
-// import fallback from '../../assets/errorimage.png';
 
 const { Header } = Layout;
 
 function Navbar({ logout }) {
-  const { imgURL, firstName, lastName } = useContext(UserContext);
-  const initials = `${firstName[0]}${lastName[0]}`;
+  // const { imgURL, firstName, lastName } = useContext(UserContext);
+  // const initials = `${firstName[0]}${lastName[0]}`;
+
+  const user = useContext(UserContext);
+  /* eslint no-unused-vars: */
+  const [firstName, setFirstName] = useState(' ');
+  const [lastName, setLastName] = useState(' ');
+  const [initials, setInitials] = useState(' ');
+  const [imgURL, setImgURL] = useState(' ');
+
+  useEffect(() => {
+    console.log(user);
+
+    if (user.firstName !== undefined) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setImgURL(user.imgURL);
+      setInitials(`${user.firstName[0]}${user.lastName[0]}`);
+    }
+  }, [user]);
 
   return (
     <div>
