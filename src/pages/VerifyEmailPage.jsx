@@ -38,13 +38,13 @@ function VerifyEmailPage() {
     setLinkInvalid(false);
 
     try {
-      const res = await API.verifyEmail(userId, verificationCode);
-
-      if (res.status === 404) {
-        setLinkInvalid(true);
-      }
+      await API.verifyEmail(userId, verificationCode);
     } catch (err) {
-      setHasError(true);
+      if (err.status === 404) {
+        setLinkInvalid(true);
+      } else {
+        setHasError(true);
+      }
     }
 
     setLoading(false);

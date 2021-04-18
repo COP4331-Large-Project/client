@@ -108,7 +108,7 @@ const API = {
   verifyEmail: async (userId, verificationCode) => fetch(
     relURL(`/users/${userId}/verify`),
     postOptions({ verificationCode }),
-  ),
+  ).then(handleResponse),
 };
 
 export default API;
