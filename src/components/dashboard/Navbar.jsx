@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import UserMenu from './UserMenu.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
+import fallback from '../../assets/errorimage.png';
 
 const { Header } = Layout;
 
@@ -34,7 +35,12 @@ function Navbar({ logout }) {
           <a onClick={e => e.preventDefault()}>
             <Avatar
               size={40}
-              src={<Image src={imgURL}/>}
+              src={
+                <Image
+                  src={imgURL}
+                  fallback={fallback}
+                />
+              }
             >
             </Avatar>
           </a>
