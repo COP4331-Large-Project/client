@@ -1,11 +1,14 @@
 import '../../scss/navbar.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Avatar, Layout, Dropdown } from 'antd';
 import UserMenu from './UserMenu.jsx';
 
 const { Header } = Layout;
 
-function Navbar() {
+function Navbar({ logout }) {
+  const menu = <UserMenu logout={logout}/>;
+
   return (
     <div>
       {
@@ -21,7 +24,7 @@ function Navbar() {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Dropdown overlay={UserMenu} trigger={['click']}>
+        <Dropdown overlay={menu} trigger={['click']}>
           <a onClick={e => e.preventDefault()}>
             <Avatar size={40}>
               U
@@ -32,5 +35,13 @@ function Navbar() {
     </div>
   );
 }
+
+Navbar.propTypes = {
+  logout: PropTypes.func,
+};
+
+Navbar.defaultProps = {
+  logout: () => {},
+};
 
 export default Navbar;

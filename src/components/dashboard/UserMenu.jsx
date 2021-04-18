@@ -1,15 +1,10 @@
 import React from 'react';
+/* eslint no-unused-vars: */
+import { useHistory } from 'react-router-dom';
 import { Menu } from 'antd';
-// import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function UserMenu() {
-  // const history = useHistory();
-  function logout() {
-    // localStorage.clear();
-    // history.replace('/');
-    console.log('logout pressed');
-  }
-
+function UserMenu({ logout }) {
   return (
     <Menu>
       <Menu.Item key="0">
@@ -20,5 +15,13 @@ function UserMenu() {
     </Menu>
   );
 }
+
+UserMenu.propTypes = {
+  logout: PropTypes.func,
+};
+
+UserMenu.defaultProps = {
+  logout: () => {},
+};
 
 export default UserMenu;

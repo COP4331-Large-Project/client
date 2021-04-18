@@ -26,6 +26,11 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const history = useHistory();
 
+  function logout() {
+    localStorage.clear();
+    history.go('/');
+  }
+
   function buildPhotoList() {
     const { groups, index } = groupData;
 
@@ -70,7 +75,7 @@ function MainPage() {
       <GroupDispatchContext.Provider value={dispatch}>
         <GroupsStateContext.Provider value={groupData}>
           <div className="main-page-body">
-            <Navbar />
+            <Navbar logout={logout}/>
             <div className="body-content">
               <Sidebar />
               <div className="main-content">
