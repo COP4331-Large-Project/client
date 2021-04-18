@@ -22,6 +22,12 @@ const handleResponse = async response => {
     throw new APIError(errBody);
   }
 
+  // There was an empty response from the server (no content)
+  // so we need to send an empty object
+  if (response.status === 204) {
+    return {};
+  }
+
   return response.json();
 };
 
@@ -97,14 +103,11 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  // eslint-disable-next-line no-unused-vars
-  requestEmailVerificationLink: async email => {
-    // TODO: Implement this
-    // Debug code to wait a few seconds before resolving
-    // (for testing only)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return true;
-  },
+  requestEmailVerificationLink: async email =>
+    fetch(
+      relURL('/users/resendVerificationEmail'),
+      postOptions({ email }),
+    ).then(handleResponse),
 
   /**
    * Verifies a users email. The verification code should match
@@ -115,14 +118,8 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  // eslint-disable-next-line no-unused-vars
-  verifyEmail: async (userId, verificationCode) => {
-    // TODO: Implement this
-    // Debug code to wait a few seconds before resolving
-    // (for testing only)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return true;
-  },
+  verifyEmail: async (userId, verificationCode) =>
+    fetch(relURL(`/users/${userId}/verify`), postOptions({ verificationCode })),
 
   /**
    * Joins a group with the given invite code.
