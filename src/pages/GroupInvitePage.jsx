@@ -160,19 +160,23 @@ function GroupInvitePage({ inviteCode }) {
       );
     }
 
-    return (
-      <>
-        <Avatar src={group.profileIconURL} size={128}>
-          {group.name[0]}
-        </Avatar>
-        <p className="text-muted avatar-title">
-          You&apos;ve been invited to join a group
-        </p>
-        <h1 className="card-title">{group.name}</h1>
-        <p className="text-muted">{getMemberText(group.users.length)}</p>
-        {renderCardActions()}
-      </>
-    );
+    if (group) {
+      return (
+        <>
+          <Avatar src={group.profileIconURL} size={128}>
+            {group.name[0]}
+          </Avatar>
+          <p className="text-muted avatar-title">
+            You&apos;ve been invited to join a group
+          </p>
+          <h1 className="card-title">{group.name}</h1>
+          <p className="text-muted">{getMemberText(group.users.length)}</p>
+          {renderCardActions()}
+        </>
+      );
+    }
+
+    return null;
   };
 
   useEffect(async () => {
@@ -200,17 +204,15 @@ function GroupInvitePage({ inviteCode }) {
   return (
     <div className="group-invite-page">
       <div className="card-container">
-        {group && (
-          <motion.div
-            initial="hidden"
-            animate="show"
-            className="group-card-wrapper"
-            transition={animationOpts}
-            variants={animationVariants}
-          >
-            <Card className="group-card">{renderCardContent()}</Card>
-          </motion.div>
-        )}
+        <motion.div
+          initial="hidden"
+          animate="show"
+          className="group-card-wrapper"
+          transition={animationOpts}
+          variants={animationVariants}
+        >
+          <Card className="group-card">{renderCardContent()}</Card>
+        </motion.div>
       </div>
     </div>
   );
