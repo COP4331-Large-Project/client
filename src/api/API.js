@@ -119,7 +119,10 @@ const API = {
    * @returns {Promise}
    */
   verifyEmail: async (userId, verificationCode) =>
-    fetch(relURL(`/users/${userId}/verify`), postOptions({ verificationCode })),
+    fetch(
+      relURL(`/users/${userId}/verify`),
+      postOptions({ verificationCode }),
+    ).then(handleResponse),
 
   /**
    * Joins a group with the given invite code.
