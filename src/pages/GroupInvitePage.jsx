@@ -25,28 +25,32 @@ const animationOpts = {
 };
 
 function GroupInvitePage({ inviteCode }) {
-  const history = useHistory();
   const [accepted, setAccepted] = useState(false);
   const [group, setGroup] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoadingGroup, setLoadingGroup] = useState(false);
+  const [isAcceptingInvite, setAcceptingInvite] = useState(false);
   const [error, setError] = useState(null);
   const [isLinkInvalid, setIsLinkInvalid] = useState(false);
+
+  const history = useHistory();
   const params = new URLSearchParams(window.location.search);
   const userId = localStorage.getItem('id');
   const groupId = params.get('groupId');
 
   const getMemberText = numUsers => {
     if (numUsers === 1) {
-      return `${numUsers} member`;
+      return `${numUsers.toLocaleString()} member`;
     }
 
-    return `${numUsers} members`;
+    return `${numUsers.toLocaleString()} members`;
   };
 
   const acceptInvite = async () => {
-    if (isLoading) {
+    if (isAcceptingInvite) {
       return;
     }
+
+    setAcceptingInvite(true);
 
     // Prevent the user from accepting the invite
     // if they aren't logged in
@@ -66,16 +70,19 @@ function GroupInvitePage({ inviteCode }) {
       return;
     }
 
-    // Make sure the user can't join the group if they're
-    // already a member or the creator of the group.
-    if (
-      // prettier-ignore
-      group.users.find(({ id }) => userId === id)
-      || group.creator.id === userId
-    ) {
-      setError({
-        title: "Couldn't Join Group",
-        description: (
+    try {
+      await API.joinGroup(userId, inviteCode);
+    } catch (err) {
+      const errorObj = {
+        title: 'Unexpected Error',
+        description: `
+          An error occurred while joining this group.
+          Please refresh the page and try again.`,
+      };
+
+      if (err.status === 418) {
+        errorObj.title = "Couldn't Join Group";
+        errorObj.description = (
           <span>
             Well this is awkward. Looks like you&apos;re already a member of
             this group.{' '}
@@ -84,25 +91,14 @@ function GroupInvitePage({ inviteCode }) {
             </Link>{' '}
             to go back.
           </span>
-        ),
-      });
+        );
+      }
+
+      setError(errorObj);
       return;
     }
 
-    setLoading(true);
-
-    try {
-      await API.joinGroup(userId, inviteCode);
-    } catch (err) {
-      setError({
-        title: 'Unexpected Error',
-        description: `
-          An error occurred while joining this group.
-          Please refresh the page and try again.`,
-      });
-      return;
-    }
-
+    setAcceptingInvite(false);
     setAccepted(true);
   };
 
@@ -136,7 +132,7 @@ function GroupInvitePage({ inviteCode }) {
     }
 
     return (
-      <Button onClick={acceptInvite} disabled={isLoading}>
+      <Button onClick={acceptInvite} disabled={isAcceptingInvite}>
         Accept Invite
       </Button>
     );
@@ -163,14 +159,17 @@ function GroupInvitePage({ inviteCode }) {
     if (group) {
       return (
         <>
-          <Avatar src={group.profileIconURL} size={128}>
+          <Avatar src={group.thubmnail} size={128}>
             {group.name[0]}
           </Avatar>
           <p className="text-muted avatar-title">
-            You&apos;ve been invited to join a group
+            You&apos;ve been invited to join a group.
           </p>
           <h1 className="card-title">{group.name}</h1>
-          <p className="text-muted">{getMemberText(group.users.length)}</p>
+          {/* TODO: replace with real number */}
+          <p className="text-muted">
+            {getMemberText(Math.floor(Math.random() * 10_000))}
+          </p>
           {renderCardActions()}
         </>
       );
@@ -185,12 +184,16 @@ function GroupInvitePage({ inviteCode }) {
       return;
     }
 
+    setLoadingGroup(true);
+
     try {
       const groupInfo = await API.getGroup(groupId);
+      const { publicGroup, invitedUsers } = groupInfo;
+      const isInvited = invitedUsers.find(user => user.id === userId);
 
       // Private groups need explicit invitation so we'll
       // hide the group from the user if the group is private
-      if (!groupInfo.publicGroup) {
+      if (!publicGroup && !isInvited) {
         setIsLinkInvalid(true);
         return;
       }
@@ -199,20 +202,24 @@ function GroupInvitePage({ inviteCode }) {
     } catch (err) {
       setIsLinkInvalid(true);
     }
+
+    setLoadingGroup(false);
   }, []);
 
   return (
     <div className="group-invite-page">
       <div className="card-container">
-        <motion.div
-          initial="hidden"
-          animate="show"
-          className="group-card-wrapper"
-          transition={animationOpts}
-          variants={animationVariants}
-        >
-          <Card className="group-card">{renderCardContent()}</Card>
-        </motion.div>
+        {!isLoadingGroup && (
+          <motion.div
+            initial="hidden"
+            animate="show"
+            className="group-card-wrapper"
+            transition={animationOpts}
+            variants={animationVariants}
+          >
+            <Card className="group-card">{renderCardContent()}</Card>
+          </motion.div>
+        )}
       </div>
     </div>
   );
