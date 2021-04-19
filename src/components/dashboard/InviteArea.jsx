@@ -31,11 +31,11 @@ const copyToClipboard = text => new Promise((resolve, reject) => {
   navigator.clipboard.writeText(text).then(resolve).catch(reject);
 });
 
-function InviteArea({ inviteCode }) {
-  const inviteLink = `imageus.io/invite/${inviteCode}`;
+function InviteArea({ inviteCode, groupId }) {
+  const inviteLink = `imageus.io/invite/${inviteCode}?groupId=${groupId}`;
 
   const copyCode = () => {
-    if (!inviteCode) {
+    if (!inviteCode || !groupId) {
       return;
     }
 
@@ -50,7 +50,7 @@ function InviteArea({ inviteCode }) {
       <div className="input-wrapper">
         <TextInput
           className="invite-link-input"
-          value={inviteCode ? inviteLink : ''}
+          value={inviteCode && groupId ? inviteLink : ''}
           readOnly
         />
         <Button className="clipboard-btn" onClick={copyCode}>
@@ -67,10 +67,12 @@ function InviteArea({ inviteCode }) {
 
 InviteArea.propTypes = {
   inviteCode: PropTypes.string,
+  groupId: PropTypes.string,
 };
 
 InviteArea.defaultProps = {
   inviteCode: '',
+  groupId: '',
 };
 
 export default InviteArea;

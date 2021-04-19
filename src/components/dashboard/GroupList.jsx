@@ -6,25 +6,26 @@ import PropTypes from 'prop-types';
 function GroupList({ groups, activeIndex, onGroupClick }) {
   const getMemberText = members => {
     if (members === 1) {
-      return `${members} member`;
+      return `${members.toLocaleString()} member`;
     }
 
-    return `${members} members`;
+    return `${members.toLocaleString()} members`;
   };
 
-  const renderGroupImage = (imageURL, title) => (
-    <Avatar src={imageURL} size={54} alt={title}>
+  const renderGroupImage = (thumbnail, title) => (
+    <Avatar src={thumbnail} size={54} alt={title}>
       {title[0]}
     </Avatar>
   );
 
-  const renderListItem = ({ title, thumbnail, users }, index) => (
-    <List.Item onClick={() => onGroupClick(index)} title={title}>
+  const renderListItem = ({ name, thumbnail }, index) => (
+    <List.Item onClick={() => onGroupClick(index)} title={name}>
       <List.Item.Meta
         className={index === activeIndex ? 'selected' : ''}
-        avatar={renderGroupImage(thumbnail.URL, title)}
-        title={title}
-        description={getMemberText(users.length)}
+        avatar={renderGroupImage(thumbnail, name)}
+        title={name}
+        // TODO: Replace with actual group member count
+        description={getMemberText(100)}
       />
     </List.Item>
   );
