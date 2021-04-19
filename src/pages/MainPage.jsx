@@ -70,7 +70,12 @@ function MainPage() {
     setGroupTitle(groups[index].name);
 
     try {
-      const res = await API.getGroupImages(groups[index].id);
+      // TODO: Remove the _id check
+      const res = await API.getGroupImages(
+        // eslint-disable-next-line no-underscore-dangle
+        groups[index]._id || groups[index].id,
+      );
+
       setPhotos(res.images.map(img => img.URL));
     } catch (err) {
       notification.error({
@@ -87,8 +92,8 @@ function MainPage() {
   async function getUser(token, userId) {
     try {
       return await API.getInfo(token, userId);
-    } catch (e) {
-      if (e.status === 403) {
+    } catch (err) {
+      if (err.status === 403) {
         // The user isn't authenticated, take them back
         // to the login page
         history.replace('/');
@@ -169,7 +174,9 @@ function MainPage() {
               <Sidebar />
               <div className="main-content">
                 <div className="group-title-row">
-                  <h1 className="group-title" title={groupTitle}>{groupTitle}</h1>
+                  <h1 className="group-title" title={groupTitle}>
+                    {groupTitle}
+                  </h1>
                   {groupData.groups.length > 0 && (
                     <Button className="group-action-btn" type="primary">
                       <BsThreeDots />

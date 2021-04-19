@@ -1,4 +1,3 @@
-/* eslint-disable */
 import '../scss/create-group-modal.scss';
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
@@ -15,7 +14,7 @@ import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import UserContext from '../contexts/UserContext.jsx';
 import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
-import GroupsStateContext from '../contexts/GroupStateContext';
+import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -59,7 +58,7 @@ function CreateGroupModal({ visible, onClose }) {
   const createGroup = async event => {
     event.preventDefault();
 
-    if (isLoading) {
+    if (isLoading || !groupName.trim()) {
       return;
     }
 
@@ -80,10 +79,9 @@ function CreateGroupModal({ visible, onClose }) {
         type: 'addGroup',
         payload: {
           group,
-          index: groups.length
+          index: groups.length,
         },
       });
-  
     } catch (err) {
       notification.error({
         message: 'Error creating group',

@@ -1,9 +1,12 @@
 import '../scss/image-upload-modal.scss';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Modal, Upload, Alert } from 'antd';
 import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import TextInput from './TextInput.jsx';
+import GroupStateContext from '../contexts/GroupStateContext.jsx';
+import UserContext from '../contexts/UserContext.jsx';
+import API from '../api/API';
 
 const { Dragger } = Upload;
 
@@ -13,9 +16,10 @@ function ImageUploadModal({ visible, onClose }) {
   const [file, setFile] = useState(null);
   const [isUploading, setUploading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const { groups, index } = useContext(GroupStateContext);
+  const user = useContext(UserContext);
 
   const previewImage = new Image();
-  const [debugTimeoutId, setDebugTimeoutId] = useState(null);
 
   // Adds a custom input below ant's list item component
   const renderListItem = originNode => (
@@ -26,6 +30,9 @@ function ImageUploadModal({ visible, onClose }) {
           Image Caption <span className="subtitle">(Optional)</span>
         </p>
         <TextInput className="caption-input" onChange={setImageCaption} />
+        <p className="group-hint">
+          This will upload your image to {groups[index].name}
+        </p>
       </div>
     </>
   );
@@ -54,30 +61,50 @@ function ImageUploadModal({ visible, onClose }) {
     }
   };
 
-  const uploadImage = () => {
-    if (isUploading) {
+  // Make sure the state resets when the modal is closed
+  const onRequestClose = () => {
+    setHasError(false);
+    setFile(null);
+    setUploading(false);
+    onClose();
+  };
+
+  const uploadImage = async () => {
+    if (isUploading || !file) {
       return;
     }
 
     setHasError(false);
     setUploading(true);
 
-    // TODO: Make API request here. This is just to test
-    const id = setTimeout(() => {
-      setUploading(false);
-      setHasError(true);
-    }, 3000);
+    try {
+      await API.uploadGroupImage({
+        image: file,
+        caption: imageCaption,
+        userId: user.id,
+        // TODO: Remove the _id check
+        // eslint-disable-next-line no-underscore-dangle
+        groupId: groups[index]._id || groups[index].id,
+      });
 
-    setDebugTimeoutId(id);
+      onRequestClose();
+    } catch (err) {
+      setHasError(true);
+    }
+
+    setUploading(false);
   };
 
-  // Make sure the state resets when the modal is closed
-  const onRequestClose = () => {
-    clearTimeout(debugTimeoutId);
-    setHasError(false);
-    setFile(null);
-    setUploading(false);
-    onClose();
+  const getOkText = () => {
+    if (isUploading) {
+      return 'Uploading...';
+    }
+
+    if (hasError) {
+      return 'Retry';
+    }
+
+    return 'Upload';
   };
 
   return (
@@ -94,7 +121,7 @@ function ImageUploadModal({ visible, onClose }) {
       cancelText="Close"
       onOk={uploadImage}
       onCancel={onRequestClose}
-      okText={isUploading ? 'Uploading...' : 'Upload'}
+      okText={getOkText()}
       // Prevents the modal from closing when clicking on the overlay
       maskClosable={false}
     >
@@ -116,7 +143,7 @@ function ImageUploadModal({ visible, onClose }) {
         onPreview={onRequestPreview}
         onRemove={onFileRemoved}
         itemRender={renderListItem}
-        accept="image/png, image/jpeg, image/jpg"
+        accept="image/png, image/jpeg, image/jpg, image/gif"
       >
         <p className="ant-upload-frag-icon">
           <AiOutlineCloudUpload size={64} color="#525252" />

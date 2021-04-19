@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Image } from 'antd';
@@ -6,6 +6,7 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
 import ImageUploadModal from '../ImageUploadModal.jsx';
+import GroupStateContext from '../../contexts/GroupStateContext.jsx';
 
 import '../../scss/photo-grid.scss';
 
@@ -18,6 +19,7 @@ function PhotoGrid({ photos }) {
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
+  const { groups } = useContext(GroupStateContext);
 
   return (
     <div className="photo-grid-container">
@@ -47,9 +49,11 @@ function PhotoGrid({ photos }) {
             </div>
           </motion.div>
         </AnimatePresence>
-        <FloatingButton onClick={openUploadModal}>
-          <AiOutlineCloudUpload size={32} color="#525252" />
-        </FloatingButton>
+        {groups.length > 0 && (
+          <FloatingButton onClick={openUploadModal}>
+            <AiOutlineCloudUpload size={32} color="#525252" />
+          </FloatingButton>
+        )}
       </Image.PreviewGroup>
       <ImageUploadModal
         visible={isUploadModalVisible}
