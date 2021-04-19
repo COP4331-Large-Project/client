@@ -28,15 +28,38 @@ function JoinGroupButton() {
     setHasError(false);
   }
 
+  function isURL(str) {
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' // protocol
+      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
+      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
+      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
+      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
+      + '(\\#[-a-z\\d_]*)?$', 'i', // fragment locator
+    );
+    return !!pattern.test(str);
+  }
+
+  function getInviteCode(str) {
+    const len = str.length;
+    return str.substring(8, len);
+  }
+
   function submitCode(event) {
     event.preventDefault();
     setConfirmLoading(true);
-
+    // Need to should be able to take in url or the invite code.
+    // If url, do something like new URL(url) and get the path?
     try {
-      // TODO: Hook up join group api
-      // Dummy time out to simulate async
       setTimeout(() => {
-        setCode('');
+        if (isURL(code) === true) {
+          const { pathname } = new URL(code);
+          const inviteCode = getInviteCode(pathname);
+          console.log(inviteCode);
+          console.log(pathname);
+        } else {
+          setCode('');
+        }
         setVisible(false);
         setConfirmLoading(false);
       }, 1000);
