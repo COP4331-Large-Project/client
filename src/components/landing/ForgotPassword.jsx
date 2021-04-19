@@ -5,7 +5,7 @@ import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
 import '../../scss/landing.scss';
-// import API from '../../api/API';
+import API from '../../api/API';
 
 /// callBack should be passed from landing page. Used to re-render the landing page
 /// with the default landing page card, which should be the login card.
@@ -27,7 +27,7 @@ function ForgotPassword({ switchCard }) {
     event.preventDefault();
     try {
       if (isTrimmedEmpty(input) === false) {
-        // await API.passwordRecovery(input);
+        await API.passwordRecovery(input);
         notification.success({
           description: 'Please check your email for the password reset link.',
         });
