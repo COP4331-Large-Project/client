@@ -1,34 +1,15 @@
+import axios from 'axios';
 import APIError from './APIError';
 
 const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.imageus.io' : 'http://localhost:5000';
-const relURL = path => BASE_URL + path;
 
-/**
- * Handles the response from the server.
- *
- * @param {Response} response
- * @throws {APIError} On server error.
- * @returns {Promise<Object>}
- */
-const handleResponse = async response => {
-  if (!response.ok) {
-    const errBody = await response.json();
-    throw new APIError(errBody);
-  }
+// Setup Axios defaults
+axios.defaults.baseURL = BASE_URL;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-  // There was an empty response from the server (no content)
-  // so we need to return an empty object
-  if (response.status === 204) {
-    return {};
-  }
-
-  return response.json();
-};
-
-const postOptions = body => ({
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(body),
+// Setup error interceptor
+axios.interceptors.response.use(response => response, error => {
+  throw new APIError(error.response.data);
 });
 
 /**
@@ -56,10 +37,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  login: async (username, password) => {
+  async login(username, password) {
     const payload = { username, password };
-    return fetch(relURL('/users/login'), postOptions(payload))
-      .then(handleResponse);
+    return axios.post('/users/login', payload);
   },
 
   /**
@@ -76,8 +56,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  register: async (payload) => fetch(relURL('/users/'), postOptions(payload))
-    .then(handleResponse),
+  async register(payload) {
+    return axios.post('/users/', payload);
+  },
 
   /**
    * Fetches user info.
@@ -87,16 +68,11 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  getInfo: async (token, id) => fetch(
-    relURL(`/users/${id}`),
-    {
-      method: 'GET',
-      headers: {
-        Authorization: token,
-      },
-    },
-  )
-    .then(handleResponse),
+  async getInfo(token, id) {
+    return axios.get(`/users/${id}`, {
+      headers: { Authorization: token },
+    });
+  },
 
   /**
    * Takes an email address and makes a request to send
@@ -106,10 +82,9 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise<UserResponse>}
    */
-  requestEmailVerificationLink: async email => fetch(
-    relURL('/users/resendVerificationEmail'),
-    postOptions({ email }),
-  ).then(handleResponse),
+  async requestEmailVerificationLink(email) {
+    return axios.post('/users/resendVerificationEmail', { email });
+  },
 
   /**
    * Verifies a users email. The verification code should match
@@ -120,10 +95,9 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise<UserResponse>}
    */
-  verifyEmail: async (userId, verificationCode) => fetch(
-    relURL(`/users/${userId}/verify`),
-    postOptions({ verificationCode }),
-  ).then(handleResponse),
+  async verifyEmail(userId, verificationCode) {
+    return axios.post(`/users/${userId}/verify`, { verificationCode });
+  },
 
   /**
    * Creates a new group with the given options.
@@ -139,8 +113,9 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  createGroup: async payload => fetch(relURL('/groups'), postOptions(payload))
-    .then(handleResponse),
+  async createGroup(payload) {
+    return axios.post('/groups', payload);
+  },
 
   /**
    * Gets the list of groups that the user is in.
@@ -149,8 +124,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise}
    */
-  getGroups: async userId => fetch(relURL(`/users/${userId}/groups`))
-    .then(handleResponse),
+  async getGroups(userId) {
+    return axios.get(`/users/${userId}/groups`);
+  },
 
   /**
    * Gets the list of images for the given group.
@@ -159,8 +135,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<{ images: ImageObject[] }>}
    */
-  getGroupImages: async groupId => fetch(relURL(`/groups/${groupId}/images`))
-    .then(handleResponse),
+  async getGroupImages(groupId) {
+    return axios.get(`/groups/${groupId}/images`);
+  },
 };
 
 export default API;
