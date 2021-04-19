@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Input, Alert } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
-// import { func } from 'prop-types';
+// import API from '../../api/API';
 
 function JoinGroupButton() {
   const [visible, setVisible] = React.useState(false);
@@ -48,18 +48,22 @@ function JoinGroupButton() {
   function submitCode(event) {
     event.preventDefault();
     setConfirmLoading(true);
-    // Need to should be able to take in url or the invite code.
-    // If url, do something like new URL(url) and get the path?
+
     try {
       setTimeout(() => {
+        // Extracting the invite code from url if given a url
         if (isURL(code) === true) {
           const { pathname } = new URL(code);
           const inviteCode = getInviteCode(pathname);
-          console.log(inviteCode);
-          console.log(pathname);
-        } else {
-          setCode('');
+          setCode(inviteCode);
         }
+
+        // const token = localStorage.getItem('token');
+        // const id = localStorage.getItem('id');
+
+        /// NEED TO MAKE API CALL
+
+        setCode('');
         setVisible(false);
         setConfirmLoading(false);
       }, 1000);
