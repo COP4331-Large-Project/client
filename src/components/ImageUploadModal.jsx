@@ -27,7 +27,11 @@ function ImageUploadModal({ visible, onClose }) {
   // Adds a custom input below ant's list item component
   const renderListItem = originNode => (
     <>
-      <Tooltip title="Click to preview" mouseEnterDelay={0.7}>
+      <Tooltip
+        title="Click to preview"
+        mouseEnterDelay={0.5}
+        mouseLeaveDelay={0}
+      >
         {originNode}
       </Tooltip>
       <div className="input-wrapper">
@@ -78,7 +82,7 @@ function ImageUploadModal({ visible, onClose }) {
       // Opening a new window that's on a different domain prevents
       // us from modifying that tab's title and styling so we need
       // to do that manually using document.write
-      newWindow.document.write(/* html */`
+      newWindow.document.write(/* html */ `
         <title>Preview</title>
         <style>
           body {
