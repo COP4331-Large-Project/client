@@ -78,7 +78,7 @@ function CreateGroupModal({ visible, onClose }) {
       notification.error({
         message: 'Error creating group',
         description:
-          'An error occurred while creating this group. Pleas try again later.',
+          'An error occurred while creating this group. Please try again later.',
         key: 'group-create-error',
       });
       setLoading(false);

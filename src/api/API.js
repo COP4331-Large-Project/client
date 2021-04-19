@@ -126,8 +126,7 @@ const API = {
   ).then(handleResponse),
 
   /**
-   * Verifies a users email. The verification code should match
-   * the code sent from the API.
+   * Creates a new group with the given options.
    *
    * @typedef {Object} GroupOptions
    * @property {string} name
