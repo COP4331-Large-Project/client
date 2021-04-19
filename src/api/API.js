@@ -23,7 +23,7 @@ const handleResponse = async response => {
   }
 
   // There was an empty response from the server (no content)
-  // so we need to send an empty object
+  // so we need to return an empty object
   if (response.status === 204) {
     return {};
   }
@@ -146,7 +146,7 @@ const API = {
    * @returns {Promise}
    */
   getGroup: async groupId =>
-    fetch(relURL(`/groups/${groupId}`), getOptions()).then(handleResponse),
+    fetch(relURL(`/groups/${groupId}`)).then(handleResponse),
 };
 
 export default API;

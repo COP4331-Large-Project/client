@@ -52,24 +52,6 @@ function GroupInvitePage({ inviteCode }) {
 
     setAcceptingInvite(true);
 
-    // Prevent the user from accepting the invite
-    // if they aren't logged in
-    if (!userId) {
-      setError({
-        title: "Couldn't Join Group",
-        description: (
-          <span>
-            You&apos;ll need to{' '}
-            <Link to="/" className="card-link">
-              log in
-            </Link>{' '}
-            before you can accept this invite.
-          </span>
-        ),
-      });
-      return;
-    }
-
     try {
       await API.joinGroup(userId, inviteCode);
     } catch (err) {
@@ -102,7 +84,37 @@ function GroupInvitePage({ inviteCode }) {
     setAccepted(true);
   };
 
+  // Renders the invite button along with alerts that show if there
+  // was an error while trying to join the group
   const renderCardActions = () => {
+    if (error) {
+      return (
+        <Alert
+          type="error"
+          message={error.title}
+          description={error.description}
+        />
+      );
+    }
+
+    if (!userId) {
+      return (
+        <Alert
+          type="warning"
+          message="You're Not Logged In"
+          description={
+            <span>
+              Woah there slow down! You&apos;ll need to{' '}
+              <Link to="/" className="card-link">
+                log in
+              </Link>{' '}
+              before you can accept this invite.
+            </span>
+          }
+        />
+      );
+    }
+
     if (accepted) {
       return (
         <Alert
@@ -117,16 +129,6 @@ function GroupInvitePage({ inviteCode }) {
               to go to the main page.
             </span>
           }
-        />
-      );
-    }
-
-    if (error) {
-      return (
-        <Alert
-          type="error"
-          message={error.title}
-          description={error.description}
         />
       );
     }
