@@ -1,15 +1,19 @@
-import React from 'react';
-import { Modal, Input, Alert } from 'antd';
+import React, { useState, useContext } from 'react';
+import {
+  Modal,
+  Input,
+  notification,
+} from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
-// import API from '../../api/API';
+import API from '../../api/API';
+import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 
 function JoinGroupButton() {
-  const [visible, setVisible] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const [hasError, setHasError] = React.useState(false);
-  const [errorText, setErrorText] = React.useState('');
-  const [code, setCode] = React.useState('');
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [code, setCode] = useState('');
+  const dispatch = useContext(GroupContextDispatch);
 
   function showModal() {
     setCode('');
@@ -18,14 +22,8 @@ function JoinGroupButton() {
 
   function handleCancel() {
     setCode('');
-    setHasError(false);
     setConfirmLoading(false);
     setVisible(false);
-  }
-
-  function closeAlert() {
-    setErrorText('');
-    setHasError(false);
   }
 
   function isURL(str) {
@@ -45,33 +43,49 @@ function JoinGroupButton() {
     return str.substring(8, len);
   }
 
-  function submitCode(event) {
+  async function submitCode(event) {
     event.preventDefault();
+
+    if (confirmLoading === true) {
+      return;
+    }
+
     setConfirmLoading(true);
 
     try {
-      setTimeout(() => {
-        // Extracting the invite code from url if given a url
-        if (isURL(code) === true) {
-          const { pathname } = new URL(code);
-          const inviteCode = getInviteCode(pathname);
-          setCode(inviteCode);
-        }
+      // Extracting the invite code from url if given a url
+      if (isURL(code) === true) {
+        const { pathname } = new URL(code);
+        const inviteCode = getInviteCode(pathname);
+        setCode(inviteCode);
+      }
 
-        // const token = localStorage.getItem('token');
-        // const id = localStorage.getItem('id');
+      const id = localStorage.getItem('id');
 
-        /// NEED TO MAKE API CALL
+      const group = await API.joinGroup(id, code);
 
-        setCode('');
-        setVisible(false);
-        setConfirmLoading(false);
-      }, 1000);
+      dispatch({
+        type: 'addGroup',
+        payload: group,
+      });
     } catch (e) {
-      setErrorText(e.message);
       setConfirmLoading(false);
-      setHasError(true);
+      setCode('');
+      notification.error({
+        message: 'Error Joining Group',
+        description: e.message,
+        key: 'group-join-error',
+      });
+      return;
     }
+
+    notification.success({
+      message: 'Joined Group',
+      key: 'join-groupsuccess',
+    });
+    setCode('');
+    setVisible(false);
+    setConfirmLoading(false);
   }
 
   return (
@@ -88,14 +102,6 @@ function JoinGroupButton() {
       >
         <form onSubmit={submitCode}>
             <p>Enter a group code.</p>
-            {hasError && (
-              <Alert
-              closable
-              message={errorText}
-              type='error'
-              onClose={ closeAlert }
-            />
-            )}
             <Input
               className="group-code-input"
               placeHolder='Example: xJwY394p'
