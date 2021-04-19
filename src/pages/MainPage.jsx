@@ -28,7 +28,7 @@ function MainPage() {
 
   function logout() {
     localStorage.clear();
-    history.go('/');
+    history.replace('/');
   }
 
   function buildPhotoList() {
@@ -75,7 +75,7 @@ function MainPage() {
       <GroupDispatchContext.Provider value={dispatch}>
         <GroupsStateContext.Provider value={groupData}>
           <div className="main-page-body">
-            <Navbar logout={logout}/>
+            <Navbar onLogout={logout}/>
             <div className="body-content">
               <Sidebar />
               <div className="main-content">

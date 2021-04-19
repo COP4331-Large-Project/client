@@ -2,10 +2,10 @@ import React from 'react';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
 
-function UserMenu({ logout }) {
+function UserMenu({ onLogout }) {
   return (
     <Menu>
-      <Menu.Item key="0" onClick={logout}>
+      <Menu.Item key="0" onClick={onLogout}>
           Logout
       </Menu.Item>
     </Menu>
@@ -13,11 +13,11 @@ function UserMenu({ logout }) {
 }
 
 UserMenu.propTypes = {
-  logout: PropTypes.func,
+  onLogout: PropTypes.func,
 };
 
 UserMenu.defaultProps = {
-  logout: () => {},
+  onLogout: () => {},
 };
 
 export default UserMenu;

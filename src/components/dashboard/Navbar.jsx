@@ -12,7 +12,7 @@ import UserContext from '../../contexts/UserContext.jsx';
 
 const { Header } = Layout;
 
-function Navbar({ logout }) {
+function Navbar({ onLogout }) {
   const user = useContext(UserContext);
   const [initials, setInitials] = useState(' ');
   const [imgURL, setImgURL] = useState(' ');
@@ -39,7 +39,7 @@ function Navbar({ logout }) {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Dropdown overlay={<UserMenu logout={logout}/>} trigger={['click']}>
+        <Dropdown overlay={<UserMenu onLogout={onLogout}/>} trigger={['click']}>
         <Avatar
           size={40}
           src={imgURL}
@@ -55,11 +55,11 @@ function Navbar({ logout }) {
 }
 
 Navbar.propTypes = {
-  logout: PropTypes.func,
+  onLogout: PropTypes.func,
 };
 
 Navbar.defaultProps = {
-  logout: () => {},
+  onLogout: () => {},
 };
 
 export default Navbar;
