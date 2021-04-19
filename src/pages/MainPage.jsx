@@ -35,7 +35,7 @@ function MainPage() {
   const [user, setUser] = useState({});
   // Using an initial value of -1 here so that groupData can
   // trigger updates when it's value is set to 0 on mount.
-  // (It'll be set to 0 even if there are no groups)
+  // It'll be set to 0 even if there is at least ont group to load
   const [groupData, dispatch] = useReducer(groupReducer, {
     groups: [],
     index: -1,
@@ -139,7 +139,15 @@ function MainPage() {
       return;
     }
 
-    dispatch({ type: 'init', payload: groups });
+    // Set the index to -1 if there are no groups to load so
+    // that it can be updated once a new group is added
+    dispatch({
+      type: 'init',
+      payload: {
+        groups,
+        index: groups.length === 0 ? -1 : 0,
+      },
+    });
   }, []);
 
   // Triggers when group changes
@@ -153,7 +161,7 @@ function MainPage() {
       <GroupDispatchContext.Provider value={dispatch}>
         <GroupsStateContext.Provider value={groupData}>
           <div className="main-page-body">
-            <Navbar onLogout={logout}/>
+            <Navbar onLogout={logout} />
             <div className="body-content">
               <Sidebar />
               <div className="main-content">
@@ -161,18 +169,20 @@ function MainPage() {
                   style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
                   <h1>{groupTitle}</h1>
-                  <Button
-                    type="primary"
-                    size="large"
-                    shape="circle"
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <BsThreeDots />
-                  </Button>
+                  {groupData.groups.length > 0 && (
+                    <Button
+                      type="primary"
+                      size="large"
+                      shape="circle"
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <BsThreeDots />
+                    </Button>
+                  )}
                 </div>
                 <PhotoGrid photos={photos} />
               </div>

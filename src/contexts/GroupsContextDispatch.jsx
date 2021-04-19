@@ -12,10 +12,14 @@ function groupReducer(state, action) {
     case 'addGroup':
       return {
         ...state,
-        groups: [...state.groups, action.payload],
+        groups: [...state.groups, action.payload.group],
+        index: action.payload.index,
       };
     case 'init':
-      return { groups: action.payload, index: 0 };
+      return {
+        groups: action.payload.groups,
+        index: action.payload.index,
+      };
     default:
       throw new Error('Invalid Group reducer action.');
   }

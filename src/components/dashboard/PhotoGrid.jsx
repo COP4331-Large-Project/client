@@ -25,7 +25,7 @@ function PhotoGrid({ photos }) {
         <AnimatePresence exitBeforeEnter>
           <motion.div
             initial={{ opacity: 0, y: '25%' }}
-            key={photos[0]} // Todo Change me later
+            key={photos[0]}
             animate={{ opacity: 1, y: 0 }}
             exit={{
               opacity: 0,

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import '../scss/create-group-modal.scss';
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
@@ -14,6 +15,7 @@ import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import UserContext from '../contexts/UserContext.jsx';
 import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
+import GroupsStateContext from '../contexts/GroupStateContext';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -21,6 +23,7 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
+  const { groups } = useContext(GroupsStateContext);
   const dispatch = useContext(GroupsContextDispatch);
   const user = useContext(UserContext);
 
@@ -70,10 +73,17 @@ function CreateGroupModal({ visible, onClose }) {
         emails: [...members],
       });
 
+      // Passing the length of the user's groups here so that the
+      // currently selected group index  will always be the
+      // newly created group index (essentially groups[groups.length - 1])
       dispatch({
         type: 'addGroup',
-        payload: group,
+        payload: {
+          group,
+          index: groups.length
+        },
       });
+  
     } catch (err) {
       notification.error({
         message: 'Error creating group',
