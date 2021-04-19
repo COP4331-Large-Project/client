@@ -161,6 +161,19 @@ const API = {
    */
   getGroupImages: async groupId => fetch(relURL(`/groups/${groupId}/images`))
     .then(handleResponse),
+
+  /**
+   * Takes an email address and makes a request to send
+   * a verification link to that email.
+   *
+   * @param {string} email
+   * @throws {APIError} On server error
+   * @returns {Promise<UserResponse>}
+   */
+  passwordReset: async email => fetch(
+    relURL('/users/passwordRecovery'),
+    postOptions({ email }),
+  ).then(handleResponse),
 };
 
 export default API;
