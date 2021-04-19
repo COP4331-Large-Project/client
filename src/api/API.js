@@ -170,7 +170,7 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise<UserResponse>}
    */
-  passwordReset: async email => fetch(
+  passwordRecovery: async email => fetch(
     relURL('/users/passwordRecovery'),
     postOptions({ email }),
   ).then(handleResponse),
