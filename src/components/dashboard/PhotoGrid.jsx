@@ -27,7 +27,7 @@ function PhotoGrid({ photos }) {
         <AnimatePresence exitBeforeEnter>
           <motion.div
             initial={{ opacity: 0, y: '25%' }}
-            key={photos[0]}
+            key="photo-container"
             animate={{ opacity: 1, y: 0 }}
             exit={{
               opacity: 0,
@@ -42,8 +42,8 @@ function PhotoGrid({ photos }) {
           >
             <div className="photo-grid">
               {photos.map(photo => (
-                <motion.div key={photo} variants={item}>
-                  <PhotoThumbnail key={photo} src={photo} />
+                <motion.div key={photo.URL} variants={item}>
+                  <PhotoThumbnail key={photo.URL} src={photo.URL} />
                 </motion.div>
               ))}
             </div>
@@ -64,7 +64,12 @@ function PhotoGrid({ photos }) {
 }
 
 PhotoGrid.propTypes = {
-  photos: PropTypes.arrayOf(String).isRequired,
+  photos: PropTypes.arrayOf(
+    PropTypes.shape({
+      URL: PropTypes.string.isRequired,
+      caption: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default PhotoGrid;

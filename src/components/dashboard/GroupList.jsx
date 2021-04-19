@@ -24,7 +24,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
         className={index === activeIndex ? 'selected' : ''}
         avatar={renderGroupImage(thumbnail, name)}
         title={name}
-        description={getMemberText(memberCount)}
+        description={getMemberText(memberCount || 1)}
       />
     </List.Item>
   );

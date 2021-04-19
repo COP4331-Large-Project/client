@@ -1,10 +1,4 @@
-// prettier-ignore
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
@@ -21,16 +15,6 @@ import GroupDispatchContext, {
 
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 
-function usePrevious(value) {
-  const ref = useRef();
-
-  useEffect(() => {
-    ref.current = value;
-  });
-
-  return ref.current;
-}
-
 function MainPage() {
   const [user, setUser] = useState({});
   // Using an initial value of -1 here so that groupData can
@@ -38,51 +22,15 @@ function MainPage() {
   // It'll be set to 0 even if there is at least ont group to load
   const [groupData, dispatch] = useReducer(groupReducer, {
     groups: [],
+    images: [],
     index: -1,
   });
-  const [photos, setPhotos] = useState([]);
   const [groupTitle, setGroupTitle] = useState('');
   const history = useHistory();
-  // Save the previously selected group index so that we don't
-  // unnecessarily reload a group when either the same group is
-  // clicked, or a new group is added
-  const prevIndex = usePrevious(groupData.index);
 
   function logout() {
     localStorage.clear();
     history.replace('/');
-  }
-
-  async function buildPhotoList() {
-    const { groups, index } = groupData;
-
-    if (groups.length === 0) {
-      setPhotos([]);
-      return;
-    }
-
-    // Don't reload the photos if the currently
-    // selected group hasn't changed
-    if (prevIndex === index) {
-      return;
-    }
-
-    setGroupTitle(groups[index].name);
-
-    try {
-      const res = await API.getGroupImages(groups[index].id);
-
-      setPhotos(res.images.map(img => img.URL));
-    } catch (err) {
-      notification.error({
-        key: 'error-build-photo',
-        message: 'Unexpected Error',
-        description: `
-          An error occurred while this group's images.
-          Please try again later.
-        `,
-      });
-    }
   }
 
   async function getUser(token, userId) {
@@ -112,7 +60,32 @@ function MainPage() {
     try {
       return await API.getGroups(userId);
     } catch (e) {
+      notification.error({
+        key: 'error-init',
+        message: 'Unexpected Error',
+        description: `
+          An error occurred while loading
+          your groups. Please try again later.
+        `,
+      });
       return null;
+    }
+  }
+
+  async function getGroupImages(groupId) {
+    try {
+      const res = await API.getGroupImages(groupId);
+      return res.images;
+    } catch (err) {
+      notification.error({
+        key: 'error-image',
+        message: 'Unexpected Error',
+        description: `
+          An error occurred while loading images for
+          this group. Please try again later.
+        `,
+      });
+      return [];
     }
   }
 
@@ -132,33 +105,45 @@ function MainPage() {
     const groups = await getGroups(id);
 
     if (!groups) {
-      notification.error({
-        key: 'error-init',
-        message: 'Unexpected Error',
-        description: `
-          An error occurred while loading
-          your groups. Please try again later.
-        `,
-      });
       return;
     }
 
+    let images = [];
+
+    if (groups.length > 0) {
+      images = await getGroupImages(groups[0].id);
+    }
+
     // Set the index to -1 if there are no groups to load so
-    // that it can be updated once a new group is added
+    // that it can be updated once the first new group is added
     dispatch({
       type: 'init',
       payload: {
-        groups,
         index: groups.length === 0 ? -1 : 0,
+        groups,
+        images,
       },
     });
   }, []);
 
-  // Triggers when group changes
-  // Builds photo array based on current group
-  useEffect(() => {
-    buildPhotoList();
-  }, [groupData]);
+  // Triggers only when the selected group index changes.
+  // In this case we'll set the group title and load the
+  // images from this group.
+  useEffect(async () => {
+    const { groups, index } = groupData;
+
+    if (groups.length > 0) {
+      const group = groups[index];
+      setGroupTitle(group.name);
+
+      const images = await getGroupImages(group.id);
+
+      dispatch({
+        type: 'setImages',
+        payload: images,
+      });
+    }
+  }, [groupData.index]);
 
   return (
     <UserContext.Provider value={user}>
@@ -179,7 +164,7 @@ function MainPage() {
                     </Button>
                   )}
                 </div>
-                <PhotoGrid photos={photos} />
+                <PhotoGrid photos={groupData.images} />
               </div>
             </div>
           </div>

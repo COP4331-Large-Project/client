@@ -12,24 +12,25 @@ import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import GroupStateContext from '../contexts/GroupStateContext.jsx';
 import UserContext from '../contexts/UserContext.jsx';
+import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
 function ImageUploadModal({ visible, onClose }) {
   const [imageCaption, setImageCaption] = useState('');
   const [file, setFile] = useState(null);
   const [isUploading, setUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(new Image());
   const [hasError, setHasError] = useState(false);
   const { groups, index } = useContext(GroupStateContext);
+  const dispatch = useContext(GroupContextDispatch);
   const user = useContext(UserContext);
-
-  const previewImage = new Image();
 
   // Adds a custom input below ant's list item component
   const renderListItem = originNode => (
     <>
       <Tooltip
         title="Click to preview"
-        mouseEnterDelay={0.5}
+        mouseEnterDelay={0.4}
         mouseLeaveDelay={0}
       >
         {originNode}
@@ -51,10 +52,21 @@ function ImageUploadModal({ visible, onClose }) {
   );
 
   const onBeforeUpload = inputFile => {
+    setFile(inputFile);
+    const image = new Image();
+
+    image.src = URL.createObjectURL(inputFile);
+
+    image.style.width = '100%';
+    image.style.height = '100%';
+    image.style.objectFit = 'contain';
+
+    image.onload = () => setPreviewImage(image);
+
+    setHasError(false);
+
     // Returning false prevents ant from automatically uploading the
     // image right after the user selects an image
-    setFile(inputFile);
-    setHasError(false);
     return false;
   };
 
@@ -67,23 +79,17 @@ function ImageUploadModal({ visible, onClose }) {
     // The browser won't properly display the image
     // in a new tab so we need to create an image with the data URI.
     // This allows us to customize how we render the image.
-    if (thumbUrl) {
-      previewImage.src = URL.createObjectURL(file);
+    if (!thumbUrl) {
+      return;
+    }
 
-      previewImage.style.width = '100%';
-      previewImage.style.height = '100%';
-      previewImage.style.objectFit = 'contain';
+    const previewWindow = window.open(thumbUrl, '_blank');
 
-      // Release the object to free browser memory
-      previewImage.onload = () => URL.revokeObjectURL(previewImage.src);
-
-      const newWindow = window.open(thumbUrl, '_blank');
-
-      // Opening a new window that's on a different domain prevents
-      // us from modifying that tab's title and styling so we need
-      // to do that manually using document.write
-      newWindow.document.write(/* html */ `
-        <title>Preview</title>
+    // Opening a new window that's on a different domain prevents
+    // us from modifying that tab's title and styling so we need
+    // to do that manually using document.write
+    previewWindow.document.write(/* html */ `
+        <title>Preview - ImageUs</title>
         <style>
           body {
             margin: 0;
@@ -91,11 +97,12 @@ function ImageUploadModal({ visible, onClose }) {
         </style>
         <body>${previewImage.outerHTML}</body>
       `);
-    }
   };
 
   // Make sure the state resets when the modal is closed
   const onRequestClose = () => {
+    // Release the image blob to free browser memory
+    URL.revokeObjectURL(previewImage.src);
     setUploading(false);
     onClose();
   };
@@ -111,11 +118,16 @@ function ImageUploadModal({ visible, onClose }) {
     setUploading(true);
 
     try {
-      await API.uploadGroupImage({
+      const image = await API.uploadGroupImage({
         image: file,
         caption: imageCaption,
         userId: user.id,
         groupId: groups[index].id,
+      });
+
+      dispatch({
+        type: 'addImage',
+        payload: image,
       });
 
       // Reset the state of the modal only when an
