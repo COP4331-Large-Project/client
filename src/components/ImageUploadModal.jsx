@@ -74,6 +74,10 @@ function ImageUploadModal({ visible, onClose }) {
       previewImage.onload = () => URL.revokeObjectURL(previewImage.src);
 
       const newWindow = window.open(thumbUrl, '_blank');
+
+      // Opening a new window that's on a different domain prevents
+      // us from modifying that tab's title and styling so we need
+      // to do that manually using document.write
       newWindow.document.write(/* html */`
         <title>Preview</title>
         <style>
