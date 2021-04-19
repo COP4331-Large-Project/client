@@ -39,7 +39,7 @@ const API = {
    */
   async login(username, password) {
     const payload = { username, password };
-    return axios.post('/users/login', payload);
+    return (await axios.post('/users/login', payload)).data;
   },
 
   /**
@@ -57,7 +57,7 @@ const API = {
    * @returns {Promise<UserResponse>}
    */
   async register(payload) {
-    return axios.post('/users/', payload);
+    return axios.post('/users/', payload).then(response => response.data);
   },
 
   /**
@@ -83,7 +83,7 @@ const API = {
    * @returns {Promise<UserResponse>}
    */
   async requestEmailVerificationLink(email) {
-    return axios.post('/users/resendVerificationEmail', { email });
+    return (await axios.post('/users/resendVerificationEmail', { email })).then(response => response.data);
   },
 
   /**
@@ -96,7 +96,7 @@ const API = {
    * @returns {Promise<UserResponse>}
    */
   async verifyEmail(userId, verificationCode) {
-    return axios.post(`/users/${userId}/verify`, { verificationCode });
+    return axios.post(`/users/${userId}/verify`, { verificationCode }).then(response => response.data);
   },
 
   /**
@@ -114,7 +114,7 @@ const API = {
    * @returns {Promise}
    */
   async createGroup(payload) {
-    return axios.post('/groups', payload);
+    return axios.post('/groups', payload).then(response => response.data);
   },
 
   /**
@@ -125,7 +125,7 @@ const API = {
    * @returns {Promise}
    */
   async getGroups(userId) {
-    return axios.get(`/users/${userId}/groups`);
+    return axios.get(`/users/${userId}/groups`).then(response => response.data);
   },
 
   /**
@@ -136,7 +136,7 @@ const API = {
    * @returns {Promise<{ images: ImageObject[] }>}
    */
   async getGroupImages(groupId) {
-    return axios.get(`/groups/${groupId}/images`);
+    return (await axios.get(`/groups/${groupId}/images`)).data;
   },
 };
 
