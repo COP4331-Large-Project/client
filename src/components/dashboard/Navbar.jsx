@@ -1,12 +1,7 @@
 import '../../scss/navbar.scss';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Avatar,
-  Layout,
-  Dropdown,
-
-} from 'antd';
+import { Avatar, Layout, Dropdown } from 'antd';
 import UserMenu from './UserMenu.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
 
@@ -39,16 +34,19 @@ function Navbar({ onLogout }) {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Dropdown overlay={<UserMenu onLogout={onLogout}/>} trigger={['click']}>
-        <Avatar
-          size={40}
-          src={imgURL}
-          alt={initials}
-          className="avatar-button"
+        <Dropdown
+          overlay={<UserMenu onLogout={onLogout} />}
+          trigger={['click']}
         >
-          {initials}
-        </Avatar>
-    </Dropdown>
+          <Avatar
+            size={40}
+            src={imgURL}
+            alt={initials}
+            className="avatar-button"
+          >
+            {initials}
+          </Avatar>
+        </Dropdown>
       </Header>
     </div>
   );

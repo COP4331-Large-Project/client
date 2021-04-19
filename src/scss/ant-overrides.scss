@@ -25,7 +25,6 @@
   padding-bottom: 24px;
 }
 
-
 .ant-modal-footer {
   border-top: none;
   padding-top: 0;
@@ -116,6 +115,10 @@ span.anticon.anticon-delete {
   font-size: 16px;
 }
 
+.ant-dropdown {
+  box-shadow: rgb(0, 0, 0, 20%) 0px 5px 15px;
+}
+
 .ant-btn {
   transition: 0.5s;
   border-radius: 5px;
@@ -142,12 +145,21 @@ span.anticon.anticon-delete {
   .ant-btn.ant-btn-#{$color} {
     color: $value;
     background-color: lighten(rgba($value, 0.2), 35%);
-    
 
     &:hover {
       background-color: $value;
       color: white;
       transition: 0.5s;
     }
+  }
+}
+
+.ant-btn-dangerous {
+  $danger-color: map-get($variant-colors, 'danger');
+  color: $danger-color;
+
+  &:hover {
+    background-color: lighten(rgba($danger-color, 0.2), 35%);
+    color: $danger-color;
   }
 }
