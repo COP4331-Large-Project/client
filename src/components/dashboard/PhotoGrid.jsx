@@ -43,7 +43,11 @@ function PhotoGrid({ photos }) {
             <div className="photo-grid">
               {photos.map(photo => (
                 <motion.div key={photo.URL} variants={item}>
-                  <PhotoThumbnail key={photo.URL} src={photo.URL} />
+                  <PhotoThumbnail
+                    key={photo.URL}
+                    src={photo.URL}
+                    caption={photo.caption}
+                  />
                 </motion.div>
               ))}
             </div>
