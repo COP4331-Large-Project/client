@@ -5,7 +5,7 @@ import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
 import '../../scss/landing.scss';
-import API from '../../api/API';
+// import API from '../../api/API';
 
 /// callBack should be passed from landing page. Used to re-render the landing page
 /// with the default landing page card, which should be the login card.
@@ -13,17 +13,28 @@ import API from '../../api/API';
 function ForgotPassword({ switchCard }) {
   // Leaving input as stateless since it should probably reset if user goes back
   // to login.
-  let input;
+  let input = '';
   const [err, setError] = useState(null);
+
+  function isTrimmedEmpty(str) {
+    if (str.trim() === '') {
+      return true;
+    }
+    return false;
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
     try {
-      await API.passwordRecovery(input);
-      notification.open({
-        description: 'Please check your email for the password reset link.',
-      });
-      setError('');
+      if (isTrimmedEmpty(input) === false) {
+        // await API.passwordRecovery(input);
+        notification.success({
+          description: 'Please check your email for the password reset link.',
+        });
+        setError('');
+      } else {
+        throw (new Error('Email field cannot be empty.'));
+      }
     } catch (e) {
       setError(e.message);
     }
