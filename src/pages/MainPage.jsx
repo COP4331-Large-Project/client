@@ -70,11 +70,7 @@ function MainPage() {
     setGroupTitle(groups[index].name);
 
     try {
-      // TODO: Remove the _id check
-      const res = await API.getGroupImages(
-        // eslint-disable-next-line no-underscore-dangle
-        groups[index]._id || groups[index].id,
-      );
+      const res = await API.getGroupImages(groups[index].id);
 
       setPhotos(res.images.map(img => img.URL));
     } catch (err) {

@@ -82,9 +82,7 @@ function ImageUploadModal({ visible, onClose }) {
         image: file,
         caption: imageCaption,
         userId: user.id,
-        // TODO: Remove the _id check
-        // eslint-disable-next-line no-underscore-dangle
-        groupId: groups[index]._id || groups[index].id,
+        groupId: groups[index].id,
       });
 
       onRequestClose();
