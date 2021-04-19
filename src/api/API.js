@@ -1,6 +1,13 @@
+// These options are ONLY disabled to keep prettier from fighting eslint
+/* eslint-disable operator-linebreak */
+/* eslint-disable implicit-arrow-linebreak */
 import APIError from './APIError';
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.imageus.io' : 'http://localhost:5000';
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api.imageus.io'
+    : 'http://localhost:5000';
+
 const relURL = path => BASE_URL + path;
 
 /**
@@ -30,6 +37,19 @@ const postOptions = body => ({
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(body),
 });
+
+const getOptions = token => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  if (token) {
+    options.headers.Authorization = token;
+  }
+
+  return options;
+};
 
 /**
  * @typedef UserResponse
@@ -69,8 +89,9 @@ const API = {
    */
   login: async (username, password) => {
     const payload = { username, password };
-    return fetch(relURL('/users/login'), postOptions(payload))
-      .then(handleResponse);
+    return fetch(relURL('/users/login'), postOptions(payload)).then(
+      handleResponse,
+    );
   },
 
   /**
@@ -87,8 +108,8 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  register: async (payload) => fetch(relURL('/users/'), postOptions(payload))
-    .then(handleResponse),
+  register: async payload =>
+    fetch(relURL('/users/'), postOptions(payload)).then(handleResponse),
 
   /**
    * Fetches user info.
@@ -98,16 +119,8 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  getInfo: async (token, id) => fetch(
-    relURL(`/users/${id}`),
-    {
-      method: 'GET',
-      headers: {
-        Authorization: token,
-      },
-    },
-  )
-    .then(handleResponse),
+  getInfo: async (token, id) =>
+    fetch(relURL(`/users/${id}`), getOptions(token)).then(handleResponse),
 
   /**
    * Takes an email address and makes a request to send
@@ -115,12 +128,13 @@ const API = {
    *
    * @param {string} email
    * @throws {APIError} On server error
-   * @returns {Promise<UserResponse>}
+   * @returns {Promise}
    */
-  requestEmailVerificationLink: async email => fetch(
-    relURL('/users/resendVerificationEmail'),
-    postOptions({ email }),
-  ).then(handleResponse),
+  requestEmailVerificationLink: async email =>
+    fetch(
+      relURL('/users/resendVerificationEmail'),
+      postOptions({ email }),
+    ).then(handleResponse),
 
   /**
    * Verifies a users email. The verification code should match
@@ -129,12 +143,37 @@ const API = {
    * @param {string} userId
    * @param {string} verificationCode
    * @throws {APIError} On server error
-   * @returns {Promise<UserResponse>}
+   * @returns {Promise}
    */
-  verifyEmail: async (userId, verificationCode) => fetch(
-    relURL(`/users/${userId}/verify`),
-    postOptions({ verificationCode }),
-  ).then(handleResponse),
+  verifyEmail: async (userId, verificationCode) =>
+    fetch(
+      relURL(`/users/${userId}/verify`),
+      postOptions({ verificationCode }),
+    ).then(handleResponse),
+
+  /**
+   * Joins a group with the given invite code.
+   *
+   * @param {string} userId
+   * @param {string} inviteCode
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  joinGroup: async (userId, inviteCode) =>
+    fetch(
+      relURL(`/groups/${inviteCode}/join`),
+      postOptions({ user: userId }),
+    ).then(handleResponse),
+
+  /**
+   * Gets a group with the given id.
+   *
+   * @param {string} groupId
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  getGroup: async groupId =>
+    fetch(relURL(`/groups/${groupId}`)).then(handleResponse),
 
   /**
    * Creates a new group with the given options.
@@ -150,8 +189,8 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  createGroup: async payload => fetch(relURL('/groups'), postOptions(payload))
-    .then(handleResponse),
+  createGroup: async payload =>
+    fetch(relURL('/groups'), postOptions(payload)).then(handleResponse),
 
   /**
    * Gets the list of groups that the user is in.
@@ -160,8 +199,8 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise}
    */
-  getGroups: async userId => fetch(relURL(`/users/${userId}/groups`))
-    .then(handleResponse),
+  getGroups: async userId =>
+    fetch(relURL(`/users/${userId}/groups`)).then(handleResponse),
 
   /**
    * Gets the list of images for the given group.
@@ -170,8 +209,8 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<{ images: ImageObject[] }>}
    */
-  getGroupImages: async groupId => fetch(relURL(`/groups/${groupId}/images`))
-    .then(handleResponse),
+  getGroupImages: async groupId =>
+    fetch(relURL(`/groups/${groupId}/images`)).then(handleResponse),
 
   /**
    * Uploads an image or GIF to the specified group.
@@ -187,6 +226,7 @@ const API = {
    * @returns {Promise<ImageUploadResponse>}
    */
   uploadGroupImage: async ({
+    // prettier-ignore
     image,
     userId,
     groupId,
