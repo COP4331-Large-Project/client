@@ -161,17 +161,14 @@ function GroupInvitePage({ inviteCode }) {
     if (group) {
       return (
         <>
-          <Avatar src={group.thubmnail} size={128}>
+          <Avatar src={group.thumbnail && group.thumbnail.URL} size={128}>
             {group.name[0]}
           </Avatar>
           <p className="text-muted avatar-title">
             You&apos;ve been invited to join a group.
           </p>
           <h1 className="card-title">{group.name}</h1>
-          {/* TODO: replace with real number */}
-          <p className="text-muted">
-            {getMemberText(Math.floor(Math.random() * 10_000))}
-          </p>
+          <p className="text-muted">{getMemberText(group.memberCount)}</p>
           {renderCardActions()}
         </>
       );
