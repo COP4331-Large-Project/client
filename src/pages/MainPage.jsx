@@ -74,6 +74,7 @@ function MainPage() {
       setPhotos(res.images.map(img => img.URL));
     } catch (err) {
       notification.error({
+        key: 'error-build-photo',
         message: 'Unexpected Error',
         description: `
           An error occurred while this group's images.
@@ -93,6 +94,7 @@ function MainPage() {
         history.replace('/');
       } else {
         notification.error({
+          key: 'error-get-user',
           message: 'Unexpected Error',
           description: `
           An unexpected error occurred while loading
@@ -130,6 +132,7 @@ function MainPage() {
 
     if (!groups) {
       notification.error({
+        key: 'error-init',
         message: 'Unexpected Error',
         description: `
           An error occurred while loading
@@ -165,21 +168,10 @@ function MainPage() {
             <div className="body-content">
               <Sidebar />
               <div className="main-content">
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <h1>{groupTitle}</h1>
+                <div className="group-title-row">
+                  <h1 className="group-title" title={groupTitle}>{groupTitle}</h1>
                   {groupData.groups.length > 0 && (
-                    <Button
-                      type="primary"
-                      size="large"
-                      shape="circle"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
+                    <Button className="group-action-btn" type="primary">
                       <BsThreeDots />
                     </Button>
                   )}
