@@ -1,7 +1,13 @@
+// These options are ONLY disabled to keep prettier from fighting eslint
+/* eslint-disable operator-linebreak */
+/* eslint-disable implicit-arrow-linebreak */
 import axios from 'axios';
 import APIError from './APIError';
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.imageus.io' : 'http://localhost:5000';
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api.imageus.io'
+    : 'http://localhost:5000';
 
 // Setup Axios defaults
 axios.defaults.baseURL = BASE_URL;
@@ -80,10 +86,11 @@ const API = {
    *
    * @param {string} email
    * @throws {APIError} On server error
-   * @returns {Promise<UserResponse>}
+   * @returns {Promise}
    */
   async requestEmailVerificationLink(email) {
-    return (await axios.post('/users/resendVerificationEmail', { email })).then(response => response.data);
+    return (await axios.post('/users/resendVerificationEmail', { email }))
+      .then(response => response.data);
   },
 
   /**
@@ -93,10 +100,28 @@ const API = {
    * @param {string} userId
    * @param {string} verificationCode
    * @throws {APIError} On server error
-   * @returns {Promise<UserResponse>}
+   * @returns {Promise}
    */
   async verifyEmail(userId, verificationCode) {
-    return axios.post(`/users/${userId}/verify`, { verificationCode }).then(response => response.data);
+    return axios.post(`/users/${userId}/verify`, { verificationCode })
+      .then(response => response.data);
+  },
+
+  /**
+   * Joins a group with the given invite code.
+   *
+   * @param {string} userId
+   * @param {string} inviteCode
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async joinGroup(userId, inviteCode) {
+    return axios.post(`/groups/${inviteCode}/join`, { user: userId })
+      .then(response => response.data);
+  },
+
+  async getGroup(groupId) {
+    axios.get(`/groups/${groupId}`).then(response => response.data);
   },
 
   /**

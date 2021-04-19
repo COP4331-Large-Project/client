@@ -1,0 +1,85 @@
+@import 'variables';
+
+.group-invite-page {
+  background-image: url('../assets/Splash.png');
+  background-size: contain;
+
+  .card-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .group-card-wrapper {
+    width: 500px;
+    max-width: 500px;
+  }
+
+  .group-card {
+    margin: 8px;
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .ant-avatar {
+    color: darken(map-get($variant-colors, 'primary'), 10%);
+    background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    margin-bottom: 16px;
+  }
+
+  .ant-avatar-string {
+    font-size: 42px;
+    font-weight: 800;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  .card-title {
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80%;
+    text-align: center;
+  }
+
+  .btn,
+  .ant-alert {
+    width: 100%;
+  }
+
+  .btn-link {
+    background-color: white;
+    margin-top: 4px;
+    color: map-get($variant-colors, 'primary');
+  }
+
+  .text-muted {
+    color: hsl(0, 0%, 45%);
+  }
+
+  .avatar-title {
+    font-weight: 500;
+  }
+
+  .invalid-code-alert {
+    margin-top: 16px;
+    margin-bottom: 4px;
+  }
+
+  .card-link {
+    font-weight: 600;
+    color: #0000cf;
+  }
+}
