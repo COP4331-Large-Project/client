@@ -53,6 +53,9 @@ GroupList.propTypes = {
       title: PropTypes.string,
       imageURL: PropTypes.string,
       memberCount: PropTypes.number,
+      thumbnail: PropTypes.shape({
+        URL: PropTypes.string,
+      }),
     }),
   ),
   activeIndex: PropTypes.number,
