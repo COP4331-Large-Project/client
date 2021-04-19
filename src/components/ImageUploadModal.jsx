@@ -7,6 +7,7 @@ import {
   Alert,
   Input,
   Tooltip,
+  notification,
 } from 'antd';
 import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -14,6 +15,9 @@ import GroupStateContext from '../contexts/GroupStateContext.jsx';
 import UserContext from '../contexts/UserContext.jsx';
 import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
+
+// 2 megabytes
+const MAX_FILE_SIZE = 2e+6;
 
 function ImageUploadModal({ visible, onClose }) {
   const [imageCaption, setImageCaption] = useState('');
@@ -111,6 +115,18 @@ function ImageUploadModal({ visible, onClose }) {
     event.preventDefault();
 
     if (isUploading || !file) {
+      return;
+    }
+
+    if (file.size >= MAX_FILE_SIZE) {
+      notification.error({
+        key: 'file-too-large-error',
+        message: 'File Too Large',
+        description: `
+          This file is too large to upload.
+          The max file size is ${MAX_FILE_SIZE / 1e6} MB.
+        `,
+      });
       return;
     }
 
