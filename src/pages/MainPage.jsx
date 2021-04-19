@@ -1,8 +1,14 @@
-import React, { useState, useEffect, useReducer } from 'react';
+// prettier-ignore
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
@@ -13,46 +19,97 @@ import GroupDispatchContext, {
   groupReducer,
 } from '../contexts/GroupsContextDispatch.jsx';
 
-import Groups from '../models/groups'; // Dummy group list.
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+
+function usePrevious(value) {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref.current;
+}
 
 function MainPage() {
   const [user, setUser] = useState({});
+  // Using an initial value of -1 here so that groupData can
+  // trigger updates when it's value is set to 0 on mount.
+  // (It'll be set to 0 even if there are no groups)
   const [groupData, dispatch] = useReducer(groupReducer, {
     groups: [],
-    index: 0,
+    index: -1,
   });
   const [photos, setPhotos] = useState([]);
   const [groupTitle, setGroupTitle] = useState('');
   const history = useHistory();
+  // Save the previously selected group index so that we don't
+  // unnecessarily reload a group when either the same group is
+  // clicked, or a new group is added
+  const prevIndex = usePrevious(groupData.index);
 
   function logout() {
     localStorage.clear();
     history.replace('/');
   }
 
-  function buildPhotoList() {
+  async function buildPhotoList() {
     const { groups, index } = groupData;
 
     if (groups.length === 0) {
       setPhotos([]);
-    } else {
-      const { images } = groups[index];
-      setGroupTitle(groups[index].title);
-      setPhotos(images.map(img => img.URL));
+      return;
+    }
+
+    // Don't reload the photos if the currently
+    // selected group hasn't changed
+    if (prevIndex === index) {
+      return;
+    }
+
+    setGroupTitle(groups[index].name);
+
+    try {
+      const res = await API.getGroupImages(groups[index].id);
+      setPhotos(res.images.map(img => img.URL));
+    } catch (err) {
+      notification.error({
+        message: 'Unexpected Error',
+        description: `
+          An error occurred while this group's images.
+          Please try again later.
+        `,
+      });
     }
   }
 
-  async function getUser(token, id) {
+  async function getUser(token, userId) {
     try {
-      const res = await API.getInfo(token, id);
-      setUser(res);
-      // Leaving this for now. Later will need to set group to the group
-      // list returned.
-      // dispatch({ type: 'init', state: { groups: Groups } });
+      return await API.getInfo(token, userId);
     } catch (e) {
-      // TODO: Will probably need better error handling
-      history.replace('/');
+      if (e.status === 403) {
+        // The user isn't authenticated, take them back
+        // to the login page
+        history.replace('/');
+      } else {
+        notification.error({
+          message: 'Unexpected Error',
+          description: `
+          An unexpected error occurred while loading
+          your profile. Please try again later.
+        `,
+        });
+      }
+    }
+
+    return null;
+  }
+
+  async function getGroups(userId) {
+    try {
+      return await API.getGroups(userId);
+    } catch (e) {
+      return null;
     }
   }
 
@@ -60,8 +117,29 @@ function MainPage() {
   useEffect(async () => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
-    await getUser(token, id);
-    dispatch({ type: 'init', payload: Groups });
+
+    const userInfo = await getUser(token, id);
+
+    if (!userInfo) {
+      return;
+    }
+
+    setUser(userInfo);
+
+    const groups = await getGroups(id);
+
+    if (!groups) {
+      notification.error({
+        message: 'Unexpected Error',
+        description: `
+          An error occurred while loading
+          your groups. Please try again later.
+        `,
+      });
+      return;
+    }
+
+    dispatch({ type: 'init', payload: groups });
   }, []);
 
   // Triggers when group changes
