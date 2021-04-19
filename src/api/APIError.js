@@ -1,7 +1,7 @@
 class APIError extends Error {
   constructor(json) {
     super(json.title);
-    this.status = json.status;
+    this.status = parseInt(json.status, 10);
     this.description = json.description;
   }
 }

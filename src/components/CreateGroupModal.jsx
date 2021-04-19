@@ -1,5 +1,5 @@
 import '../scss/create-group-modal.scss';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 // prettier-ignore
 import {
@@ -11,6 +11,9 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
+import UserContext from '../contexts/UserContext.jsx';
+import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
+import API from '../api/API';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -18,6 +21,8 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
+  const dispatch = useContext(GroupsContextDispatch);
+  const user = useContext(UserContext);
 
   const addMember = event => {
     event.preventDefault();
@@ -40,21 +45,52 @@ function CreateGroupModal({ visible, onClose }) {
 
   const removeAllMembers = () => setMembers(new Set());
 
-  const createGroup = () => {
+  // Need to make sure the private checkbox and list
+  // of members gets reset when the modal is closed.
+  const closeModal = () => {
+    setPrivateChecked(false);
+    setMembers(new Set());
+    onClose();
+  };
+
+  const createGroup = async event => {
+    event.preventDefault();
+
     if (isLoading) {
       return;
     }
 
     setLoading(true);
 
-    // TODO: Make API request Here - The below is just testing
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const group = await API.createGroup({
+        name: groupName,
+        publicGroup: !isPrivateChecked,
+        creator: user.id,
+        emails: [...members],
+      });
+
+      dispatch({
+        type: 'addGroup',
+        payload: group,
+      });
+    } catch (err) {
       notification.error({
         message: 'Error creating group',
-        description: "Yikes, this feature hasn't been implemented yet",
+        description:
+          'An error occurred while creating this group. Please try again later.',
+        key: 'group-create-error',
       });
-    }, 3000);
+      setLoading(false);
+      return;
+    }
+
+    notification.success({
+      message: 'Group Created',
+      key: 'group-create-success',
+    });
+    closeModal();
+    setLoading(false);
   };
 
   const renderDeleteButton = index => (
@@ -126,10 +162,11 @@ function CreateGroupModal({ visible, onClose }) {
   return (
     <Modal
       centered
+      destroyOnClose
       visible={visible}
       title="Create Group"
       className="create-group-modal"
-      onCancel={onClose}
+      onCancel={closeModal}
       okButtonProps={{
         disabled: groupName.trim().length === 0,
         loading: isLoading,
@@ -137,23 +174,30 @@ function CreateGroupModal({ visible, onClose }) {
       onOk={createGroup}
       okText={isLoading ? 'Creating group...' : 'Create'}
     >
-      <p className="input-title">Group Name</p>
-      <Input
-        onInput={event => setGroupName(event.target.value)}
-        disabled={isLoading}
-      />
-      {renderMemberInput()}
-      <Checkbox
-        className="private-checkbox"
-        onChange={event => setPrivateChecked(event.target.checked)}
-        disabled={isLoading}
-      >
-        Private
-      </Checkbox>
-      <p className="description">
-        Public groups can be joined through an invite link. Private groups can
-        only be joined with an invite link after the owner grants them access.
-      </p>
+      {/*
+        Wrapping the modal's body in a form allows us to
+        call `createGroup` when enter is pressed
+      */}
+      <form onSubmit={createGroup}>
+        <p className="input-title">Group Name</p>
+        <Input
+          onInput={event => setGroupName(event.target.value)}
+          disabled={isLoading}
+          autoFocus
+        />
+        {renderMemberInput()}
+        <Checkbox
+          className="private-checkbox"
+          onChange={event => setPrivateChecked(event.target.checked)}
+          disabled={isLoading}
+        >
+          Private
+        </Checkbox>
+        <p className="description">
+          Public groups can be joined through an invite link. Private groups can
+          only be joined with an invite link after the owner grants them access.
+        </p>
+      </form>
     </Modal>
   );
 }

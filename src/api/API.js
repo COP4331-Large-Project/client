@@ -7,6 +7,7 @@ const BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://api.imageus.io'
     : 'http://localhost:5000';
+
 const relURL = path => BASE_URL + path;
 
 /**
@@ -58,6 +59,14 @@ const getOptions = token => {
  * @property {String} email
  */
 
+/**
+ * @typedef ImageObject
+ * @property {String} fileName
+ * @property {String} creator
+ * @property {String} dateUploaded
+ * @property {String} URL
+ */
+
 const API = {
   /**
    * Logs user into account.
@@ -77,7 +86,14 @@ const API = {
   /**
    * Registers a new user.
    *
-   * @param {Object} payload
+   * @typedef {Object} RegistrationOptions
+   * @property {string} firstName
+   * @property {string} lasName
+   * @property {string} email
+   * @property {string} username
+   * @property {string} password
+   *
+   * @param {RegistrationOptions} payload
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
@@ -147,6 +163,43 @@ const API = {
    */
   getGroup: async groupId =>
     fetch(relURL(`/groups/${groupId}`)).then(handleResponse),
+
+  /**
+   * Creates a new group with the given options.
+   *
+   * @typedef {Object} GroupOptions
+   * @property {string} name
+   * @property {boolean} publicGroup
+   * @property {string} creator - The ID of the user creating the group
+   * @property {string[]} emails - A list of emails to send invitation links
+   * (if the group is private)
+   *
+   * @param {GroupOptions} payload
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  createGroup: async payload =>
+    fetch(relURL('/groups'), postOptions(payload)).then(handleResponse),
+
+  /**
+   * Gets the list of groups that the user is in.
+   *
+   * @param {string} userId
+   * @throws {APIError} On server error.
+   * @returns {Promise}
+   */
+  getGroups: async userId =>
+    fetch(relURL(`/users/${userId}/groups`)).then(handleResponse),
+
+  /**
+   * Gets the list of images for the given group.
+   *
+   * @param {string} groupId
+   * @throws {APIError} On server error.
+   * @returns {Promise<{ images: ImageObject[] }>}
+   */
+  getGroupImages: async groupId =>
+    fetch(relURL(`/groups/${groupId}/images`)).then(handleResponse),
 };
 
 export default API;

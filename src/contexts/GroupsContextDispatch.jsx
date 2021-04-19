@@ -5,9 +5,15 @@ const GroupsDispatchContext = createContext(null);
 function groupReducer(state, action) {
   switch (action.type) {
     case 'setIndex':
-      return { groups: state.groups, index: action.payload };
-    case 'update':
-      return { groups: action.payload, index: state.index };
+      return {
+        ...state,
+        index: action.payload,
+      };
+    case 'addGroup':
+      return {
+        ...state,
+        groups: [...state.groups, action.payload],
+      };
     case 'init':
       return { groups: action.payload, index: 0 };
     default:
