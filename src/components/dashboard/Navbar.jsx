@@ -1,10 +1,29 @@
 import '../../scss/navbar.scss';
-import React from 'react';
-import { Avatar, Layout } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import {
+  Avatar,
+  Layout,
+  Dropdown,
+
+} from 'antd';
+import UserMenu from './UserMenu.jsx';
+import UserContext from '../../contexts/UserContext.jsx';
 
 const { Header } = Layout;
 
-function Navbar() {
+function Navbar({ onLogout }) {
+  const user = useContext(UserContext);
+  const [initials, setInitials] = useState(' ');
+  const [imgURL, setImgURL] = useState(' ');
+
+  useEffect(() => {
+    if (user.firstName !== undefined) {
+      setImgURL(user.imgURL);
+      setInitials(`${user.firstName[0]}${user.lastName[0]}`);
+    }
+  }, [user]);
+
   return (
     <div>
       {
@@ -20,10 +39,27 @@ function Navbar() {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Avatar size={40}>U</Avatar>
+        <Dropdown overlay={<UserMenu onLogout={onLogout}/>} trigger={['click']}>
+        <Avatar
+          size={40}
+          src={imgURL}
+          alt={initials}
+          className="avatar-button"
+        >
+          {initials}
+        </Avatar>
+    </Dropdown>
       </Header>
     </div>
   );
 }
+
+Navbar.propTypes = {
+  onLogout: PropTypes.func,
+};
+
+Navbar.defaultProps = {
+  onLogout: () => {},
+};
 
 export default Navbar;

@@ -48,6 +48,11 @@ function MainPage() {
   // clicked, or a new group is added
   const prevIndex = usePrevious(groupData.index);
 
+  function logout() {
+    localStorage.clear();
+    history.replace('/');
+  }
+
   async function buildPhotoList() {
     const { groups, index } = groupData;
 
@@ -148,7 +153,7 @@ function MainPage() {
       <GroupDispatchContext.Provider value={dispatch}>
         <GroupsStateContext.Provider value={groupData}>
           <div className="main-page-body">
-            <Navbar />
+            <Navbar onLogout={logout}/>
             <div className="body-content">
               <Sidebar />
               <div className="main-content">
