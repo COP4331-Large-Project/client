@@ -28,7 +28,7 @@ function PhotoGrid({ photos }) {
       <img src={emptySvg} className="empty-img" />
       <h2 className="title">It&apos;s empty in here!</h2>
       <p className="description">
-        Upload an image or invite some friends to the party.
+        Create a group, upload an image, or invite some friends to get started.
       </p>
     </div>
   );
@@ -37,9 +37,15 @@ function PhotoGrid({ photos }) {
     <Image.PreviewGroup>
       <AnimatePresence exitBeforeEnter>
         <motion.div
-          initial={{ opacity: 0, y: '25%' }}
           key={photos.length > 0 ? photos[0].URL : ''}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{
+            opacity: 0,
+            y: '25%',
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
           exit={{
             opacity: 0,
             y: '25%',

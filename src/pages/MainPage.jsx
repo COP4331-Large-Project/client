@@ -26,8 +26,8 @@ function MainPage() {
     index: -1,
   });
   const [groupTitle, setGroupTitle] = useState('');
-  const [isLoadingGroups, setLoadingGroups] = useState(true);
-  const [isLoadingImages, setLoadingImages] = useState(true);
+  const [isLoadingGroups, setLoadingGroups] = useState(false);
+  const [isLoadingImages, setLoadingImages] = useState(false);
   const history = useHistory();
 
   const loadingStates = {
@@ -88,17 +88,10 @@ function MainPage() {
   }
 
   async function getGroupImages(groupId) {
-    setLoadingImages(true);
-
     try {
       const res = await API.getGroupImages(groupId);
-
-      setLoadingImages(false);
-
       return res.images;
     } catch (err) {
-      setLoadingImages(false);
-
       notification.error({
         key: 'error-image',
         message: 'Unexpected Error',
@@ -133,7 +126,9 @@ function MainPage() {
     let images = [];
 
     if (groups.length > 0) {
+      setLoadingImages(true);
       images = await getGroupImages(groups[0].id);
+      setLoadingImages(false);
     }
 
     // Set the index to -1 if there are no groups to load so
@@ -156,9 +151,12 @@ function MainPage() {
 
     if (groups.length > 0) {
       const group = groups[index];
+
       setGroupTitle(group.name);
+      setLoadingImages(true);
 
       const images = await getGroupImages(group.id);
+      setLoadingImages(false);
 
       dispatch({
         type: 'setImages',
