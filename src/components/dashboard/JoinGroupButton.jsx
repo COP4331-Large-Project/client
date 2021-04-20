@@ -46,10 +46,10 @@ function JoinGroupButton() {
     try {
       // Extracting the invite code from url if given a url
       if (invite.length < 36) {
-        // code is empty or too short to be an actual invite code
+        // potential invite is empty or too short to be an actual invite code
         throw (new Error('Code cannot be empty or is too short to be an invite code.'));
       } else if (invite.length > 36) {
-        // need to parse it out
+        // Need to parse invite code out
         invite = parseInvite(invite);
       }
 
