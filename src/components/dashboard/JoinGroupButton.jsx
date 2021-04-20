@@ -62,7 +62,6 @@ function JoinGroupButton() {
       });
     } catch (e) {
       setConfirmLoading(false);
-      setInput('');
       notification.error({
         message: 'Error Joining Group',
         description: e.message,
