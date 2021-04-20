@@ -1,9 +1,12 @@
 import '../../scss/group-list.scss';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Avatar, List } from 'antd';
 import PropTypes from 'prop-types';
+import LoadingContext from '../../contexts/LoadingContext.jsx';
 
 function GroupList({ groups, activeIndex, onGroupClick }) {
+  const { groupsLoading } = useContext(LoadingContext);
+
   const getMemberText = members => {
     if (members === 1) {
       return `${members.toLocaleString()} member`;
@@ -33,7 +36,12 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
     <div className="group-list">
       <List
         dataSource={groups}
-        header={<p className="list-header">Your Groups</p>}
+        header={
+          <p className="list-header">
+            {groupsLoading ? 'Loading groups...' : 'Your Groups'}
+          </p>
+        }
+        loading={groupsLoading}
         locale={{
           emptyText: `
             Looks like you’re not a member of any groups yet. Click the

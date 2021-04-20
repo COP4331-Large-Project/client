@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
-import { Button, notification } from 'antd';
+import { Button, notification, Skeleton } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
@@ -12,8 +12,8 @@ import UserContext from '../contexts/UserContext.jsx';
 import GroupDispatchContext, {
   groupReducer,
 } from '../contexts/GroupsContextDispatch.jsx';
-
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import LoadingContext from '../contexts/LoadingContext.jsx';
 
 function MainPage() {
   const [user, setUser] = useState({});
@@ -26,7 +26,14 @@ function MainPage() {
     index: -1,
   });
   const [groupTitle, setGroupTitle] = useState('');
+  const [isLoadingGroups, setLoadingGroups] = useState(true);
+  const [isLoadingImages, setLoadingImages] = useState(true);
   const history = useHistory();
+
+  const loadingStates = {
+    groupsLoading: isLoadingGroups,
+    imagesLoading: isLoadingImages,
+  };
 
   function logout() {
     localStorage.clear();
@@ -57,9 +64,17 @@ function MainPage() {
   }
 
   async function getGroups(userId) {
+    setLoadingGroups(true);
+
     try {
-      return await API.getGroups(userId);
+      const groups = await API.getGroups(userId);
+
+      setLoadingGroups(false);
+
+      return groups;
     } catch (e) {
+      setLoadingGroups(false);
+
       notification.error({
         key: 'error-init',
         message: 'Unexpected Error',
@@ -73,10 +88,17 @@ function MainPage() {
   }
 
   async function getGroupImages(groupId) {
+    setLoadingImages(true);
+
     try {
       const res = await API.getGroupImages(groupId);
+
+      setLoadingImages(false);
+
       return res.images;
     } catch (err) {
+      setLoadingImages(false);
+
       notification.error({
         key: 'error-image',
         message: 'Unexpected Error',
@@ -149,25 +171,34 @@ function MainPage() {
     <UserContext.Provider value={user}>
       <GroupDispatchContext.Provider value={dispatch}>
         <GroupsStateContext.Provider value={groupData}>
-          <div className="main-page-body">
-            <Navbar onLogout={logout} />
-            <div className="body-content">
-              <Sidebar />
-              <div className="main-content">
-                <div className="group-title-row">
-                  <h1 className="group-title" title={groupTitle}>
-                    {groupTitle}
-                  </h1>
-                  {groupData.groups.length > 0 && (
-                    <Button className="group-action-btn" type="primary">
-                      <BsThreeDots />
-                    </Button>
-                  )}
+          <LoadingContext.Provider value={loadingStates}>
+            <div className="main-page-body">
+              <Navbar onLogout={logout} />
+              <div className="body-content">
+                <Sidebar />
+                <div className="main-content">
+                  <Skeleton
+                    active
+                    className="title-skeleton"
+                    loading={isLoadingGroups}
+                    paragraph={{ rows: 0 }}
+                  >
+                    <div className="group-title-row">
+                      <h1 className="group-title" title={groupTitle}>
+                        {groupTitle}
+                      </h1>
+                      {groupData.groups.length > 0 && (
+                        <Button className="group-action-btn" type="primary">
+                          <BsThreeDots />
+                        </Button>
+                      )}
+                    </div>
+                  </Skeleton>
+                  <PhotoGrid photos={groupData.images} />
                 </div>
-                <PhotoGrid photos={groupData.images} />
               </div>
             </div>
-          </div>
+          </LoadingContext.Provider>
         </GroupsStateContext.Provider>
       </GroupDispatchContext.Provider>
     </UserContext.Provider>

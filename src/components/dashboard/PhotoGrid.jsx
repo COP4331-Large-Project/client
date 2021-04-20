@@ -1,14 +1,15 @@
+import '../../scss/photo-grid.scss';
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Image } from 'antd';
+import { Image, Spin } from 'antd';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
 import ImageUploadModal from '../ImageUploadModal.jsx';
 import GroupStateContext from '../../contexts/GroupStateContext.jsx';
-
-import '../../scss/photo-grid.scss';
+import LoadingContext from '../../contexts/LoadingContext.jsx';
+import emptySvg from '../../assets/no-photos.svg';
 
 const item = {
   hidden: { opacity: 0, scale: 0.5 },
@@ -20,45 +21,68 @@ function PhotoGrid({ photos }) {
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
   const { groups } = useContext(GroupStateContext);
+  const { imagesLoading } = useContext(LoadingContext);
+
+  const emptyContainer = (
+    <div className="empty-overlay">
+      <img src={emptySvg} className="empty-img" />
+      <h2 className="title">It&apos;s empty in here!</h2>
+      <p className="description">
+        Upload an image or invite some friends to the party.
+      </p>
+    </div>
+  );
+
+  const photoGrid = (
+    <Image.PreviewGroup>
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          initial={{ opacity: 0, y: '25%' }}
+          key={photos.length > 0 ? photos[0].URL : ''}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{
+            opacity: 0,
+            y: '25%',
+          }}
+          transition={{
+            ease: 'easeOut',
+            duration: 0.3,
+            type: 'spring',
+            bounce: 0.25,
+          }}
+        >
+          <div className="photo-grid">
+            {photos.map(photo => (
+              <motion.div key={photo.URL} variants={item}>
+                <PhotoThumbnail
+                  key={photo.URL}
+                  src={photo.URL}
+                  caption={photo.caption}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </Image.PreviewGroup>
+  );
+
+  if (imagesLoading) {
+    return (
+      <div className="photo-grid-container loading">
+        <Spin size="large" tip="Loading images..." />
+      </div>
+    );
+  }
 
   return (
     <div className="photo-grid-container">
-      <Image.PreviewGroup>
-        <AnimatePresence exitBeforeEnter>
-          <motion.div
-            initial={{ opacity: 0, y: '25%' }}
-            key={photos.length > 0 ? photos[0].URL : ''}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{
-              opacity: 0,
-              y: '25%',
-            }}
-            transition={{
-              ease: 'easeOut',
-              duration: 0.3,
-              type: 'spring',
-              bounce: 0.25,
-            }}
-          >
-            <div className="photo-grid">
-              {photos.map(photo => (
-                <motion.div key={photo.URL} variants={item}>
-                  <PhotoThumbnail
-                    key={photo.URL}
-                    src={photo.URL}
-                    caption={photo.caption}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-        {groups.length > 0 && (
-          <FloatingButton onClick={openUploadModal}>
-            <AiOutlineCloudUpload size={32} color="#525252" />
-          </FloatingButton>
-        )}
-      </Image.PreviewGroup>
+      {photos.length === 0 ? emptyContainer : photoGrid}
+      {groups.length > 0 && (
+        <FloatingButton onClick={openUploadModal}>
+          <AiOutlineCloudUpload size={32} color="#525252" />
+        </FloatingButton>
+      )}
       <ImageUploadModal
         visible={isUploadModalVisible}
         onClose={closeUploadModal}

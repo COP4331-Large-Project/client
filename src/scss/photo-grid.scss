@@ -1,5 +1,53 @@
 @import 'variables';
 
+.photo-grid-container {
+  display: flex;
+  flex: 1;
+
+  &.loading {
+    justify-content: center;
+    align-items: center;
+    // Not using flex: 1 here since that can make the
+    // loading overlay seem slightly off center.
+    flex: 0.87;
+  }
+
+  .ant-spin-text {
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    color: hsl(0, 0%, 30%);
+  }
+
+  .empty-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 0;
+      margin-top: 24px;
+    }
+
+    .description {
+      font-size: 18px;
+      color: hsl(0, 0%, 40%);
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    }
+  }
+
+  .empty-img {
+    width: 40%;
+    max-width: 40%;
+    min-width: 300px;
+  }
+}
+
 .photo-grid {
   display: flex;
   flex-wrap: wrap;
