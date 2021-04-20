@@ -2,8 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
-import { Button, notification } from 'antd';
-import { BsThreeDots } from 'react-icons/bs';
+import { notification } from 'antd';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
@@ -12,8 +11,8 @@ import UserContext from '../contexts/UserContext.jsx';
 import GroupDispatchContext, {
   groupReducer,
 } from '../contexts/GroupsContextDispatch.jsx';
-
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
 
 function MainPage() {
   const [user, setUser] = useState({});
@@ -159,9 +158,7 @@ function MainPage() {
                     {groupTitle}
                   </h1>
                   {groupData.groups.length > 0 && (
-                    <Button className="group-action-btn" type="primary">
-                      <BsThreeDots />
-                    </Button>
+                    <GroupMenuButton className="group-action-btn" />
                   )}
                 </div>
                 <PhotoGrid photos={groupData.images} />
