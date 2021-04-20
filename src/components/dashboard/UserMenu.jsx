@@ -1,11 +1,29 @@
-import React from 'react';
-import { Menu } from 'antd';
+import React, { useContext } from 'react';
+import { Menu, notification } from 'antd';
 import PropTypes from 'prop-types';
+import UserContext from '../../contexts/UserContext.jsx';
+import API from '../../api/API';
 
 function UserMenu({ onLogout }) {
+  const { email } = useContext(UserContext);
+
+  async function sendResetEmail() {
+    try {
+      // Need to test with invalid email
+      await API.passwordRecovery(email);
+      notification.success({
+        message: `${email}`,
+      });
+    } catch (err) {
+      notification.error({
+        message: err.message,
+      });
+    }
+  }
+
   return (
     <Menu>
-      <Menu.Item key="0">
+      <Menu.Item key="0" onClick={sendResetEmail}>
           Reset Password
       </Menu.Item>
       <Menu.Item key="1" onClick={onLogout}>
