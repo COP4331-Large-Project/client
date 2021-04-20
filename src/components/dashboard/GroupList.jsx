@@ -4,6 +4,17 @@ import { Avatar, List } from 'antd';
 import PropTypes from 'prop-types';
 
 function GroupList({ groups, activeIndex, onGroupClick }) {
+  const publicGroups = [];
+  const privateGroups = [];
+
+  groups.forEach(group => {
+    if (group.publicGroup) {
+      publicGroups.push(group);
+    } else {
+      privateGroups.push(group);
+    }
+  });
+
   const getMemberText = members => {
     if (members === 1) {
       return `${members.toLocaleString()} member`;
@@ -32,7 +43,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
   return (
     <div className="group-list">
       <List
-        dataSource={groups}
+        dataSource={publicGroups}
         header={<p className="list-header">Your Groups</p>}
         locale={{
           emptyText: `
@@ -43,6 +54,14 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
         }}
         renderItem={renderListItem}
       />
+      {privateGroups.length > 0 && (
+        <List
+          className="group-list-private"
+          dataSource={privateGroups}
+          header={<p className="list-header">Private Groups</p>}
+          renderItem={renderListItem}
+        />
+      )}
     </div>
   );
 }
