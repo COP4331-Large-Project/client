@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useHistory } from 'react-router-dom';
 import { notification } from 'antd';
 import PropTypes from 'prop-types';
 import Card from '../components/Card.jsx';
@@ -27,12 +28,49 @@ function PasswordResetPage({ userId }) {
   /* eslint no-unused-vars: */
   const params = new URLSearchParams(window.location.search);
   const verificationCode = params.get('verificationCode');
+  const [submitted, setSubmitted] = useState(false);
+  const history = useHistory();
+
+  function isTrimmedEmpty(str) {
+    if (str.trim() === '') return true;
+    return false;
+  }
+
+  function goBack() {
+    history.replace('/');
+    setSubmitted(false);
+  }
 
   function changePassword(event) {
     event.preventDefault();
-    notification.success({
-      message: 'Test',
-    });
+    const data = new FormData(event.target);
+
+    try {
+      const password = data.get('password');
+      const confirmedPassword = data.get('confirmedPassword');
+
+      // Empty case
+      if (isTrimmedEmpty(password) === true || isTrimmedEmpty(confirmedPassword) === true) {
+        throw (new Error('Password fields cannot be empty.'));
+      }
+      /// Different
+      if (password !== confirmedPassword) {
+        throw (new Error('Passwords do not match.'));
+      }
+
+      // Make API call
+      setSubmitted(true);
+      notification.success({
+        message: 'Password has been reset, navigating to home page.',
+        duration: 2,
+      });
+
+      setTimeout(() => { goBack(); }, 2000);
+    } catch (err) {
+      notification.error({
+        message: `${err.message}`,
+      });
+    }
   }
 
   return (
@@ -49,11 +87,26 @@ function PasswordResetPage({ userId }) {
             <Card className="reset-card">
               <h1 className="card-title">Reset Password</h1>
               <p>Please enter your new password</p>
-              <TextInput className="textbox" type="password" />
-              <Button className="btn" type="submit">
+              <TextInput
+                className="textbox"
+                type="password"
+                placeHolder="Enter a password"
+                name="password"
+              />
+              <TextInput
+                className="textbox"
+                type="password"
+                placeHolder="Confirm your password"
+                name="confirmedPassword"
+              />
+              <Button
+                className="btn"
+                type="submit"
+                disabled={submitted}
+              >
                 Reset Password
               </Button>
-              <Button className="btn-link">
+              <Button onClick={goBack} className="btn-link">
                 Take me back
               </Button>
             </Card>
