@@ -14,6 +14,7 @@ import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import UserContext from '../contexts/UserContext.jsx';
 import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
+import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -21,6 +22,7 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
+  const { groups } = useContext(GroupsStateContext);
   const dispatch = useContext(GroupsContextDispatch);
   const user = useContext(UserContext);
 
@@ -56,7 +58,7 @@ function CreateGroupModal({ visible, onClose }) {
   const createGroup = async event => {
     event.preventDefault();
 
-    if (isLoading) {
+    if (isLoading || !groupName.trim()) {
       return;
     }
 
@@ -70,9 +72,15 @@ function CreateGroupModal({ visible, onClose }) {
         emails: [...members],
       });
 
+      // Passing the length of the user's groups here so that the
+      // currently selected group index  will always be the
+      // newly created group index (essentially groups[groups.length - 1])
       dispatch({
         type: 'addGroup',
-        payload: group,
+        payload: {
+          group,
+          index: groups.length,
+        },
       });
     } catch (err) {
       notification.error({
@@ -174,30 +182,24 @@ function CreateGroupModal({ visible, onClose }) {
       onOk={createGroup}
       okText={isLoading ? 'Creating group...' : 'Create'}
     >
-      {/*
-        Wrapping the modal's body in a form allows us to
-        call `createGroup` when enter is pressed
-      */}
-      <form onSubmit={createGroup}>
-        <p className="input-title">Group Name</p>
-        <Input
-          onInput={event => setGroupName(event.target.value)}
-          disabled={isLoading}
-          autoFocus
-        />
-        {renderMemberInput()}
-        <Checkbox
-          className="private-checkbox"
-          onChange={event => setPrivateChecked(event.target.checked)}
-          disabled={isLoading}
-        >
-          Private
-        </Checkbox>
-        <p className="description">
-          Public groups can be joined through an invite link. Private groups can
-          only be joined with an invite link after the owner grants them access.
-        </p>
-      </form>
+      <p className="input-title">Group Name</p>
+      <Input
+        onInput={event => setGroupName(event.target.value)}
+        disabled={isLoading}
+        autoFocus
+      />
+      {renderMemberInput()}
+      <Checkbox
+        className="private-checkbox"
+        onChange={event => setPrivateChecked(event.target.checked)}
+        disabled={isLoading}
+      >
+        Private
+      </Checkbox>
+      <p className="description">
+        Public groups can be joined through an invite link. Private groups can
+        only be joined with an invite link after the owner grants them access.
+      </p>
     </Modal>
   );
 }

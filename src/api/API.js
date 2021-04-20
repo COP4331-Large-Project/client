@@ -43,6 +43,16 @@ axios.interceptors.response.use(response => response, error => {
  * @property {Number} memberCount
  * @property {Boolean} publicGroup
  * @property {Array<UserResponse>} invitedUsers
+
+/*
+ * @typedef ImageUploadResponse
+ * @property {String} caption
+ * @property {String} fileName
+ * @property {String} creator
+ * @property {String} groupId
+ * @property {String} dateUploaded
+ * @property {String} URL
+ * @property {String} id
  */
 
 const API = {
@@ -179,6 +189,38 @@ const API = {
    */
   async getGroupImages(groupId) {
     return (await axios.get(`/groups/${groupId}/images`)).data;
+  },
+
+  /**
+   * Uploads an image or GIF to the specified group.
+   *
+   * @typedef {Object} ImageUploadOptions
+   * @property {File} image
+   * @property {string} userId
+   * @property {string} groupId
+   * @property {string?} caption
+   *
+   * @param {ImageUploadOptions} payload
+   * @throws {APIError} On server error.
+   * @returns {Promise<ImageUploadResponse>}
+   */
+  async uploadGroupImage({
+    // prettier-ignore
+    image,
+    userId,
+    groupId,
+    caption,
+  }) {
+    const formDate = new FormData();
+
+    formDate.append('groupPicture', image);
+    formDate.append('userId', userId);
+
+    if (caption) {
+      formDate.append('caption', caption);
+    }
+
+    return axios.put(`/groups/${groupId}/uploadImage`, formDate).then(response => response.data);
   },
 };
 

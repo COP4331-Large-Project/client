@@ -25,12 +25,17 @@
     height: $navbar-height;
     width: 100%;
   }
+
+  .avatar-button {
+    cursor: pointer;
+  }
+
+  .ant-avatar-string {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
 }
 
 .invisible-backing {
   height: $navbar-height;
-}
-
-.avatar-button {
-  cursor: pointer;
 }
