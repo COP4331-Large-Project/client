@@ -193,6 +193,7 @@ function GroupInvitePage({ inviteCode }) {
       // Private groups need explicit invitation so we'll
       // hide the group from the user if the group is private
       if (!publicGroup && !isInvited) {
+        setLoadingGroup(false);
         setIsLinkInvalid(true);
         return;
       }
