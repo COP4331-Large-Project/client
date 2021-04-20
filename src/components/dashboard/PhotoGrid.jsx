@@ -26,9 +26,11 @@ function PhotoGrid({ photos }) {
   const emptyContainer = (
     <div className="empty-overlay">
       <img src={emptySvg} className="empty-img" />
-      <h2 className="title">It&apos;s empty in here!</h2>
+      <h2 className="title">It&apos;s Empty in Here!</h2>
       <p className="description">
-        Create a group, upload an image, or invite some friends to get started.
+        {groups.length === 0
+          ? 'Create or join a group to get this party started.'
+          : 'Upload an image or invite some friends to the party.'}
       </p>
     </div>
   );
