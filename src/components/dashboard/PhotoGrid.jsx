@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Image } from 'antd';
@@ -6,6 +6,7 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
 import ImageUploadModal from '../ImageUploadModal.jsx';
+import GroupStateContext from '../../contexts/GroupStateContext.jsx';
 
 import '../../scss/photo-grid.scss';
 
@@ -18,6 +19,7 @@ function PhotoGrid({ photos }) {
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
+  const { groups } = useContext(GroupStateContext);
 
   return (
     <div className="photo-grid-container">
@@ -25,7 +27,7 @@ function PhotoGrid({ photos }) {
         <AnimatePresence exitBeforeEnter>
           <motion.div
             initial={{ opacity: 0, y: '25%' }}
-            key={photos[0]} // Todo Change me later
+            key={photos.length > 0 ? photos[0].URL : ''}
             animate={{ opacity: 1, y: 0 }}
             exit={{
               opacity: 0,
@@ -40,16 +42,22 @@ function PhotoGrid({ photos }) {
           >
             <div className="photo-grid">
               {photos.map(photo => (
-                <motion.div key={photo} variants={item}>
-                  <PhotoThumbnail key={photo} src={photo} />
+                <motion.div key={photo.URL} variants={item}>
+                  <PhotoThumbnail
+                    key={photo.URL}
+                    src={photo.URL}
+                    caption={photo.caption}
+                  />
                 </motion.div>
               ))}
             </div>
           </motion.div>
         </AnimatePresence>
-        <FloatingButton onClick={openUploadModal}>
-          <AiOutlineCloudUpload size={32} color="#525252" />
-        </FloatingButton>
+        {groups.length > 0 && (
+          <FloatingButton onClick={openUploadModal}>
+            <AiOutlineCloudUpload size={32} color="#525252" />
+          </FloatingButton>
+        )}
       </Image.PreviewGroup>
       <ImageUploadModal
         visible={isUploadModalVisible}
@@ -60,7 +68,12 @@ function PhotoGrid({ photos }) {
 }
 
 PhotoGrid.propTypes = {
-  photos: PropTypes.arrayOf(String).isRequired,
+  photos: PropTypes.arrayOf(
+    PropTypes.shape({
+      URL: PropTypes.string.isRequired,
+      caption: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default PhotoGrid;

@@ -39,7 +39,7 @@ function InviteArea({ inviteCode, groupId }) {
       return;
     }
 
-    copyToClipboard(`https://${inviteLink}`)
+    copyToClipboard(`https://www.${inviteLink}`)
       .then(() => message.success('Link copied to clipboard.'))
       .catch(() => message.error('Error copying code.'));
   };

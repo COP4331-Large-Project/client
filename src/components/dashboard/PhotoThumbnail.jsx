@@ -1,13 +1,13 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Image } from 'antd';
 import fallback from '../../assets/errorimage.png';
 
-function PhotoThumbnail({ src }) {
+function PhotoThumbnail({ src, caption }) {
   return (
     <motion.div
+      className="thumbnail-wrapper"
       transition={{
         duration: 1,
         type: 'spring',
@@ -30,17 +30,23 @@ function PhotoThumbnail({ src }) {
         },
       }}
     >
-      <Image
-        className="photo-thumbnail"
-        src={src}
-        fallback={fallback}
-      />
+      <Image className="photo-thumbnail" src={src} fallback={fallback} />
+      {caption && (
+        <div className="thumbnail-caption">
+          <p className="caption">{caption}</p>
+        </div>
+      )}
     </motion.div>
   );
 }
 
 PhotoThumbnail.propTypes = {
   src: PropTypes.string.isRequired,
+  caption: PropTypes.string,
+};
+
+PhotoThumbnail.defaultProps = {
+  caption: '',
 };
 
 export default PhotoThumbnail;
