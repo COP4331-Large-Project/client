@@ -5,6 +5,7 @@ import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
 import API from '../../api/API';
+import onInputChange from "../../event/PasswordValidation";
 
 function RegisterCard({ switchCard }) {
   const [err, setError] = useState(null);
@@ -84,6 +85,7 @@ function RegisterCard({ switchCard }) {
         placeHolder="Password"
         type="password"
         name="password"
+        onChange={onInputChange}
         required
       />
       <TextInput
