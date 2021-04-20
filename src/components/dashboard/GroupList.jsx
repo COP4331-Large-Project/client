@@ -7,11 +7,18 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
   const publicGroups = [];
   const privateGroups = [];
 
-  groups.forEach(group => {
+  groups.forEach((group, index) => {
+    // Because the groups are in two different arrays, we need
+    // to save the index since they both have different indices.
+    const groupObj = {
+      ...group,
+      groupIndex: index,
+    };
+
     if (group.publicGroup) {
-      publicGroups.push(group);
+      publicGroups.push(groupObj);
     } else {
-      privateGroups.push(group);
+      privateGroups.push(groupObj);
     }
   });
 
@@ -29,10 +36,16 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
     </Avatar>
   );
 
-  const renderListItem = ({ name, thumbnail, memberCount }, index) => (
-    <List.Item onClick={() => onGroupClick(index)} title={name}>
+  // prettier-ignore
+  const renderListItem = ({
+    name,
+    thumbnail,
+    memberCount,
+    groupIndex,
+  }) => (
+    <List.Item onClick={() => onGroupClick(groupIndex)} title={name}>
       <List.Item.Meta
-        className={index === activeIndex ? 'selected' : ''}
+        className={groupIndex === activeIndex ? 'selected' : ''}
         avatar={renderGroupImage(thumbnail, name)}
         title={name}
         description={getMemberText(memberCount || 1)}

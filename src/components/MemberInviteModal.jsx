@@ -1,40 +1,48 @@
-/* eslint-disable */
 import '../scss/member-invite-modal.scss';
 import React, { useContext, useState } from 'react';
-import { Modal, Input, Button, List } from 'antd';
+// prettier-ignore
+import {
+  Modal,
+  Input,
+  Button,
+  List,
+  notification,
+} from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import PropTypes from 'prop-types';
-import GroupsStateContext from '../contexts/GroupStateContext';
+import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import API from '../api/API';
 
 function MemberInviteModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
-  const [members, setMembers] = useState(new Set());
+  const [emails, setEmails] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const { groups, index } = useContext(GroupsStateContext);
 
   const addMember = event => {
     event.preventDefault();
 
     const email = memberEmail.trim();
-    const combined = new Set([...members, email]);
+    const combined = new Set([...emails, email]);
 
-    if (email && !members.has(email)) {
-      setMembers(combined);
+    if (email && !emails.has(email)) {
+      setEmails(combined);
       setMemberEmail('');
     }
   };
 
   const removeMember = email => {
-    const copy = new Set(members);
+    const copy = new Set(emails);
     copy.delete(email);
 
-    setMembers(copy);
+    setEmails(copy);
   };
 
-  const removeAllMembers = () => setMembers(new Set());
+  const removeAllMembers = () => setEmails(new Set());
 
   const renderListFooter = () => {
-    if (members.size === 0) {
+    if (emails.size === 0) {
       return null;
     }
 
@@ -51,10 +59,10 @@ function MemberInviteModal({ visible, onClose }) {
     );
   };
 
-  const renderDeleteButton = index => (
+  const renderDeleteButton = idx => (
     <Button
       className="delete-member-btn"
-      onClick={() => removeMember(index)}
+      onClick={() => removeMember(idx)}
       disabled={isLoading}
     >
       <AiOutlineDelete size={20} />
@@ -67,13 +75,38 @@ function MemberInviteModal({ visible, onClose }) {
     </List.Item>
   );
 
-  const inviteMembers = () => {
-    setLoading(true);
-  };
+  const inviteMembers = async () => {
+    if (isLoading) {
+      return;
+    }
 
-  const onRequestClose = () => {
+    setLoading(true);
+    setHasError(false);
+
+    try {
+      const groupId = groups[index].id;
+
+      await API.sendGroupInviteLink(groupId, [...emails]);
+
+      notification.success({
+        key: 'email-invite-success',
+        message: 'Invites Sent',
+      });
+
+      setEmails(new Set());
+      setMemberEmail('');
+      onClose();
+    } catch (err) {
+      notification.success({
+        key: 'email-invite-error',
+        message: 'Error Sending Invites',
+        description:
+          'An error occurred while sending invites. Please try again.',
+      });
+      setHasError(true);
+    }
+
     setLoading(false);
-    onClose();
   };
 
   return (
@@ -82,11 +115,12 @@ function MemberInviteModal({ visible, onClose }) {
       title="Invite Members"
       className="member-invite-modal"
       visible={visible}
-      onCancel={() => onRequestClose()}
+      onCancel={onClose}
       okText={isLoading ? 'Sending Invites...' : 'Send Invites'}
+      cancelText={hasError ? 'Retry' : 'Close'}
       onOk={inviteMembers}
       okButtonProps={{
-        disabled: members.size === 0 || isLoading,
+        disabled: emails.size === 0 || isLoading,
       }}
     >
       <form className="group-member-container" onSubmit={addMember}>
@@ -110,7 +144,7 @@ function MemberInviteModal({ visible, onClose }) {
         />
         <List
           className="group-member-list"
-          dataSource={members}
+          dataSource={emails}
           renderItem={renderListItem}
           footer={renderListFooter()}
         />

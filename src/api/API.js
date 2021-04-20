@@ -250,6 +250,18 @@ const API = {
       handleResponse,
     );
   },
+
+  /**
+   * Sends an invitation email to each provided email.
+   *
+   * @param {string} groupId
+   * @param {string[]} emails
+   */
+  sendGroupInviteLink: async (groupId, emails) =>
+    fetch(
+      relURL(`/groups/${groupId}/invite`),
+      postOptions({ emails }),
+    ).then(handleResponse),
 };
 
 export default API;

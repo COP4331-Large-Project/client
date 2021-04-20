@@ -187,12 +187,18 @@ function GroupInvitePage({ inviteCode }) {
 
     try {
       const groupInfo = await API.getGroup(groupId);
-      const { publicGroup, invitedUsers } = groupInfo;
-      const isInvited = invitedUsers.find(user => user.id === userId);
+      const { publicGroup, invitedUsers, creator } = groupInfo;
+      const invitedUser = invitedUsers.find(user => user.id === userId);
+      const groupCreator = creator.find(
+        // eslint-disable-next-line no-underscore-dangle
+        user => user._id === userId || user.id === userId,
+      );
 
       // Private groups need explicit invitation so we'll
-      // hide the group from the user if the group is private
-      if (!publicGroup && !isInvited) {
+      // hide the group from the user if the group is private.
+      // Even though the creator can't join their group, we still
+      // want them to see the invite card
+      if (!publicGroup && !invitedUser && !groupCreator) {
         setLoadingGroup(false);
         setIsLinkInvalid(true);
         return;
