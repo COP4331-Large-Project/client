@@ -93,7 +93,7 @@ function JoinGroupButton() {
         okText='Join'
       >
         <form onSubmit={submitCode}>
-            <p>Enter a group code.</p>
+            <p>Enter a group invite link or an invite code.</p>
             <Input
               className="group-code-input"
               placeHolder='Example: xJwY394p'
