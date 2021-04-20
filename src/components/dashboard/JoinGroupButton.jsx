@@ -1,50 +1,82 @@
-import React from 'react';
-import { Modal, Input, Alert } from 'antd';
+import React, { useState, useContext } from 'react';
+import {
+  Modal,
+  Input,
+  notification,
+} from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
-// import { func } from 'prop-types';
+import API from '../../api/API';
+import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 
 function JoinGroupButton() {
-  const [visible, setVisible] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const [hasError, setHasError] = React.useState(false);
-  const [errorText, setErrorText] = React.useState('');
-  const [code, setCode] = React.useState('');
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [input, setInput] = useState('');
+  const dispatch = useContext(GroupContextDispatch);
 
   function showModal() {
-    setCode('');
+    setInput('');
     setVisible(true);
   }
 
   function handleCancel() {
-    setCode('');
-    setHasError(false);
+    setInput('');
     setConfirmLoading(false);
     setVisible(false);
   }
 
-  function closeAlert() {
-    setErrorText('');
-    setHasError(false);
+  function parseInvite(str) {
+    const strEnd = str.length;
+    const linkEnd = strEnd - 33;
+    const linkStart = linkEnd - 36;
+    return str.substring(linkStart, linkEnd);
   }
 
-  function submitCode(event) {
+  async function submitCode(event) {
     event.preventDefault();
+    let invite = input;
+
+    if (confirmLoading === true) {
+      return;
+    }
+
     setConfirmLoading(true);
 
     try {
-      // TODO: Hook up join group api
-      // Dummy time out to simulate async
-      setTimeout(() => {
-        setCode('');
-        setVisible(false);
-        setConfirmLoading(false);
-      }, 1000);
+      // Extracting the invite code from url if given a url
+      if (invite.length < 36) {
+        // potential invite is empty or too short to be an actual invite code
+        throw (new Error('Code cannot be empty or is too short to be an invite code.'));
+      } else if (invite.length > 36) {
+        // Need to parse invite code out
+        invite = parseInvite(invite);
+      }
+
+      const id = localStorage.getItem('id');
+      const group = await API.joinGroup(id, invite);
+
+      dispatch({
+        type: 'addGroup',
+        payload: group,
+      });
     } catch (e) {
-      setErrorText(e.message);
       setConfirmLoading(false);
-      setHasError(true);
+      notification.error({
+        message: 'Error Joining Group',
+        description: e.message,
+        key: 'group-join-error',
+      });
+      return;
     }
+
+    notification.success({
+      message: 'Joined Group',
+      key: 'join-group-success',
+    });
+    setInput('');
+    setVisible(false);
+    setConfirmLoading(false);
   }
 
   return (
@@ -60,20 +92,12 @@ function JoinGroupButton() {
         okText='Join'
       >
         <form onSubmit={submitCode}>
-            <p>Enter a group code.</p>
-            {hasError && (
-              <Alert
-              closable
-              message={errorText}
-              type='error'
-              onClose={ closeAlert }
-            />
-            )}
+            <p>Enter a group invite link or an invite code.</p>
             <Input
               className="group-code-input"
               placeHolder='Example: xJwY394p'
-              onChange={event => setCode(event.target.value)}
-              value={code}
+              onChange={event => setInput(event.target.value)}
+              value={input}
             />
         </form>
       </Modal>
