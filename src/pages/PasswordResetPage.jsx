@@ -86,7 +86,10 @@ function PasswordResetPage({ userId }) {
           <form onSubmit={changePassword}>
             <Card className="reset-card">
               <h1 className="card-title">Reset Password</h1>
-              <p>Please enter your new password</p>
+              <p className="card-text">
+                Please enter your new password. Your password must be at least 8 characters long,
+                 include a lowercase letter, uppercase letter, a number, and a special character.
+              </p>
               <TextInput
                 className="textbox"
                 type="password"
