@@ -7,6 +7,7 @@ import fallback from '../../assets/errorimage.png';
 function PhotoThumbnail({ src, caption }) {
   return (
     <motion.div
+      className="thumbnail-wrapper"
       transition={{
         duration: 1,
         type: 'spring',
@@ -29,14 +30,12 @@ function PhotoThumbnail({ src, caption }) {
         },
       }}
     >
-      <div className="thumbnail-container">
-        <Image className="photo-thumbnail" src={src} fallback={fallback} />
-        {caption && (
-          <div className="thumbnail-caption">
-            <p className="caption">{caption}</p>
-          </div>
-        )}
-      </div>
+      <Image className="photo-thumbnail" src={src} fallback={fallback} />
+      {caption && (
+        <div className="thumbnail-caption">
+          <p className="caption">{caption}</p>
+        </div>
+      )}
     </motion.div>
   );
 }
