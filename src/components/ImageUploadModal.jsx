@@ -17,12 +17,12 @@ import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
 // 2 megabytes
-const MAX_FILE_SIZE = 2e+6;
+const MAX_FILE_SIZE = 2e6;
 
 function ImageUploadModal({ visible, onClose }) {
   const [imageCaption, setImageCaption] = useState('');
   const [file, setFile] = useState(null);
-  const [isUploading, setUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState(new Image());
   const [hasError, setHasError] = useState(false);
   const { groups, index } = useContext(GroupStateContext);
@@ -65,7 +65,11 @@ function ImageUploadModal({ visible, onClose }) {
     image.style.height = '100%';
     image.style.objectFit = 'contain';
 
-    image.onload = () => setPreviewImage(image);
+    image.onload = () => {
+      // Release the image blob to free browser memory
+      URL.revokeObjectURL(previewImage.src);
+      setPreviewImage(image);
+    };
 
     setHasError(false);
 
@@ -105,9 +109,7 @@ function ImageUploadModal({ visible, onClose }) {
 
   // Make sure the state resets when the modal is closed
   const onRequestClose = () => {
-    // Release the image blob to free browser memory
-    URL.revokeObjectURL(previewImage.src);
-    setUploading(false);
+    setIsUploading(false);
     onClose();
   };
 
@@ -131,7 +133,7 @@ function ImageUploadModal({ visible, onClose }) {
     }
 
     setHasError(false);
-    setUploading(true);
+    setIsUploading(true);
 
     try {
       const image = await API.uploadGroupImage({
@@ -155,7 +157,7 @@ function ImageUploadModal({ visible, onClose }) {
       setHasError(true);
     }
 
-    setUploading(false);
+    setIsUploading(false);
   };
 
   const getOkText = () => {
@@ -173,6 +175,9 @@ function ImageUploadModal({ visible, onClose }) {
   return (
     <Modal
       centered
+      // This allows the modal to keep its state if the user
+      // closes it before they finish uploading the file
+      destroyOnClose={file === null}
       title="Upload Image"
       visible={visible}
       className="image-upload-modal"
