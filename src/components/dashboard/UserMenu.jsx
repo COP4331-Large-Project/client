@@ -13,7 +13,8 @@ function UserMenu({ onLogout }) {
       // await API.passwordRecovery(email);
       notification.warning({
         // Test message, will be changed
-        message: `You have been logged out. Please check ${email} for a link to reset your password.`,
+        message: 'This message needs to be changed.',
+        description: `You have been logged out. Please check ${email} for a link to reset your password.`,
       });
       onLogout();
     } catch (err) {
