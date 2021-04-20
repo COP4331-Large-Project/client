@@ -25,7 +25,11 @@ function PhotoGrid({ photos }) {
 
   const emptyContainer = (
     <div className="empty-overlay">
-      <img src={emptySvg} className="empty-img" />
+      <img
+        src={emptySvg}
+        className="empty-img"
+        alt={groups.length === 0 ? 'empty group' : 'no photos'}
+      />
       <h2 className="title">It&apos;s Empty in Here!</h2>
       <p className="description">
         {groups.length === 0
