@@ -67,6 +67,17 @@ const getOptions = token => {
  * @property {String} URL
  */
 
+/**
+ * @typedef ImageUploadResponse
+ * @property {String} caption
+ * @property {String} fileName
+ * @property {String} creator
+ * @property {String} groupId
+ * @property {String} dateUploaded
+ * @property {String} URL
+ * @property {String} id
+ */
+
 const API = {
   /**
    * Logs user into account.
@@ -200,6 +211,45 @@ const API = {
    */
   getGroupImages: async groupId =>
     fetch(relURL(`/groups/${groupId}/images`)).then(handleResponse),
+
+  /**
+   * Uploads an image or GIF to the specified group.
+   *
+   * @typedef {Object} ImageUploadOptions
+   * @property {File} image
+   * @property {string} userId
+   * @property {string} groupId
+   * @property {string?} caption
+   *
+   * @param {ImageUploadOptions} payload
+   * @throws {APIError} On server error.
+   * @returns {Promise<ImageUploadResponse>}
+   */
+  uploadGroupImage: async ({
+    // prettier-ignore
+    image,
+    userId,
+    groupId,
+    caption,
+  }) => {
+    const formDate = new FormData();
+
+    formDate.append('groupPicture', image);
+    formDate.append('userId', userId);
+
+    if (caption) {
+      formDate.append('caption', caption);
+    }
+
+    const options = {
+      method: 'PUT',
+      body: formDate,
+    };
+
+    return fetch(relURL(`/groups/${groupId}/uploadImage`), options).then(
+      handleResponse,
+    );
+  },
 };
 
 export default API;

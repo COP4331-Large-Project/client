@@ -24,7 +24,9 @@ function Sidebar() {
   useEffect(() => {
     if (groups.length > 0) {
       setInviteCode(groups[index].inviteCode);
-      setGroupId(groups[index].id);
+      // TODO: Remove the _id check
+      // eslint-disable-next-line no-underscore-dangle
+      setGroupId(groups[index]._id || groups[index].id);
     } else {
       setInviteCode('');
       setGroupId('');

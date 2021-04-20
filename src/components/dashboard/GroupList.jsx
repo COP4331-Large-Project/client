@@ -13,19 +13,18 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
   };
 
   const renderGroupImage = (thumbnail, title) => (
-    <Avatar src={thumbnail} size={54} alt={title}>
+    <Avatar src={thumbnail && thumbnail.URL} size={54} alt={title}>
       {title[0]}
     </Avatar>
   );
 
-  const renderListItem = ({ name, thumbnail }, index) => (
+  const renderListItem = ({ name, thumbnail, memberCount }, index) => (
     <List.Item onClick={() => onGroupClick(index)} title={name}>
       <List.Item.Meta
         className={index === activeIndex ? 'selected' : ''}
         avatar={renderGroupImage(thumbnail, name)}
         title={name}
-        // TODO: Replace with actual group member count
-        description={getMemberText(100)}
+        description={getMemberText(memberCount || 1)}
       />
     </List.Item>
   );
@@ -53,7 +52,10 @@ GroupList.propTypes = {
     PropTypes.shape({
       title: PropTypes.string,
       imageURL: PropTypes.string,
-      members: PropTypes.number,
+      memberCount: PropTypes.number,
+      thumbnail: PropTypes.shape({
+        URL: PropTypes.string,
+      }),
     }),
   ),
   activeIndex: PropTypes.number,
