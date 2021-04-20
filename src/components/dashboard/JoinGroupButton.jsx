@@ -12,39 +12,30 @@ import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 function JoinGroupButton() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [code, setCode] = useState('');
+  const [input, setInput] = useState('');
   const dispatch = useContext(GroupContextDispatch);
 
   function showModal() {
-    setCode('');
+    setInput('');
     setVisible(true);
   }
 
   function handleCancel() {
-    setCode('');
+    setInput('');
     setConfirmLoading(false);
     setVisible(false);
   }
 
-  function isURL(str) {
-    const pattern = new RegExp(
-      '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-      + '(\\#[-a-z\\d_]*)?$', 'i', // fragment locator
-    );
-    return !!pattern.test(str);
-  }
-
-  function getInviteCode(str) {
-    const len = str.length;
-    return str.substring(8, len);
+  function parseInvite(str) {
+    const strEnd = str.length;
+    const linkEnd = strEnd - 33;
+    const linkStart = linkEnd - 36;
+    return str.substring(linkStart, linkEnd);
   }
 
   async function submitCode(event) {
     event.preventDefault();
+    let invite = input;
 
     if (confirmLoading === true) {
       return;
@@ -54,15 +45,16 @@ function JoinGroupButton() {
 
     try {
       // Extracting the invite code from url if given a url
-      if (isURL(code) === true) {
-        const { pathname } = new URL(code);
-        const inviteCode = getInviteCode(pathname);
-        setCode(inviteCode);
+      if (invite.length < 36) {
+        // code is empty or too short to be an actual invite code
+        throw (new Error('Code cannot be empty or is too short to be an invite code.'));
+      } else if (invite.length > 36) {
+        // need to parse it out
+        invite = parseInvite(invite);
       }
 
       const id = localStorage.getItem('id');
-
-      const group = await API.joinGroup(id, code);
+      const group = await API.joinGroup(id, invite);
 
       dispatch({
         type: 'addGroup',
@@ -70,7 +62,7 @@ function JoinGroupButton() {
       });
     } catch (e) {
       setConfirmLoading(false);
-      setCode('');
+      setInput('');
       notification.error({
         message: 'Error Joining Group',
         description: e.message,
@@ -81,9 +73,9 @@ function JoinGroupButton() {
 
     notification.success({
       message: 'Joined Group',
-      key: 'join-groupsuccess',
+      key: 'join-group-success',
     });
-    setCode('');
+    setInput('');
     setVisible(false);
     setConfirmLoading(false);
   }
@@ -105,8 +97,8 @@ function JoinGroupButton() {
             <Input
               className="group-code-input"
               placeHolder='Example: xJwY394p'
-              onChange={event => setCode(event.target.value)}
-              value={code}
+              onChange={event => setInput(event.target.value)}
+              value={input}
             />
         </form>
       </Modal>
