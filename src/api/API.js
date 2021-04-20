@@ -34,6 +34,17 @@ axios.interceptors.response.use(response => response, error => {
  * @property {String} URL
  */
 
+/**
+ * @typedef GroupResponse
+ * @property {String} name
+ * @property {String} id
+ * @property {UserResponse} creator
+ * @property {ImageObject} thumbnail
+ * @property {Number} memberCount
+ * @property {Boolean} publicGroup
+ * @property {Array<UserResponse>} invitedUsers
+ */
+
 const API = {
   /**
    * Logs user into account.
@@ -77,7 +88,7 @@ const API = {
   async getInfo(token, id) {
     return axios.get(`/users/${id}`, {
       headers: { Authorization: token },
-    });
+    }).then(response => response.data);
   },
 
   /**
@@ -120,8 +131,14 @@ const API = {
       .then(response => response.data);
   },
 
+  /**
+   * Fetches the group with the given ID>
+   *
+   * @param {String} groupId The ID of the group to fetch.
+   * @returns {Promise<GroupResponse>} The group with the given ID
+   */
   async getGroup(groupId) {
-    axios.get(`/groups/${groupId}`).then(response => response.data);
+    return axios.get(`/groups/${groupId}`).then(response => response.data);
   },
 
   /**
@@ -147,7 +164,7 @@ const API = {
    *
    * @param {string} userId
    * @throws {APIError} On server error.
-   * @returns {Promise}
+   * @returns {Promise<Array<GroupResponse>>}
    */
   async getGroups(userId) {
     return axios.get(`/users/${userId}/groups`).then(response => response.data);
