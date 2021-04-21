@@ -62,7 +62,24 @@
     border: 1px solid transparent;
   }
 
-  .remove-all-btn:hover:not(:disabled),
+  .group-member-list-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .remove-all-btn,
+  .remove-all-btn:hover {
+    background-color: lighten(map-get($variant-colors, 'danger'), 45%);
+    color: darken(map-get($variant-colors, 'danger'), 10%);
+    border-color: darken(map-get($variant-colors, 'danger'), 10%);
+    width: 50%;
+  }
+
+  .remove-all-btn:disabled {
+    border-color: transparent;
+  }
+
   .delete-member-btn:hover {
     background-color: lighten(map-get($variant-colors, 'danger'), 45%);
     color: darken(map-get($variant-colors, 'danger'), 10%);
