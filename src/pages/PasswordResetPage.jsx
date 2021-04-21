@@ -7,6 +7,7 @@ import Card from '../components/Card.jsx';
 import TextInput from '../components/TextInput.jsx';
 import Button from '../components/Button.jsx';
 import '../scss/password-reset-page.scss';
+import API from '../api/API';
 
 const animationVariants = {
   hidden: {
@@ -25,7 +26,6 @@ const animationOpts = {
 };
 
 function PasswordResetPage({ userId }) {
-  /* eslint no-unused-vars: */
   const params = new URLSearchParams(window.location.search);
   const verificationCode = params.get('verificationCode');
   const [submitted, setSubmitted] = useState(false);
@@ -58,7 +58,8 @@ function PasswordResetPage({ userId }) {
         throw (new Error('Passwords do not match.'));
       }
 
-      // Make API call
+      API.passwordReset(userId, verificationCode, password);
+
       setSubmitted(true);
       notification.success({
         message: 'Password has been reset, navigating to home page.',
