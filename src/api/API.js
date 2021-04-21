@@ -17,6 +17,11 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.interceptors.response.use(
   response => response,
   error => {
+    if (axios.isCancel(error)) {
+      // 499 represents a request that was cancelled by the user
+      throw new APIError({ status: 499 });
+    }
+
     throw new APIError(error.response.data);
   },
 );
@@ -209,27 +214,36 @@ const API = {
    * @property {string?} caption
    *
    * @param {ImageUploadOptions} payload
+   * @param {ProgressEvent} onUploadProgress
+   * @param {import('axios').CancelToken} cancelToken - Specifies a cancel
+   *  token that can be used to cancel the request
+   *
    * @throws {APIError} On server error.
    * @returns {Promise<ImageUploadResponse>}
    */
-  async uploadGroupImage({
+  async uploadGroupImage(
+    payload,
+    onUploadProgress = () => {},
+    cancelToken = null,
+  ) {
     // prettier-ignore
-    image,
-    userId,
-    groupId,
-    caption,
-  }) {
-    const formDate = new FormData();
+    const {
+      image,
+      userId,
+      groupId,
+      caption = '',
+    } = payload;
+    const formData = new FormData();
 
-    formDate.append('groupPicture', image);
-    formDate.append('userId', userId);
-
-    if (caption) {
-      formDate.append('caption', caption);
-    }
+    formData.append('groupPicture', image);
+    formData.append('userId', userId);
+    formData.append('caption', caption);
 
     return axios
-      .put(`/groups/${groupId}/uploadImage`, formDate)
+      .put(`/groups/${groupId}/uploadImage`, formData, {
+        onUploadProgress,
+        cancelToken,
+      })
       .then(response => response.data);
   },
 
@@ -238,8 +252,10 @@ const API = {
    *
    * @param {string} groupId
    * @param {string[]} emails
+   *
+   * @returns {Promise}
+   * @throws {APIError} On server error.
    */
-
   async sendGroupInviteLink(groupId, emails) {
     return axios
       .post(`/groups/${groupId}/invite`, {
