@@ -21,6 +21,7 @@ import API from '../api/API';
 // 2 megabytes
 const MAX_FILE_SIZE = 2e6;
 const PROGRESS_NOTIFICATION_KEY = 'upload-progress';
+
 function ImageUploadModal({ visible, onClose }) {
   const [imageCaption, setImageCaption] = useState('');
   const [file, setFile] = useState(null);
@@ -66,8 +67,11 @@ function ImageUploadModal({ visible, onClose }) {
   );
 
   const onBeforeUpload = inputFile => {
-    setFile(inputFile);
+    // Set to false so the user doesn't have to choose this image
+    // again after the modal is closed
     setShouldDestroyOnClose(false);
+    setFile(inputFile);
+
     const image = new Image();
 
     image.src = URL.createObjectURL(inputFile);
@@ -109,14 +113,14 @@ function ImageUploadModal({ visible, onClose }) {
     // us from modifying that tab's title and styling so we need
     // to do that manually using document.write
     previewWindow.document.write(/* html */ `
-        <title>Preview - ImageUs</title>
-        <style>
-          body {
-            margin: 0;
-          }
-        </style>
-        <body>${previewImage.outerHTML}</body>
-      `);
+      <title>Preview - ImageUs</title>
+      <style>
+        body {
+          margin: 0;
+        }
+      </style>
+      <body>${previewImage.outerHTML}</body>
+    `);
   };
 
   const cancelUpload = () => {
@@ -168,6 +172,7 @@ function ImageUploadModal({ visible, onClose }) {
         payload: image,
       });
 
+      // Reset the state of the modal when the image finishes uploading
       setIsUploading(false);
       setFile(null);
       setImageCaption('');
@@ -200,7 +205,7 @@ function ImageUploadModal({ visible, onClose }) {
       description: <Progress active type="line" percent={uploadProgress} />,
     });
 
-    // Delay closing the notification
+    // Delay closing the notification when the upload completes
     if (uploadProgress === 100) {
       setTimeout(() => {
         notification.close(PROGRESS_NOTIFICATION_KEY);
@@ -223,7 +228,7 @@ function ImageUploadModal({ visible, onClose }) {
   // eslint-disable-next-line arrow-body-style
   useEffect(() => {
     // When switching groups, the notification won't update
-    // because this gets component gets unmounted, we need
+    // because this gets component gets unmounted. We need
     // to close the notification so it doesn't stay open
     return () => notification.close(PROGRESS_NOTIFICATION_KEY);
   }, []);
