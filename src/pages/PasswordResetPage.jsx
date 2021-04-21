@@ -29,6 +29,8 @@ function PasswordResetPage({ userId }) {
   const params = new URLSearchParams(window.location.search);
   const verificationCode = params.get('verificationCode');
   const [submitted, setSubmitted] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
   const history = useHistory();
 
   function isTrimmedEmpty(str) {
@@ -43,14 +45,10 @@ function PasswordResetPage({ userId }) {
 
   async function changePassword(event) {
     event.preventDefault();
-    const data = new FormData(event.target);
 
     try {
-      const password = data.get('password');
-      const confirmedPassword = data.get('confirmedPassword');
-
       if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g)) {
-        throw (new Error('Your password must be at least 8 characters long, include a lowercase letter, uppercase letter, a number, and a special character.'));
+        throw (new Error('Your password does not meet the requirements.'));
       }
 
       // Empty case
@@ -65,11 +63,11 @@ function PasswordResetPage({ userId }) {
 
       setSubmitted(true);
       notification.success({
-        message: 'Password has been reset. Please click the "Take me back" button to log in.',
+        description: 'Password has been reset. Please click the "Back to login" button to log in.',
       });
     } catch (err) {
       notification.error({
-        message: `${err.message}`,
+        description: 'Password was not reset.',
       });
     }
   }
@@ -95,23 +93,25 @@ function PasswordResetPage({ userId }) {
                 className="textbox"
                 type="password"
                 placeHolder="Enter a password"
-                name="password"
+                onChange={(c) => { setPassword(c); }}
               />
               <TextInput
                 className="textbox"
                 type="password"
                 placeHolder="Confirm your password"
-                name="confirmedPassword"
+                onChange={(c) => { setConfirmedPassword(c); }}
               />
               <Button
-                className="btn"
+                className="btn submit"
                 type="submit"
-                disabled={submitted}
+                disabled={
+                  submitted || isTrimmedEmpty(password) || isTrimmedEmpty(confirmedPassword)
+                }
               >
                 Reset Password
               </Button>
               <Button onClick={goBack} className="btn-link">
-                Take me back
+                Back to login
               </Button>
             </Card>
           </form>
