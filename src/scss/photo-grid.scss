@@ -55,15 +55,15 @@
 }
 
 .thumbnail-wrapper {
-  border-radius: 20px;
+  border-radius: $image-border-radius;
   margin: 10px;
   position: relative;
   transition: box-shadow 400ms ease-in-out;
   cursor: pointer;
 
   .thumbnail-caption {
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: $image-border-radius;
+    border-bottom-right-radius: $image-border-radius;
     background-color: hsla(0, 0%, 10%, 70%);
     color: white;
     padding: 6px;
@@ -108,7 +108,7 @@
   display: inline;
 
   img {
-    border-radius: 20px;
+    border-radius: $image-border-radius;
   }
 }
 

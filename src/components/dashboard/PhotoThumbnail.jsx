@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Image } from 'antd';
 import fallback from '../../assets/errorimage.png';
+import loadingSvg from '../../assets/no-photos.svg';
 
 function PhotoThumbnail({ src, caption }) {
+  const [isLoading, setLoading] = useState(true);
+
   return (
     <motion.div
       className="thumbnail-wrapper"
@@ -30,7 +33,12 @@ function PhotoThumbnail({ src, caption }) {
         },
       }}
     >
-      <Image className="photo-thumbnail" src={src} fallback={fallback} />
+      <Image
+        className="photo-thumbnail"
+        onLoad={() => setLoading(false)}
+        src={isLoading ? loadingSvg : src}
+        fallback={fallback}
+      />
       {caption && (
         <div className="thumbnail-caption">
           <p className="caption">{caption}</p>
