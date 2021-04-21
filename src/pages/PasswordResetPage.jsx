@@ -51,11 +51,6 @@ function PasswordResetPage({ userId }) {
         throw (new Error('Your password does not meet the requirements.'));
       }
 
-      // Empty case
-      if (isTrimmedEmpty(password) === true || isTrimmedEmpty(confirmedPassword) === true) {
-        throw (new Error('Password fields cannot be empty.'));
-      }
-      /// Different
       if (password !== confirmedPassword) {
         throw (new Error('Passwords do not match.'));
       }
