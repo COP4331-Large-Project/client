@@ -37,7 +37,9 @@ function RegisterCard({ switchCard }) {
       if (isTrimmedEmpty(data.email)) throw (new Error('Email input required.'));
       if (isTrimmedEmpty(data.password)) throw (new Error('Password input required.'));
       if (isTrimmedEmpty(data.confirmPassword)) throw (new Error('Confirm password input required.'));
-
+      if (!data.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g)) {
+        throw (new Error('Your password must be at least 8 characters long, include a lowercase letter, uppercase letter, a number, and a special character.'));
+      }
       setUserEmail(data.email);
 
       // Calling register API
