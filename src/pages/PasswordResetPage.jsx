@@ -49,6 +49,10 @@ function PasswordResetPage({ userId }) {
       const password = data.get('password');
       const confirmedPassword = data.get('confirmedPassword');
 
+      if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g)) {
+        throw (new Error('Your password must be at least 8 characters long, include a lowercase letter, uppercase letter, a number, and a special character.'));
+      }
+
       // Empty case
       if (isTrimmedEmpty(password) === true || isTrimmedEmpty(confirmedPassword) === true) {
         throw (new Error('Password fields cannot be empty.'));
