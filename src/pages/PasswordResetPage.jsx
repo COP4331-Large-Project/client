@@ -57,14 +57,11 @@ function PasswordResetPage({ userId }) {
       if (password !== confirmedPassword) {
         throw (new Error('Passwords do not match.'));
       }
-      // TODO: Password isnt actually reset so thats weird,
-      // TODO: Find a way to handle APIErrors.
       await API.passwordReset(userId, verificationCode, password);
 
       setSubmitted(true);
       notification.success({
-        message: 'Password has been reset, navigating to home page.',
-        duration: 2,
+        message: 'Password has been reset. Please click the "Take me back" button to log in.',
       });
     } catch (err) {
       notification.error({
