@@ -31,6 +31,7 @@ function LoginCard({ switchCard }) {
     try {
       const res = await API.login(data.get('Username'), data.get('Password'));
       const { token, id } = res;
+
       localStorage.setItem('token', token);
       localStorage.setItem('id', id);
     } catch (e) {
