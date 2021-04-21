@@ -9,6 +9,9 @@ function GroupMenu({ className }) {
   const openInviteModal = () => setInviteModalOpen(true);
   const closeInviteModal = () => setInviteModalOpen(false);
 
+  // The menu needs to be passed to ant as a variable and not
+  // a render function. Doing overlay={<Element />} causes the menu to
+  // stay open when an option is clicked.
   const menu = (
     <Menu>
       <Menu.Item onClick={openInviteModal}>Invite members</Menu.Item>
