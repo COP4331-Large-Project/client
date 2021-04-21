@@ -11,6 +11,10 @@
     margin-bottom: 16px;
   }
 
+  .cancel-btn:focus {
+    color: unset;
+  }
+
   .input-wrapper {
     margin-top: 16px;
   }

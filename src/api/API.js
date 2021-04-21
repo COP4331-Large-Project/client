@@ -14,9 +14,17 @@ axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Setup error interceptor
-axios.interceptors.response.use(response => response, error => {
-  throw new APIError(error.response.data);
-});
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (axios.isCancel(error)) {
+      // 499 represents a request that was cancelled by the user
+      throw new APIError({ status: 499 });
+    }
+
+    throw new APIError(error.response.data);
+  },
+);
 
 /**
  * @typedef UserResponse
@@ -96,9 +104,11 @@ const API = {
    * @returns {Promise<UserResponse>}
    */
   async getInfo(token, id) {
-    return axios.get(`/users/${id}`, {
-      headers: { Authorization: token },
-    }).then(response => response.data);
+    return axios
+      .get(`/users/${id}`, {
+        headers: { Authorization: token },
+      })
+      .then(response => response.data);
   },
 
   /**
@@ -110,8 +120,9 @@ const API = {
    * @returns {Promise}
    */
   async requestEmailVerificationLink(email) {
-    return (await axios.post('/users/resendVerificationEmail', { email }))
-      .then(response => response.data);
+    return (await axios.post('/users/resendVerificationEmail', { email })).then(
+      response => response.data,
+    );
   },
 
   /**
@@ -124,7 +135,8 @@ const API = {
    * @returns {Promise}
    */
   async verifyEmail(userId, verificationCode) {
-    return axios.post(`/users/${userId}/verify`, { verificationCode })
+    return axios
+      .post(`/users/${userId}/verify`, { verificationCode })
       .then(response => response.data);
   },
 
@@ -137,7 +149,8 @@ const API = {
    * @returns {Promise}
    */
   async joinGroup(userId, inviteCode) {
-    return axios.post(`/groups/${inviteCode}/join`, { user: userId })
+    return axios
+      .post(`/groups/${inviteCode}/join`, { user: userId })
       .then(response => response.data);
   },
 
@@ -201,26 +214,38 @@ const API = {
    * @property {string?} caption
    *
    * @param {ImageUploadOptions} payload
+   * @param {ProgressEvent} onUploadProgress
+   * @param {import('axios').CancelToken} cancelToken
    * @throws {APIError} On server error.
    * @returns {Promise<ImageUploadResponse>}
    */
-  async uploadGroupImage({
+  async uploadGroupImage(
+    payload,
+    onUploadProgress = () => {},
+    cancelToken = null,
+  ) {
     // prettier-ignore
-    image,
-    userId,
-    groupId,
-    caption,
-  }) {
-    const formDate = new FormData();
+    const {
+      image,
+      userId,
+      groupId,
+      caption,
+    } = payload;
+    const formData = new FormData();
 
-    formDate.append('groupPicture', image);
-    formDate.append('userId', userId);
+    formData.append('groupPicture', image);
+    formData.append('userId', userId);
 
     if (caption) {
-      formDate.append('caption', caption);
+      formData.append('caption', caption);
     }
 
-    return axios.put(`/groups/${groupId}/uploadImage`, formDate).then(response => response.data);
+    return axios
+      .put(`/groups/${groupId}/uploadImage`, formData, {
+        onUploadProgress,
+        cancelToken,
+      })
+      .then(response => response.data);
   },
 };
 
