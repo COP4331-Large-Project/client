@@ -1,6 +1,7 @@
 // These options are ONLY disabled to keep prettier from fighting eslint
 /* eslint-disable operator-linebreak */
 /* eslint-disable implicit-arrow-linebreak */
+import axios from 'axios';
 import APIError from './APIError';
 
 const BASE_URL =
@@ -8,48 +9,14 @@ const BASE_URL =
     ? 'https://api.imageus.io'
     : 'http://localhost:5000';
 
-const relURL = path => BASE_URL + path;
+// Setup Axios defaults
+axios.defaults.baseURL = BASE_URL;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-/**
- * Handles the response from the server.
- *
- * @param {Response} response
- * @throws {APIError} On server error.
- * @returns {Promise<Object>}
- */
-const handleResponse = async response => {
-  if (!response.ok) {
-    const errBody = await response.json();
-    throw new APIError(errBody);
-  }
-
-  // There was an empty response from the server (no content)
-  // so we need to return an empty object
-  if (response.status === 204) {
-    return {};
-  }
-
-  return response.json();
-};
-
-const postOptions = body => ({
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(body),
+// Setup error interceptor
+axios.interceptors.response.use(response => response, error => {
+  throw new APIError(error.response.data);
 });
-
-const getOptions = token => {
-  const options = {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  };
-
-  if (token) {
-    options.headers.Authorization = token;
-  }
-
-  return options;
-};
 
 /**
  * @typedef UserResponse
@@ -68,6 +35,16 @@ const getOptions = token => {
  */
 
 /**
+ * @typedef GroupResponse
+ * @property {String} name
+ * @property {String} id
+ * @property {UserResponse} creator
+ * @property {ImageObject} thumbnail
+ * @property {Number} memberCount
+ * @property {Boolean} publicGroup
+ * @property {Array<UserResponse>} invitedUsers
+
+/*
  * @typedef ImageUploadResponse
  * @property {String} caption
  * @property {String} fileName
@@ -87,11 +64,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  login: async (username, password) => {
+  async login(username, password) {
     const payload = { username, password };
-    return fetch(relURL('/users/login'), postOptions(payload)).then(
-      handleResponse,
-    );
+    return (await axios.post('/users/login', payload)).data;
   },
 
   /**
@@ -108,8 +83,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  register: async payload =>
-    fetch(relURL('/users/'), postOptions(payload)).then(handleResponse),
+  async register(payload) {
+    return axios.post('/users/', payload).then(response => response.data);
+  },
 
   /**
    * Fetches user info.
@@ -119,8 +95,11 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<UserResponse>}
    */
-  getInfo: async (token, id) =>
-    fetch(relURL(`/users/${id}`), getOptions(token)).then(handleResponse),
+  async getInfo(token, id) {
+    return axios.get(`/users/${id}`, {
+      headers: { Authorization: token },
+    }).then(response => response.data);
+  },
 
   /**
    * Takes an email address and makes a request to send
@@ -130,11 +109,10 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  requestEmailVerificationLink: async email =>
-    fetch(
-      relURL('/users/resendVerificationEmail'),
-      postOptions({ email }),
-    ).then(handleResponse),
+  async requestEmailVerificationLink(email) {
+    return (await axios.post('/users/resendVerificationEmail', { email }))
+      .then(response => response.data);
+  },
 
   /**
    * Verifies a users email. The verification code should match
@@ -145,11 +123,10 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  verifyEmail: async (userId, verificationCode) =>
-    fetch(
-      relURL(`/users/${userId}/verify`),
-      postOptions({ verificationCode }),
-    ).then(handleResponse),
+  async verifyEmail(userId, verificationCode) {
+    return axios.post(`/users/${userId}/verify`, { verificationCode })
+      .then(response => response.data);
+  },
 
   /**
    * Joins a group with the given invite code.
@@ -159,21 +136,20 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  joinGroup: async (userId, inviteCode) =>
-    fetch(
-      relURL(`/groups/${inviteCode}/join`),
-      postOptions({ user: userId }),
-    ).then(handleResponse),
+  async joinGroup(userId, inviteCode) {
+    return axios.post(`/groups/${inviteCode}/join`, { user: userId })
+      .then(response => response.data);
+  },
 
   /**
-   * Gets a group with the given id.
+   * Fetches the group with the given ID>
    *
-   * @param {string} groupId
-   * @throws {APIError} On server error
-   * @returns {Promise}
+   * @param {String} groupId The ID of the group to fetch.
+   * @returns {Promise<GroupResponse>} The group with the given ID
    */
-  getGroup: async groupId =>
-    fetch(relURL(`/groups/${groupId}`)).then(handleResponse),
+  async getGroup(groupId) {
+    return axios.get(`/groups/${groupId}`).then(response => response.data);
+  },
 
   /**
    * Creates a new group with the given options.
@@ -189,18 +165,20 @@ const API = {
    * @throws {APIError} On server error
    * @returns {Promise}
    */
-  createGroup: async payload =>
-    fetch(relURL('/groups'), postOptions(payload)).then(handleResponse),
+  async createGroup(payload) {
+    return axios.post('/groups', payload).then(response => response.data);
+  },
 
   /**
    * Gets the list of groups that the user is in.
    *
    * @param {string} userId
    * @throws {APIError} On server error.
-   * @returns {Promise}
+   * @returns {Promise<Array<GroupResponse>>}
    */
-  getGroups: async userId =>
-    fetch(relURL(`/users/${userId}/groups`)).then(handleResponse),
+  async getGroups(userId) {
+    return axios.get(`/users/${userId}/groups`).then(response => response.data);
+  },
 
   /**
    * Gets the list of images for the given group.
@@ -209,8 +187,9 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<{ images: ImageObject[] }>}
    */
-  getGroupImages: async groupId =>
-    fetch(relURL(`/groups/${groupId}/images`)).then(handleResponse),
+  async getGroupImages(groupId) {
+    return (await axios.get(`/groups/${groupId}/images`)).data;
+  },
 
   /**
    * Uploads an image or GIF to the specified group.
@@ -225,13 +204,13 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<ImageUploadResponse>}
    */
-  uploadGroupImage: async ({
+  async uploadGroupImage({
     // prettier-ignore
     image,
     userId,
     groupId,
     caption,
-  }) => {
+  }) {
     const formDate = new FormData();
 
     formDate.append('groupPicture', image);
@@ -241,14 +220,7 @@ const API = {
       formDate.append('caption', caption);
     }
 
-    const options = {
-      method: 'PUT',
-      body: formDate,
-    };
-
-    return fetch(relURL(`/groups/${groupId}/uploadImage`), options).then(
-      handleResponse,
-    );
+    return axios.put(`/groups/${groupId}/uploadImage`, formDate).then(response => response.data);
   },
 };
 
