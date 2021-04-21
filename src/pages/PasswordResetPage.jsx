@@ -52,7 +52,11 @@ function PasswordResetPage({ userId }) {
       }
 
       if (password !== confirmedPassword) {
-        throw (new Error('Passwords do not match.'));
+        notification.error({
+          description: 'Passwords do not match',
+        });
+
+        return;
       }
       await API.passwordReset(userId, verificationCode, password);
 
