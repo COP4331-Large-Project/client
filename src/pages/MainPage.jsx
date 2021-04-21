@@ -58,7 +58,7 @@ function MainPage() {
 
   async function getGroups(userId) {
     try {
-      return await API.getGroups(userId);
+      return API.getGroups(userId);
     } catch (e) {
       notification.error({
         key: 'error-init',
