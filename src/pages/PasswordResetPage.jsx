@@ -41,7 +41,7 @@ function PasswordResetPage({ userId }) {
     setSubmitted(false);
   }
 
-  function changePassword(event) {
+  async function changePassword(event) {
     event.preventDefault();
     const data = new FormData(event.target);
 
@@ -57,16 +57,15 @@ function PasswordResetPage({ userId }) {
       if (password !== confirmedPassword) {
         throw (new Error('Passwords do not match.'));
       }
-
-      API.passwordReset(userId, verificationCode, password);
+      // TODO: Password isnt actually reset so thats weird,
+      // TODO: Find a way to handle APIErrors.
+      await API.passwordReset(userId, verificationCode, password);
 
       setSubmitted(true);
       notification.success({
         message: 'Password has been reset, navigating to home page.',
         duration: 2,
       });
-
-      setTimeout(() => { goBack(); }, 2000);
     } catch (err) {
       notification.error({
         message: `${err.message}`,
