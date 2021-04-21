@@ -112,6 +112,7 @@ function MemberInviteModal({ visible, onClose }) {
   return (
     <Modal
       centered
+      destroyOnClose
       title="Invite Members"
       className="member-invite-modal"
       visible={visible}
@@ -126,6 +127,7 @@ function MemberInviteModal({ visible, onClose }) {
       <form className="group-member-container" onSubmit={addMember}>
         <p className="input-title">Email</p>
         <Input.Search
+          autoFocus
           type="email"
           onInput={event => setMemberEmail(event.target.value)}
           value={memberEmail}
