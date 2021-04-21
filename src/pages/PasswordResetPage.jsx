@@ -121,8 +121,4 @@ PasswordResetPage.propTypes = {
   userId: PropTypes.string.isRequired,
 };
 
-PasswordResetPage.defaultProps = {
-  userId: '',
-};
-
 export default PasswordResetPage;
