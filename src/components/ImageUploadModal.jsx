@@ -1,5 +1,5 @@
 import '../scss/image-upload-modal.scss';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -8,9 +8,11 @@ import {
   Input,
   Tooltip,
   notification,
+  Progress,
 } from 'antd';
 import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
+import axios from 'axios';
 import GroupStateContext from '../contexts/GroupStateContext.jsx';
 import UserContext from '../contexts/UserContext.jsx';
 import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
@@ -18,13 +20,21 @@ import API from '../api/API';
 
 // 2 megabytes
 const MAX_FILE_SIZE = 2e6;
-
+const PROGRESS_NOTIFICATION_KEY = 'upload-progress';
 function ImageUploadModal({ visible, onClose }) {
   const [imageCaption, setImageCaption] = useState('');
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState(new Image());
   const [hasError, setHasError] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(-1);
+  const [cancelTokenSource, setCancelTokenSource] = useState(
+    axios.CancelToken.source(),
+  );
+  // This allows us to keep the current state of the modal if the user
+  // has selected a file, but hasn't uploaded it yet.
+  const [shouldDestroyOnClose, setShouldDestroyOnClose] = useState(true);
+
   const { groups, index } = useContext(GroupStateContext);
   const dispatch = useContext(GroupContextDispatch);
   const user = useContext(UserContext);
@@ -57,6 +67,7 @@ function ImageUploadModal({ visible, onClose }) {
 
   const onBeforeUpload = inputFile => {
     setFile(inputFile);
+    setShouldDestroyOnClose(false);
     const image = new Image();
 
     image.src = URL.createObjectURL(inputFile);
@@ -81,6 +92,7 @@ function ImageUploadModal({ visible, onClose }) {
   const onFileRemoved = () => {
     setFile(null);
     setHasError(false);
+    setShouldDestroyOnClose(true);
   };
 
   const onRequestPreview = ({ thumbUrl }) => {
@@ -107,10 +119,14 @@ function ImageUploadModal({ visible, onClose }) {
       `);
   };
 
-  // Make sure the state resets when the modal is closed
-  const onRequestClose = () => {
+  const cancelUpload = () => {
+    cancelTokenSource.cancel();
+    notification.close(PROGRESS_NOTIFICATION_KEY);
     setIsUploading(false);
-    onClose();
+  };
+
+  const onUploadProgress = event => {
+    setUploadProgress(Math.round((event.loaded * 100) / event.total));
   };
 
   const uploadImage = async event => {
@@ -136,29 +152,61 @@ function ImageUploadModal({ visible, onClose }) {
     setIsUploading(true);
 
     try {
-      const image = await API.uploadGroupImage({
-        image: file,
-        caption: imageCaption,
-        userId: user.id,
-        groupId: groups[index].id,
-      });
+      const image = await API.uploadGroupImage(
+        {
+          image: file,
+          caption: imageCaption.trim(),
+          userId: user.id,
+          groupId: groups[index].id,
+        },
+        onUploadProgress,
+        cancelTokenSource.token,
+      );
 
       dispatch({
         type: 'addImage',
         payload: image,
       });
 
-      // Reset the state of the modal only when an
-      // image upload was successful.
+      setIsUploading(false);
       setFile(null);
       setImageCaption('');
-      onRequestClose();
+      setShouldDestroyOnClose(true);
+      onClose();
     } catch (err) {
-      setHasError(true);
+      notification.close(PROGRESS_NOTIFICATION_KEY);
+      setIsUploading(false);
+
+      if (err.status !== 499) {
+        setHasError(true);
+      }
     }
 
-    setIsUploading(false);
+    // A new cancel token needs to be generated on each request
+    // https://github.com/axios/axios/issues/904#issuecomment-322054741
+    setCancelTokenSource(axios.CancelToken.source());
   };
+
+  useEffect(() => {
+    if (uploadProgress === -1) {
+      return;
+    }
+
+    notification.open({
+      key: PROGRESS_NOTIFICATION_KEY,
+      closeIcon: <div />,
+      duration: 0,
+      message: 'Uploading Image',
+      description: <Progress active type="line" percent={uploadProgress} />,
+    });
+
+    // Delay closing the notification
+    if (uploadProgress === 100) {
+      setTimeout(() => {
+        notification.close(PROGRESS_NOTIFICATION_KEY);
+      }, 3000);
+    }
+  }, [uploadProgress]);
 
   const getOkText = () => {
     if (isUploading) {
@@ -172,12 +220,18 @@ function ImageUploadModal({ visible, onClose }) {
     return 'Upload';
   };
 
+  // eslint-disable-next-line arrow-body-style
+  useEffect(() => {
+    // When switching groups, the notification won't update
+    // because this gets component gets unmounted, we need
+    // to close the notification so it doesn't stay open
+    return () => notification.close(PROGRESS_NOTIFICATION_KEY);
+  }, []);
+
   return (
     <Modal
       centered
-      // This allows the modal to keep its state if the user
-      // closes it before they finish uploading the file
-      destroyOnClose={file === null}
+      destroyOnClose={shouldDestroyOnClose}
       title="Upload Image"
       visible={visible}
       className="image-upload-modal"
@@ -185,13 +239,15 @@ function ImageUploadModal({ visible, onClose }) {
         disabled: file === null,
         loading: isUploading,
       }}
-      cancelButtonProps={{ danger: isUploading }}
+      cancelButtonProps={{
+        className: 'cancel-btn',
+        danger: isUploading,
+        onClick: isUploading ? cancelUpload : onClose,
+      }}
       cancelText={isUploading ? 'Cancel' : 'Close'}
       onOk={uploadImage}
-      onCancel={onRequestClose}
+      onCancel={onClose}
       okText={getOkText()}
-      // Prevents the modal from closing when clicking on the overlay
-      maskClosable={false}
     >
       {hasError && (
         <Alert
