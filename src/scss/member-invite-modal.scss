@@ -1,0 +1,88 @@
+@import 'variables';
+
+.member-invite-modal {
+  .ant-list-empty-text {
+    display: none;
+  }
+
+  .ant-input-group-addon > .ant-input-search-button {
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    height: 37px;
+    box-sizing: content-box;
+    border: 1px solid #1890ff;
+
+    &:not(:disabled) {
+      background-color: lighten(map-get($variant-colors, 'primary'), 58%);
+    }
+
+    &:disabled {
+      border: 1px solid hsl(0, 0%, 78%);
+    }
+  }
+
+  .ant-list-footer {
+    padding-bottom: 0;
+  }
+
+  .group-member-list {
+    max-height: 275px;
+    overflow: auto;
+    margin-top: 8px;
+  }
+
+  .input-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-left: 4px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  }
+
+  .description {
+    margin-bottom: 0;
+    margin-top: 8px;
+    font-size: 15px;
+    color: hsl(0, 0%, 40%);
+  }
+
+  .input-icon {
+    color: darken(map-get($variant-colors, 'primary'), 10%);
+  }
+
+  .remove-all-btn {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    padding: 10px 15px;
+    height: unset;
+    font-size: 16px;
+    color: hsl(0, 0%, 30%);
+    border: 1px solid transparent;
+  }
+
+  .group-member-list-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .remove-all-btn,
+  .remove-all-btn:hover {
+    background-color: lighten(map-get($variant-colors, 'danger'), 45%);
+    color: darken(map-get($variant-colors, 'danger'), 10%);
+    border-color: darken(map-get($variant-colors, 'danger'), 10%);
+    width: 50%;
+  }
+
+  .remove-all-btn:disabled {
+    border-color: transparent;
+  }
+
+  .delete-member-btn:hover {
+    background-color: lighten(map-get($variant-colors, 'danger'), 45%);
+    color: darken(map-get($variant-colors, 'danger'), 10%);
+    border-color: darken(map-get($variant-colors, 'danger'), 10%);
+  }
+}

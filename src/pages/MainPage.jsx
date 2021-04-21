@@ -2,8 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
-import { Button, notification, Skeleton } from 'antd';
-import { BsThreeDots } from 'react-icons/bs';
+import { notification, Skeleton } from 'antd';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
@@ -13,6 +12,7 @@ import GroupDispatchContext, {
   groupReducer,
 } from '../contexts/GroupsContextDispatch.jsx';
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
 
 function MainPage() {
@@ -193,9 +193,7 @@ function MainPage() {
                         {groupTitle}
                       </h1>
                       {groupData.groups.length > 0 && (
-                        <Button className="group-action-btn" type="primary">
-                          <BsThreeDots />
-                        </Button>
+                        <GroupMenuButton className="group-action-btn" />
                       )}
                     </div>
                   </Skeleton>

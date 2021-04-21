@@ -6,6 +6,23 @@ import LoadingContext from '../../contexts/LoadingContext.jsx';
 
 function GroupList({ groups, activeIndex, onGroupClick }) {
   const { groupsLoading } = useContext(LoadingContext);
+  const publicGroups = [];
+  const privateGroups = [];
+
+  groups.forEach((group, index) => {
+    // Because the groups are in two different arrays, we need
+    // to save the index since they both have different indices.
+    const groupObj = {
+      ...group,
+      groupIndex: index,
+    };
+
+    if (group.publicGroup) {
+      publicGroups.push(groupObj);
+    } else {
+      privateGroups.push(groupObj);
+    }
+  });
 
   const getMemberText = members => {
     if (members === 1) {
@@ -21,10 +38,16 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
     </Avatar>
   );
 
-  const renderListItem = ({ name, thumbnail, memberCount }, index) => (
-    <List.Item onClick={() => onGroupClick(index)} title={name}>
+  // prettier-ignore
+  const renderListItem = ({
+    name,
+    thumbnail,
+    memberCount,
+    groupIndex,
+  }) => (
+    <List.Item onClick={() => onGroupClick(groupIndex)} title={name}>
       <List.Item.Meta
-        className={index === activeIndex ? 'selected' : ''}
+        className={groupIndex === activeIndex ? 'selected' : ''}
         avatar={renderGroupImage(thumbnail, name)}
         title={name}
         description={getMemberText(memberCount || 1)}
@@ -35,7 +58,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
   return (
     <div className="group-list">
       <List
-        dataSource={groups}
+        dataSource={publicGroups}
         header={
           <p className="list-header">
             {groupsLoading ? 'Loading groups...' : 'Your Groups'}
@@ -51,6 +74,14 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
         }}
         renderItem={renderListItem}
       />
+      {!groupsLoading && privateGroups.length > 0 && (
+        <List
+          className="group-list-private"
+          dataSource={privateGroups}
+          header={<p className="list-header">Private Groups</p>}
+          renderItem={renderListItem}
+        />
+      )}
     </div>
   );
 }

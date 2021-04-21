@@ -215,7 +215,9 @@ const API = {
    *
    * @param {ImageUploadOptions} payload
    * @param {ProgressEvent} onUploadProgress
-   * @param {import('axios').CancelToken} cancelToken
+   * @param {import('axios').CancelToken} cancelToken - Specifies a cancel
+   *  token that can be used to cancel the request
+   *
    * @throws {APIError} On server error.
    * @returns {Promise<ImageUploadResponse>}
    */
@@ -229,21 +231,36 @@ const API = {
       image,
       userId,
       groupId,
-      caption,
+      caption = '',
     } = payload;
     const formData = new FormData();
 
     formData.append('groupPicture', image);
     formData.append('userId', userId);
-
-    if (caption) {
-      formData.append('caption', caption);
-    }
+    formData.append('caption', caption);
 
     return axios
       .put(`/groups/${groupId}/uploadImage`, formData, {
         onUploadProgress,
         cancelToken,
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Sends an invitation email to each provided email.
+   *
+   * @param {string} groupId
+   * @param {string[]} emails
+   *
+   * @returns {Promise}
+   * @throws {APIError} On server error.
+   */
+  async sendGroupInviteLink(groupId, emails) {
+    return axios
+      .post(`/groups/${groupId}/invite`, {
+        groupId,
+        emails,
       })
       .then(response => response.data);
   },
