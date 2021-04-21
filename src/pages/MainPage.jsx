@@ -2,7 +2,12 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
-import { Button, notification, Skeleton } from 'antd';
+import {
+  Button,
+  notification,
+  Skeleton,
+  Dropdown,
+} from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
@@ -14,6 +19,7 @@ import GroupDispatchContext, {
 } from '../contexts/GroupsContextDispatch.jsx';
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
+import GroupsMenu from '../components/dashboard/GroupsMenu.jsx';
 
 function MainPage() {
   const [user, setUser] = useState({});
@@ -193,9 +199,14 @@ function MainPage() {
                         {groupTitle}
                       </h1>
                       {groupData.groups.length > 0 && (
+                        <Dropdown
+                        overlay={<GroupsMenu/>}
+                        trigger={['click']}
+                      >
                         <Button className="group-action-btn" type="primary">
-                          <BsThreeDots />
-                        </Button>
+                            <BsThreeDots />
+                          </Button>
+                        </Dropdown>
                       )}
                     </div>
                   </Skeleton>
