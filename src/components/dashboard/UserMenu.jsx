@@ -2,19 +2,16 @@ import React, { useContext } from 'react';
 import { Menu, notification } from 'antd';
 import PropTypes from 'prop-types';
 import UserContext from '../../contexts/UserContext.jsx';
-// import API from '../../api/API';
+import API from '../../api/API';
 
 function UserMenu({ onLogout }) {
   const { email } = useContext(UserContext);
 
   async function sendResetEmail() {
     try {
-      // Need to test with invalid email
-      // await API.passwordRecovery(email);
+      await API.passwordRecovery(email);
       notification.warning({
-        // Test message, will be changed
-        message: 'This message needs to be changed.',
-        description: `You have been logged out. Please check ${email} for a link to reset your password.`,
+        message: 'You have been logged out. Please check your email for a link to reset your password.',
       });
       onLogout();
     } catch (err) {
