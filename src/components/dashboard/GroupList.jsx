@@ -1,9 +1,11 @@
 import '../../scss/group-list.scss';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Avatar, List } from 'antd';
 import PropTypes from 'prop-types';
+import LoadingContext from '../../contexts/LoadingContext.jsx';
 
 function GroupList({ groups, activeIndex, onGroupClick }) {
+  const { groupsLoading } = useContext(LoadingContext);
   const publicGroups = [];
   const privateGroups = [];
 
@@ -57,7 +59,12 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
     <div className="group-list">
       <List
         dataSource={publicGroups}
-        header={<p className="list-header">Your Groups</p>}
+        header={
+          <p className="list-header">
+            {groupsLoading ? 'Loading groups...' : 'Your Groups'}
+          </p>
+        }
+        loading={groupsLoading}
         locale={{
           emptyText: `
             Looks like you’re not a member of any groups yet. Click the
@@ -67,7 +74,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
         }}
         renderItem={renderListItem}
       />
-      {privateGroups.length > 0 && (
+      {!groupsLoading && privateGroups.length > 0 && (
         <List
           className="group-list-private"
           dataSource={privateGroups}

@@ -1,20 +1,69 @@
 @import 'variables';
 
+.photo-grid-container {
+  display: flex;
+  flex: 1;
+
+  &.loading {
+    justify-content: center;
+    align-items: center;
+    // Not using flex: 1 here since that can make the
+    // loading overlay seem slightly off center.
+    flex: 0.87;
+  }
+
+  .ant-spin-text {
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    color: hsl(0, 0%, 30%);
+  }
+
+  .empty-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 0;
+      margin-top: 24px;
+    }
+
+    .description {
+      font-size: 18px;
+      color: hsl(0, 0%, 40%);
+      text-align: center;
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    }
+  }
+
+  .empty-img {
+    width: 40%;
+    max-width: 40%;
+    min-width: 300px;
+  }
+}
+
 .photo-grid {
   display: flex;
   flex-wrap: wrap;
 }
 
 .thumbnail-wrapper {
-  border-radius: 20px;
+  border-radius: $image-border-radius;
   margin: 10px;
   position: relative;
   transition: box-shadow 400ms ease-in-out;
   cursor: pointer;
 
   .thumbnail-caption {
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: $image-border-radius;
+    border-bottom-right-radius: $image-border-radius;
     background-color: hsla(0, 0%, 10%, 70%);
     color: white;
     padding: 6px;
@@ -42,6 +91,19 @@
       opacity: 1;
     }
   }
+
+  .loading-spinner {
+    border-radius: $image-border-radius;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(#9dd3ff, 0.1);
+  }
 }
 
 .photo-thumbnail {
@@ -59,7 +121,7 @@
   display: inline;
 
   img {
-    border-radius: 20px;
+    border-radius: $image-border-radius;
   }
 }
 
