@@ -34,6 +34,7 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
   const history = useHistory();
 
   const loadingStates = {
@@ -160,6 +161,9 @@ function MainPage() {
     if (groups.length > 0) {
       const group = groups[index];
 
+      /* eslint no-underscore-dangle: */
+      setIsOwner(group.creator[0]._id === user.id);
+
       setGroupTitle(group.name);
       setLoadingImages(true);
 
@@ -200,7 +204,12 @@ function MainPage() {
                       </h1>
                       {groupData.groups.length > 0 && (
                         <Dropdown
-                        overlay={<GroupsMenu/>}
+                        overlay={
+                          <GroupsMenu
+                            isOwner={isOwner}
+                            groupId={groupData.groups[groupData.index].id}
+                          />
+                        }
                         trigger={['click']}
                       >
                         <Button className="group-action-btn" type="primary">
