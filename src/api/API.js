@@ -14,9 +14,12 @@ axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Setup error interceptor
-axios.interceptors.response.use(response => response, error => {
-  throw new APIError(error.response.data);
-});
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    throw new APIError(error.response.data);
+  },
+);
 
 /**
  * @typedef UserResponse
@@ -96,9 +99,11 @@ const API = {
    * @returns {Promise<UserResponse>}
    */
   async getInfo(token, id) {
-    return axios.get(`/users/${id}`, {
-      headers: { Authorization: token },
-    }).then(response => response.data);
+    return axios
+      .get(`/users/${id}`, {
+        headers: { Authorization: token },
+      })
+      .then(response => response.data);
   },
 
   /**
@@ -110,8 +115,9 @@ const API = {
    * @returns {Promise}
    */
   async requestEmailVerificationLink(email) {
-    return (await axios.post('/users/resendVerificationEmail', { email }))
-      .then(response => response.data);
+    return (await axios.post('/users/resendVerificationEmail', { email })).then(
+      response => response.data,
+    );
   },
 
   /**
@@ -124,7 +130,8 @@ const API = {
    * @returns {Promise}
    */
   async verifyEmail(userId, verificationCode) {
-    return axios.post(`/users/${userId}/verify`, { verificationCode })
+    return axios
+      .post(`/users/${userId}/verify`, { verificationCode })
       .then(response => response.data);
   },
 
@@ -137,7 +144,8 @@ const API = {
    * @returns {Promise}
    */
   async joinGroup(userId, inviteCode) {
-    return axios.post(`/groups/${inviteCode}/join`, { user: userId })
+    return axios
+      .post(`/groups/${inviteCode}/join`, { user: userId })
       .then(response => response.data);
   },
 
@@ -220,7 +228,9 @@ const API = {
       formDate.append('caption', caption);
     }
 
-    return axios.put(`/groups/${groupId}/uploadImage`, formDate).then(response => response.data);
+    return axios
+      .put(`/groups/${groupId}/uploadImage`, formDate)
+      .then(response => response.data);
   },
 
   /**
@@ -229,11 +239,15 @@ const API = {
    * @param {string} groupId
    * @param {string[]} emails
    */
-  sendGroupInviteLink: async (groupId, emails) =>
-    fetch(
-      relURL(`/groups/${groupId}/invite`),
-      postOptions({ emails }),
-    ).then(handleResponse),
+
+  async sendGroupInviteLink(groupId, emails) {
+    return axios
+      .post(`/groups/${groupId}/invite`, {
+        groupId,
+        emails,
+      })
+      .then(response => response.data);
+  },
 };
 
 export default API;
