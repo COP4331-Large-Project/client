@@ -58,7 +58,7 @@ function PhotoGrid({ photos }) {
           }}
           transition={{
             ease: 'easeOut',
-            duration: 0.3,
+            duration: 0.7,
             type: 'spring',
             bounce: 0.25,
           }}

@@ -26,8 +26,8 @@ function MainPage() {
     index: -1,
   });
   const [groupTitle, setGroupTitle] = useState('');
-  const [isLoadingGroups, setLoadingGroups] = useState(false);
-  const [isLoadingImages, setLoadingImages] = useState(false);
+  const [isLoadingGroups, setLoadingGroups] = useState(true);
+  const [isLoadingImages, setLoadingImages] = useState(true);
   const history = useHistory();
 
   const loadingStates = {
@@ -120,14 +120,16 @@ function MainPage() {
     const groups = await getGroups(id);
 
     if (!groups) {
+      setLoadingImages(false);
       return;
     }
 
     let images = [];
 
     if (groups.length > 0) {
-      setLoadingImages(true);
       images = await getGroupImages(groups[0].id);
+      setLoadingImages(false);
+    } else {
       setLoadingImages(false);
     }
 
@@ -156,7 +158,12 @@ function MainPage() {
       setLoadingImages(true);
 
       const images = await getGroupImages(group.id);
-      setLoadingImages(false);
+
+      setTimeout(() => {
+        // Delaying this set state call makes the photo
+        // grid mount animation a little bit smoother
+        setLoadingImages(false);
+      }, 500);
 
       dispatch({
         type: 'setImages',

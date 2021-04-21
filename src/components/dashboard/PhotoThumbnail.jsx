@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { Image } from 'antd';
+import { Image, Spin } from 'antd';
 import fallback from '../../assets/errorimage.png';
-import loadingSvg from '../../assets/no-photos.svg';
 
 function PhotoThumbnail({ src, caption }) {
   const [isLoading, setLoading] = useState(true);
@@ -36,9 +35,15 @@ function PhotoThumbnail({ src, caption }) {
       <Image
         className="photo-thumbnail"
         onLoad={() => setLoading(false)}
-        src={isLoading ? loadingSvg : src}
+        src={src}
         fallback={fallback}
+        loading="lazy"
       />
+      {isLoading && (
+        <div className="loading-spinner">
+          <Spin size="large" />
+        </div>
+      )}
       {caption && (
         <div className="thumbnail-caption">
           <p className="caption">{caption}</p>

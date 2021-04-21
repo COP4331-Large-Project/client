@@ -60,6 +60,9 @@
   position: relative;
   transition: box-shadow 400ms ease-in-out;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .thumbnail-caption {
     border-bottom-left-radius: $image-border-radius;
@@ -90,6 +93,10 @@
     .thumbnail-caption {
       opacity: 1;
     }
+  }
+
+  .loading-spinner {
+    position: absolute;
   }
 }
 
