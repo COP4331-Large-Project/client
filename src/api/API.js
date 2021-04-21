@@ -222,6 +222,19 @@ const API = {
 
     return axios.put(`/groups/${groupId}/uploadImage`, formDate).then(response => response.data);
   },
+
+  /**
+   * Sends password reset email to entered email.
+   *
+   * @param {String} email
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  async passwordRecovery(email) {
+    const payload = { email };
+    return (await axios.post('/users/passwordRecovery', payload)).data;
+  },
+
 };
 
 export default API;
