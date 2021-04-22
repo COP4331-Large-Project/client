@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
 import GroupInvitePage from './pages/GroupInvitePage.jsx';
 import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
+import PasswordResetPage from './pages/PasswordResetPage.jsx';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css';
 import './scss/ant-overrides.scss';
@@ -31,6 +32,13 @@ ReactDOM.render(
           path="/invite/:inviteCode"
           render={props => (
             <GroupInvitePage inviteCode={props.match.params.inviteCode} />
+          )}
+        />
+        <Route
+          exact
+          path="/users/:userId/password-reset"
+          render={props => (
+            <PasswordResetPage userId={props.match.params.userId} />
           )}
         />
       </Switch>

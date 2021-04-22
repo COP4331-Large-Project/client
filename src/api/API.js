@@ -215,7 +215,9 @@ const API = {
    *
    * @param {ImageUploadOptions} payload
    * @param {ProgressEvent} onUploadProgress
-   * @param {import('axios').CancelToken} cancelToken
+   * @param {import('axios').CancelToken} cancelToken - Specifies a cancel
+   *  token that can be used to cancel the request
+   *
    * @throws {APIError} On server error.
    * @returns {Promise<ImageUploadResponse>}
    */
@@ -229,16 +231,13 @@ const API = {
       image,
       userId,
       groupId,
-      caption,
+      caption = '',
     } = payload;
     const formData = new FormData();
 
     formData.append('groupPicture', image);
     formData.append('userId', userId);
-
-    if (caption) {
-      formData.append('caption', caption);
-    }
+    formData.append('caption', caption);
 
     return axios
       .put(`/groups/${groupId}/uploadImage`, formData, {
@@ -246,6 +245,50 @@ const API = {
         cancelToken,
       })
       .then(response => response.data);
+  },
+
+  /**
+   * Sends an invitation email to each provided email.
+   *
+   * @param {string} groupId
+   * @param {string[]} emails
+   *
+   * @returns {Promise}
+   * @throws {APIError} On server error.
+   */
+  async sendGroupInviteLink(groupId, emails) {
+    return axios
+      .post(`/groups/${groupId}/invite`, {
+        groupId,
+        emails,
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Sends password reset email to entered email.
+   *
+   * @param {String} email
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  async passwordRecovery(email) {
+    const payload = { email };
+    return (await axios.post('/users/passwordRecovery', payload)).data;
+  },
+
+  /**
+   * Reset password given a user id, password, and verification code.
+   *
+   * @param {String} userId
+   * @param {String} verificationCode
+   * @param {String} password
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  async passwordReset(userId, verificationCode, password) {
+    const payload = { userId, verificationCode, password };
+    return (await axios.post('/users/resetPassword', payload)).data;
   },
 };
 
