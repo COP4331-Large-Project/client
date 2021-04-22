@@ -14,7 +14,6 @@ import GroupDispatchContext, {
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
-// import GroupsMenu from '../components/dashboard/GroupsMenu.jsx';
 
 function MainPage() {
   const [user, setUser] = useState({});
@@ -29,7 +28,7 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
-  // const [isOwner, setIsOwner] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const history = useHistory();
 
   const loadingStates = {
@@ -156,8 +155,8 @@ function MainPage() {
     if (groups.length > 0) {
       const group = groups[index];
 
-      // /* eslint no-underscore-dangle: */
-      // setIsOwner(group.creator[0]._id === user.id);
+      /* eslint no-underscore-dangle: */
+      setIsOwner(group.creator[0]._id === user.id);
 
       setGroupTitle(group.name);
       setLoadingImages(true);
@@ -198,7 +197,11 @@ function MainPage() {
                         {groupTitle}
                       </h1>
                       {groupData.groups.length > 0 && (
-                        <GroupMenuButton className="group-action-btn" />
+                        <GroupMenuButton
+                          className="group-action-btn"
+                          isOwner={isOwner}
+                          groupId={groupData.groups[groupData.index].id}
+                        />
                       )}
                     </div>
                   </Skeleton>
