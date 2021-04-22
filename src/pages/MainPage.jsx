@@ -174,7 +174,7 @@ function MainPage() {
         payload: images,
       });
     }
-  }, [groupData.index]);
+  }, [groupData.groups, groupData.index]);
 
   return (
     <UserContext.Provider value={user}>

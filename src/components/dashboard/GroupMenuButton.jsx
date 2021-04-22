@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import MemberInviteModal from '../MemberInviteModal.jsx';
 import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
+import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
@@ -19,6 +20,7 @@ function GroupMenu({ className, isOwner }) {
   const [loggedInUser, setLoggedInUser] = useState({});
   const { groups, index } = useContext(GroupsStateContext);
   const user = useContext(UserContext);
+  const dispatch = useContext(GroupContextDispatch);
 
   useEffect(() => {
     setLoggedInUser(user);
@@ -33,8 +35,26 @@ function GroupMenu({ className, isOwner }) {
   function leaveGroup() {
     try {
       const groupName = groups[index].name;
-      // Make API call
-      // Update groups
+      // Make API call, need to pass userId in an array
+
+      // Updating groups
+      const newGroups = [];
+
+      groups.forEach(group => {
+        if (group.id !== groups[index].id) {
+          newGroups.push(group);
+        }
+      });
+
+      dispatch({
+        type: 'replaceGroups',
+        payload: {
+          groups: newGroups,
+          index: newGroups.length === 0 ? -1 : index,
+        },
+      });
+      // Main body content is not updating with group removal
+
       notification.success({
         description: `Successfully left ${groupName}.`,
         duration: 2,
