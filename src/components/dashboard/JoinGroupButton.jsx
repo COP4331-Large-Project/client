@@ -8,12 +8,14 @@ import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
 import API from '../../api/API';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
+import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
 
 function JoinGroupButton() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [input, setInput] = useState('');
   const dispatch = useContext(GroupContextDispatch);
+  const { groups } = useContext(GroupsStateContext);
 
   function showModal() {
     setInput('');
@@ -58,7 +60,10 @@ function JoinGroupButton() {
 
       dispatch({
         type: 'addGroup',
-        payload: group,
+        payload: {
+          group,
+          index: groups.length,
+        },
       });
     } catch (e) {
       setConfirmLoading(false);
