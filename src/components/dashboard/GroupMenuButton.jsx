@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Dropdown,
   Menu,
@@ -9,33 +9,39 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import MemberInviteModal from '../MemberInviteModal.jsx';
-// import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
-// import UserContext from '../../contexts/UserContext.jsx';
+import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
+import UserContext from '../../contexts/UserContext.jsx';
 
-function GroupMenu({ className, isOwner, groupId }) {
+function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const openInviteModal = () => setInviteModalOpen(true);
   const closeInviteModal = () => setInviteModalOpen(false);
-  // const { groups, index } = useContext(GroupsStateContext);
-  // const { user } = useContext(UserContext);
+  const [loggedInUser, setLoggedInUser] = useState({});
+  const { groups, index } = useContext(GroupsStateContext);
+  const user = useContext(UserContext);
+
+  useEffect(() => {
+    setLoggedInUser(user);
+  }, [user]);
 
   function amITheOwner() {
     notification.success({
-      description: `${isOwner} for ${groupId}`,
+      description: `${loggedInUser.firstName} is owner of ${groups[index].name}? ${isOwner}`,
     });
   }
 
   function leaveGroup() {
     try {
+      const groupName = groups[index].name;
       // Make API call
       // Update groups
       notification.success({
-        description: 'Successfully left the group.',
+        description: `Successfully left ${groupName}.`,
         duration: 2,
       });
     } catch (err) {
       notification.error({
-        title: 'Could not delete group.',
+        title: `Could not delete ${groups[index].name}`,
         description: err,
       });
     }
@@ -49,10 +55,11 @@ function GroupMenu({ className, isOwner, groupId }) {
       <Menu.Item onClick={openInviteModal}>Invite members</Menu.Item>
       <Menu.Item disabled = {isOwner}>
         <Popconfirm
-          title='Are you sure you want to leave this group?'
+          title={`Are you sure you want to leave ${groups[index].name}?`}
           okText="Yes"
           cancelText="No"
           onConfirm={leaveGroup}
+          disabled={isOwner}
         >
           Leave Group
         </Popconfirm>
@@ -79,7 +86,6 @@ function GroupMenu({ className, isOwner, groupId }) {
 GroupMenu.propTypes = {
   className: PropTypes.string,
   isOwner: PropTypes.bool,
-  groupId: PropTypes.string,
 };
 
 GroupMenu.defaultProps = {

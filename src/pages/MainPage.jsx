@@ -200,7 +200,6 @@ function MainPage() {
                         <GroupMenuButton
                           className="group-action-btn"
                           isOwner={isOwner}
-                          groupId={groupData.groups[groupData.index].id}
                         />
                       )}
                     </div>
