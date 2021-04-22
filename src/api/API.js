@@ -264,6 +264,32 @@ const API = {
       })
       .then(response => response.data);
   },
+
+  /**
+   * Sends password reset email to entered email.
+   *
+   * @param {String} email
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  async passwordRecovery(email) {
+    const payload = { email };
+    return (await axios.post('/users/passwordRecovery', payload)).data;
+  },
+
+  /**
+   * Reset password given a user id, password, and verification code.
+   *
+   * @param {String} userId
+   * @param {String} verificationCode
+   * @param {String} password
+   * @throws {APIError} On server error.
+   * @returns {Promise<UserResponse>}
+   */
+  async passwordReset(userId, verificationCode, password) {
+    const payload = { userId, verificationCode, password };
+    return (await axios.post('/users/resetPassword', payload)).data;
+  },
 };
 
 export default API;
