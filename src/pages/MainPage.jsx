@@ -141,10 +141,12 @@ function MainPage() {
     groups.forEach(group => {
       const { creator } = group;
 
-      // eslint-disable-next-line
-      group.creator.id = creator[0]._id;
-      // eslint-disable-next-line prefer-destructuring, no-param-reassign
-      group.creator = creator[0];
+      if (creator[0]) {
+        // eslint-disable-next-line no-param-reassign
+        group.creator.id = creator[0]._id;
+        // eslint-disable-next-line prefer-destructuring, no-param-reassign
+        group.creator = creator[0];
+      }
     });
 
     // Set the index to -1 if there are no groups to load so
