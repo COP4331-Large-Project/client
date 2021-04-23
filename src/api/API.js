@@ -117,7 +117,7 @@ const API = {
    *
    * @param {string} email
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async requestEmailVerificationLink(email) {
     return (await axios.post('/users/resendVerificationEmail', { email })).then(
@@ -132,7 +132,7 @@ const API = {
    * @param {string} userId
    * @param {string} verificationCode
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async verifyEmail(userId, verificationCode) {
     return axios
@@ -146,7 +146,7 @@ const API = {
    * @param {string} userId
    * @param {string} inviteCode
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async joinGroup(userId, inviteCode) {
     return axios
@@ -176,7 +176,7 @@ const API = {
    *
    * @param {GroupOptions} payload
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async createGroup(payload) {
     return axios.post('/groups', payload).then(response => response.data);
