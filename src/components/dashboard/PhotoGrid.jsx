@@ -30,7 +30,7 @@ function PhotoGrid({ photos }) {
         className="empty-img"
         alt={groups.length === 0 ? 'empty group' : 'no photos'}
       />
-      <h2 className="title">It&apos;s Empty in Here!</h2>
+      <h2 className="title">It&apos;s empty in here!</h2>
       <p className="description">
         {groups.length === 0
           ? 'Create or join a group to get this party started.'

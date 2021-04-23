@@ -12,6 +12,7 @@ import MemberInviteModal from '../MemberInviteModal.jsx';
 import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
+import API from '../../api/API';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
@@ -32,11 +33,14 @@ function GroupMenu({ className, isOwner }) {
     });
   }
 
-  function leaveGroup() {
+  async function leaveGroup() {
+    const groupName = groups[index].name;
     try {
-      const groupName = groups[index].name;
-      // Make API call, need to pass userId in an array
-
+      const users = [];
+      users.push(loggedInUser.id);
+      // console.log(`Removing ${users} from ${groups[index].id}`);
+      // Crashes in backend, says users is undefined.
+      await API.removeUsers(groups[index].id, users);
       // Updating groups
       const newGroups = [];
 
@@ -53,7 +57,6 @@ function GroupMenu({ className, isOwner }) {
           index: newGroups.length === 0 ? -1 : index,
         },
       });
-      // Main body content is not updating with group removal
 
       notification.success({
         description: `Successfully left ${groupName}.`,
@@ -61,7 +64,7 @@ function GroupMenu({ className, isOwner }) {
       });
     } catch (err) {
       notification.error({
-        title: `Could not delete ${groups[index].name}`,
+        title: `Could not delete ${groupName}`,
         description: err,
       });
     }
