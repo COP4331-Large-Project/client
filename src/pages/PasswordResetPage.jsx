@@ -49,7 +49,7 @@ function PasswordResetPage({ userId }) {
     event.preventDefault();
 
     try {
-      if(!valid) throw new Error('The password does not meet the requirements');
+      if (!valid) throw new Error('The password does not meet the requirements');
 
       if (password !== confirmedPassword) {
         notification.error({
