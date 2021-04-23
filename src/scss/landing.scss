@@ -1,5 +1,5 @@
-@import "variables";
-@import "shadow";
+@import 'variables';
+@import 'shadow';
 
 .landing-container {
   display: flex;
@@ -16,7 +16,7 @@
   justify-content: flex-end;
   width: 100%;
   height: 100%;
-  background-image: url("../assets/Splash.png");
+  background-image: url('../assets/Splash.png');
   background-size: contain;
   box-sizing: border-box;
 }
@@ -29,7 +29,7 @@
 .landing-header {
   font-size: 24px;
   font-weight: 500;
-  color: rgba(0,0,0,0.31);
+  color: rgba(0, 0, 0, 0.31);
   display: inline-flex;
   margin-top: 0;
   padding: 10px;
@@ -51,13 +51,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255,255,255, 0.95);
+  background-color: rgba(255, 255, 255, 0.95);
   width: 50%;
   max-width: 350px;
   margin: 30px;
   border-radius: 10px;
   padding: 30px;
   backdrop-filter: blur(15px);
+  max-height: 95%;
+  overflow: auto;
 }
 
 .img-left {
@@ -110,6 +112,11 @@
       transition: unset;
     }
   }
+
+  .password-checklist {
+    margin-bottom: 16px;
+    text-align: left;
+  }
 }
 
 .card-form {
@@ -154,5 +161,5 @@
 .landing-hint {
   font-size: 16px;
   font-weight: 500;
-  color: rgba(0,0,0,0.31);
+  color: rgba(0, 0, 0, 0.31);
 }
