@@ -11,7 +11,7 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import UserContext from '../contexts/UserContext.jsx';
+import UserStateContext from '../contexts/UserStateContext.jsx';
 import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
@@ -24,7 +24,7 @@ function CreateGroupModal({ visible, onClose }) {
   const [isLoading, setLoading] = useState(false);
   const { groups } = useContext(GroupsStateContext);
   const dispatch = useContext(GroupsContextDispatch);
-  const user = useContext(UserContext);
+  const user = useContext(UserStateContext);
 
   const addMember = event => {
     event.preventDefault();

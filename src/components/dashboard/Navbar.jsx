@@ -1,16 +1,15 @@
 import '../../scss/navbar.scss';
 import React, { useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Avatar, Layout, Dropdown } from 'antd';
+import { Avatar, Layout, Tooltip } from 'antd';
 import UserMenu from './UserMenu.jsx';
-import UserContext from '../../contexts/UserContext.jsx';
+import UserStateContext from '../../contexts/UserStateContext.jsx';
 
 const { Header } = Layout;
 
-function Navbar({ onLogout }) {
-  const user = useContext(UserContext);
-  const [initials, setInitials] = useState(' ');
-  const [imgURL, setImgURL] = useState(' ');
+function Navbar() {
+  const user = useContext(UserStateContext);
+  const [initials, setInitials] = useState('');
+  const [imgURL, setImgURL] = useState('');
 
   useEffect(() => {
     if (user.firstName !== undefined) {
@@ -34,30 +33,25 @@ function Navbar({ onLogout }) {
       <div className="invisible-backing" />
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
-        <Dropdown
-          overlay={<UserMenu onLogout={onLogout} />}
-          trigger={['click']}
-        >
-          <Avatar
-            size={40}
-            src={imgURL}
-            alt={initials}
-            className="avatar-button"
+        <UserMenu>
+          <Tooltip
+            title={(user && `Signed in as ${user.username}`) || ''}
+            placement="left"
+            mouseEnterDelay={0.4}
           >
-            {initials}
-          </Avatar>
-        </Dropdown>
+            <Avatar
+              size={40}
+              src={imgURL}
+              alt={initials}
+              className="avatar-button"
+            >
+              {initials}
+            </Avatar>
+          </Tooltip>
+        </UserMenu>
       </Header>
     </div>
   );
 }
-
-Navbar.propTypes = {
-  onLogout: PropTypes.func,
-};
-
-Navbar.defaultProps = {
-  onLogout: () => {},
-};
 
 export default Navbar;

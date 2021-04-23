@@ -117,7 +117,7 @@ const API = {
    *
    * @param {string} email
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async requestEmailVerificationLink(email) {
     return (await axios.post('/users/resendVerificationEmail', { email })).then(
@@ -132,7 +132,7 @@ const API = {
    * @param {string} userId
    * @param {string} verificationCode
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async verifyEmail(userId, verificationCode) {
     return axios
@@ -146,7 +146,7 @@ const API = {
    * @param {string} userId
    * @param {string} inviteCode
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async joinGroup(userId, inviteCode) {
     return axios
@@ -176,7 +176,7 @@ const API = {
    *
    * @param {GroupOptions} payload
    * @throws {APIError} On server error
-   * @returns {Promise}
+   * @returns {Promise<void>}
    */
   async createGroup(payload) {
     return axios.post('/groups', payload).then(response => response.data);
@@ -266,6 +266,21 @@ const API = {
   },
 
   /**
+   * Removes a user from a group for each given user ID.
+   *
+   * @param {string} groupId
+   * @param {string[]} userIds
+   *
+   * @returns {Promise}
+   * @throws {APIError} On server error.
+   */
+  async removeUsers(groupId, userIds) {
+    return axios
+      .delete(`/groups/${groupId}/removeUsers`, { data: { users: userIds } })
+      .then(response => response.data);
+  },
+
+  /**
    * Sends password reset email to entered email.
    *
    * @param {String} email
@@ -289,6 +304,93 @@ const API = {
   async passwordReset(userId, verificationCode, password) {
     const payload = { userId, verificationCode, password };
     return (await axios.post('/users/resetPassword', payload)).data;
+  },
+
+  /**
+   * Updates a user's information
+   *
+   * @typedef {Object} AccountParams
+   * @property {string} firstName
+   * @property {boolean} lastName
+   * @property {string} email
+   * @property {string} username
+   * @property {string} token
+   * @property {string} userId
+   *
+   * @param {AccountParams} payload
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async updateAccount(payload) {
+    // prettier-ignore
+    const {
+      firstName,
+      lastName,
+      email,
+      username,
+      userId,
+      token,
+    } = payload;
+
+    const putOptions = {
+      firstName,
+      lastName,
+      email,
+      username,
+    };
+
+    return axios
+      .put(`/users/${userId}`, putOptions, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Updates a user's profile picture. Accepts either JPG, PNG, or GIF.
+   *
+   * @param {string} userId
+   * @param {string} token
+   * @param {File} image
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async updateProfilePicture(userId, token, image) {
+    const formData = new FormData();
+
+    formData.set('avatar', image);
+
+    return axios
+      .put(`/users/${userId}/profile`, formData, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Permanently deletes a user's account
+   *
+   * @param {string} userId
+   * @param {string} password
+   * @param {string} token
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async deleteAccount(userId, token, password) {
+    return axios
+      .delete(`/users/${userId}`, {
+        data: {
+          password,
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
   },
 };
 

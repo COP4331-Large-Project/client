@@ -26,6 +26,12 @@ function groupReducer(state, action) {
         groups: [...state.groups, action.payload.group],
         index: index === null || index === undefined ? state.index : index,
       };
+    case 'replaceGroups':
+      return {
+        ...state,
+        groups: action.payload.groups,
+        index: action.payload.index,
+      };
     case 'addImage':
       return {
         ...state,
@@ -43,7 +49,7 @@ function groupReducer(state, action) {
         groups: [...state.groups, action.payload],
       };
     default:
-      throw new Error('Invalid Group reducer action.');
+      throw new Error(`Invalid Group reducer action ${action}.`);
   }
 }
 
