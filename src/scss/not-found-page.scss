@@ -1,0 +1,51 @@
+@import 'variables';
+
+.not-found-page {
+  background-image: url('../assets/Splash.png');
+  background-size: contain;
+
+  .card-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .card-wrapper {
+    width: 500px;
+    max-width: 500px;
+  }
+
+  .card-title {
+    margin-bottom: 0;
+  }
+
+  .card-description {
+    color: hsl(0, 0%, 45%);
+    margin: 0;
+  }
+
+  .not-found-card {
+    padding: 32px;
+    margin: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .back-btn {
+    width: 100%;
+  }
+
+  img {
+    width: 55%;
+    margin: 32px 0 24px 0;
+  }
+}

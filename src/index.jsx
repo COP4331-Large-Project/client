@@ -7,6 +7,7 @@ import MainPage from './pages/MainPage.jsx';
 import GroupInvitePage from './pages/GroupInvitePage.jsx';
 import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
 import PasswordResetPage from './pages/PasswordResetPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css';
 import './scss/ant-overrides.scss';
@@ -41,6 +42,7 @@ ReactDOM.render(
             <PasswordResetPage userId={props.match.params.userId} />
           )}
         />
+        <Route path="*" component={NotFoundPage} />
       </Switch>
     </Router>
   </React.StrictMode>,
