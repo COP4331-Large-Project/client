@@ -43,7 +43,7 @@ function GroupMenu({ className, isOwner }) {
       }
     });
 
-    // Setting new index to 0 for safety
+    // Setting new index to 0 for safety if groups list is not empty
     dispatch({
       type: 'replaceGroups',
       payload: {
