@@ -89,14 +89,14 @@ function RegisterCard({ switchCard }) {
         placeHolder="Password"
         type="password"
         name="password"
-        onChange={e => setPassword(e.target.value)}
+        onChange={c => setPassword(c)}
         required
       />
       <TextInput
         placeHolder="Confirm password"
         type="password"
         name="confirmPassword"
-        onChange={e => setConfirmPassword(e.target.value)}
+        onChange={c => setConfirmPassword(c)}
         required
       />
       <PasswordChecklist
