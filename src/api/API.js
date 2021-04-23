@@ -274,11 +274,10 @@ const API = {
    * @returns {Promise}
    * @throws {APIError} On server error.
    */
-  removeUsers(id, users) {
+  async removeUsers(groupId, userIds) {
+    console.log({ users: userIds });
     return axios
-      .delete(`/groups/${id}/removeUsers`, {
-        users,
-      })
+      .delete(`/groups/${groupId}/removeUsers`, { users: userIds })
       .then(response => response.data);
   },
 

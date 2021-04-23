@@ -12,7 +12,7 @@ import MemberInviteModal from '../MemberInviteModal.jsx';
 import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
-// import API from '../../api/API';
+import API from '../../api/API';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
@@ -54,7 +54,7 @@ function GroupMenu({ className, isOwner }) {
   async function leaveGroup() {
     const groupName = groups[index].name;
     try {
-      // await API.removeUsers(groups[index].id, [loggedInUser.id]);
+      await API.removeUsers(groups[index].id, [loggedInUser.id]);
       // Updating groups
       removeCurGroup();
       notification.success({
