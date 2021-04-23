@@ -98,6 +98,7 @@ function RegisterCard({ switchCard }) {
         required
       />
       <PasswordChecklist
+          className="password-checklist"
           rules={['length', 'specialChar', 'number', 'capital', 'match']}
           minLength={8}
           value={password}
