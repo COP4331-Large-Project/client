@@ -2,12 +2,12 @@ import '../../scss/navbar.scss';
 import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, Layout, Tooltip } from 'antd';
 import UserMenu from './UserMenu.jsx';
-import UserContext from '../../contexts/UserContext.jsx';
+import UserStateContext from '../../contexts/UserStateContext.jsx';
 
 const { Header } = Layout;
 
 function Navbar() {
-  const user = useContext(UserContext);
+  const user = useContext(UserStateContext);
   const [initials, setInitials] = useState('');
   const [imgURL, setImgURL] = useState('');
 

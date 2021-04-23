@@ -7,24 +7,27 @@ import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API from '../api/API';
-import UserContext from '../contexts/UserContext.jsx';
+import UserContext from '../contexts/UserStateContext.jsx';
 import GroupDispatchContext, {
   groupReducer,
 } from '../contexts/GroupsContextDispatch.jsx';
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
+import UserContextDispatch, {
+  userReducer,
+} from '../contexts/UserContextDispatch.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
 
 function MainPage() {
-  const [user, setUser] = useState({});
   // Using an initial value of -1 here so that groupData can
   // trigger updates when its value is set to 0 on mount.
   // It'll be set to 0 if there is at least one group to load.
-  const [groupData, dispatch] = useReducer(groupReducer, {
+  const [groupData, groupDispatch] = useReducer(groupReducer, {
     groups: [],
     images: [],
     index: -1,
   });
+  const [user, userDispatch] = useReducer(userReducer, {});
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
@@ -110,7 +113,10 @@ function MainPage() {
       return;
     }
 
-    setUser(userInfo);
+    userDispatch({
+      type: 'updateUser',
+      payload: userInfo,
+    });
 
     const groups = await getGroups(id);
 
@@ -130,7 +136,7 @@ function MainPage() {
 
     // Set the index to -1 if there are no groups to load so
     // that it can be updated once the first new group is added
-    dispatch({
+    groupDispatch({
       type: 'init',
       payload: {
         index: groups.length === 0 ? -1 : 0,
@@ -160,7 +166,7 @@ function MainPage() {
         setLoadingImages(false);
       }, 500);
 
-      dispatch({
+      groupDispatch({
         type: 'setImages',
         payload: images,
       });
@@ -169,36 +175,38 @@ function MainPage() {
 
   return (
     <UserContext.Provider value={user}>
-      <GroupDispatchContext.Provider value={dispatch}>
-        <GroupsStateContext.Provider value={groupData}>
-          <LoadingContext.Provider value={loadingStates}>
-            <div className="main-page-body">
-              <Navbar />
-              <div className="body-content">
-                <Sidebar />
-                <div className="main-content">
-                  <Skeleton
-                    active
-                    className="title-skeleton"
-                    loading={isLoadingGroups}
-                    paragraph={{ rows: 0 }}
-                  >
-                    <div className="group-title-row">
-                      <h1 className="group-title" title={groupTitle}>
-                        {groupTitle}
-                      </h1>
-                      {groupData.groups.length > 0 && (
-                        <GroupMenuButton className="group-action-btn" />
-                      )}
-                    </div>
-                  </Skeleton>
-                  <PhotoGrid photos={groupData.images} />
+      <UserContextDispatch.Provider value={userDispatch}>
+        <GroupDispatchContext.Provider value={groupDispatch}>
+          <GroupsStateContext.Provider value={groupData}>
+            <LoadingContext.Provider value={loadingStates}>
+              <div className="main-page-body">
+                <Navbar />
+                <div className="body-content">
+                  <Sidebar />
+                  <div className="main-content">
+                    <Skeleton
+                      active
+                      className="title-skeleton"
+                      loading={isLoadingGroups}
+                      paragraph={{ rows: 0 }}
+                    >
+                      <div className="group-title-row">
+                        <h1 className="group-title" title={groupTitle}>
+                          {groupTitle}
+                        </h1>
+                        {groupData.groups.length > 0 && (
+                          <GroupMenuButton className="group-action-btn" />
+                        )}
+                      </div>
+                    </Skeleton>
+                    <PhotoGrid photos={groupData.images} />
+                  </div>
                 </div>
               </div>
-            </div>
-          </LoadingContext.Provider>
-        </GroupsStateContext.Provider>
-      </GroupDispatchContext.Provider>
+            </LoadingContext.Provider>
+          </GroupsStateContext.Provider>
+        </GroupDispatchContext.Provider>
+      </UserContextDispatch.Provider>
     </UserContext.Provider>
   );
 }

@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from 'axios';
 import GroupStateContext from '../contexts/GroupStateContext.jsx';
-import UserContext from '../contexts/UserContext.jsx';
+import UserStateContext from '../contexts/UserStateContext.jsx';
 import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
@@ -38,7 +38,7 @@ function ImageUploadModal({ visible, onClose }) {
 
   const { groups, index } = useContext(GroupStateContext);
   const dispatch = useContext(GroupContextDispatch);
-  const user = useContext(UserContext);
+  const user = useContext(UserStateContext);
 
   // Adds a custom input below ant's list item component
   const renderListItem = originNode => (

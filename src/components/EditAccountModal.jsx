@@ -1,4 +1,3 @@
-/* eslint-disable */
 import '../scss/edit-account-modal.scss';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -11,17 +10,19 @@ import {
   notification,
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import UserContext from '../contexts/UserContext.jsx';
+import { useHistory } from 'react-router-dom';
+import UserStateContext from '../contexts/UserStateContext.jsx';
 import TextInput from './TextInput.jsx';
 import API from '../api/API';
-import { useHistory } from 'react-router-dom';
+import UserContextDispatch from '../contexts/UserContextDispatch.jsx';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
 
 function EditAccountModal({ visible, onClose }) {
-  const user = useContext(UserContext);
   const history = useHistory();
+  const user = useContext(UserStateContext);
+  const dispatch = useContext(UserContextDispatch);
   const [initials, setInitials] = useState('');
   const [profileImageSrc, setProfileImageSrc] = useState('');
   const [objectURL, setObjectURL] = useState('');
@@ -134,15 +135,14 @@ function EditAccountModal({ visible, onClose }) {
 
     try {
       await API.deleteAccount(user.id, authToken, password);
-      
+
       onClose();
       history.replace('/');
     } catch (err) {
       if (err.status === 403) {
         notification.error({
           message: 'Invalid Password',
-          description:
-            'Your password was incorrect, please try again.',
+          description: 'Your password was incorrect, please try again.',
         });
       } else {
         notification.error({
@@ -175,17 +175,22 @@ function EditAccountModal({ visible, onClose }) {
         await API.updateProfilePicture(user.id, authToken, profileImageFile);
       }
 
-      await API.updateAccount({
+      const userInfo = await API.updateAccount({
         ...payload,
         userId: user.id,
         token: authToken,
+      });
+
+      dispatch({
+        type: 'updateUser',
+        payload: userInfo,
       });
 
       notification.success({
         key: 'update-success',
         message: 'Success',
         description: 'Your account was updated.',
-        duration: 2.5,
+        duration: 2,
       });
 
       onClose();
