@@ -1,3 +1,4 @@
+/* eslint-disable */
 import '../scss/edit-account-modal.scss';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -13,12 +14,14 @@ import ImgCrop from 'antd-img-crop';
 import UserContext from '../contexts/UserContext.jsx';
 import TextInput from './TextInput.jsx';
 import API from '../api/API';
+import { useHistory } from 'react-router-dom';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
 
 function EditAccountModal({ visible, onClose }) {
   const user = useContext(UserContext);
+  const history = useHistory();
   const [initials, setInitials] = useState('');
   const [profileImageSrc, setProfileImageSrc] = useState('');
   const [objectURL, setObjectURL] = useState('');
@@ -40,7 +43,7 @@ function EditAccountModal({ visible, onClose }) {
       {isDeletingAccount ? 'Back' : 'Cancel'}
     </Button>,
     <Button
-      form="profile-form"
+      form={isDeletingAccount ? 'delete-account-form' : 'profile-form'}
       key="submit"
       htmlType="submit"
       type={isDeletingAccount ? 'default' : 'primary'}
@@ -119,6 +122,35 @@ function EditAccountModal({ visible, onClose }) {
         message: 'Unexpected Error',
         description: 'An error occurred while requesting a password reset',
       });
+    }
+
+    setLoading(false);
+  };
+
+  const deleteAccount = async event => {
+    event.preventDefault();
+
+    setLoading(true);
+
+    try {
+      await API.deleteAccount(user.id, authToken, password);
+      
+      onClose();
+      history.replace('/');
+    } catch (err) {
+      if (err.status === 403) {
+        notification.error({
+          message: 'Invalid Password',
+          description:
+            'Your password was incorrect, please try again.',
+        });
+      } else {
+        notification.error({
+          message: 'Error Deleting Account',
+          description:
+            'An error occurred while deleting your account. Please try again',
+        });
+      }
     }
 
     setLoading(false);
@@ -228,7 +260,7 @@ function EditAccountModal({ visible, onClose }) {
   );
 
   const deleteConfirmation = (
-    <>
+    <form onSubmit={deleteAccount} id="delete-account-form">
       <p>
         Are you sure you want to delete your account? This action is
         irreversible! Enter you password to confirm.
@@ -238,8 +270,9 @@ function EditAccountModal({ visible, onClose }) {
         onChange={setPassword}
         placeHolder="Password"
         type="password"
+        name="password"
       />
-    </>
+    </form>
   );
 
   return (

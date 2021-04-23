@@ -339,6 +339,8 @@ const API = {
    * @param {string} userId
    * @param {string} token
    * @param {File} image
+   * @throws {APIError} On server error
+   * @returns {Promise}
    */
   async updateProfilePicture(userId, token, image) {
     const formData = new FormData();
@@ -347,6 +349,28 @@ const API = {
 
     return axios
       .put(`/users/${userId}/profile`, formData, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Permanently deletes a user's account
+   *
+   * @param {string} userId
+   * @param {string} password
+   * @param {string} token
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async deleteAccount(userId, token, password) {
+    return axios
+      .delete(`/users/${userId}`, {
+        data: {
+          password,
+        },
         headers: {
           Authorization: token,
         },
