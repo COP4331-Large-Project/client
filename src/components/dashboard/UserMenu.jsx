@@ -21,7 +21,7 @@ function UserMenu({ children }) {
     setMenuVisible(true);
 
     Modal.confirm({
-      content: 'Are you sure you want to log out',
+      content: 'Are you sure you want to log out?',
       cancelText: 'Cancel',
       okText: 'Log out',
       maskClosable: true,
