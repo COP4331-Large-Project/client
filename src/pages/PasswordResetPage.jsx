@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useHistory } from 'react-router-dom';
 import { notification } from 'antd';
 import PropTypes from 'prop-types';
+import PasswordChecklist from 'react-password-checklist';
 import Card from '../components/Card.jsx';
 import TextInput from '../components/TextInput.jsx';
 import Button from '../components/Button.jsx';
@@ -99,6 +100,14 @@ function PasswordResetPage({ userId }) {
                 type="password"
                 placeHolder="Confirm your password"
                 onChange={(c) => { setConfirmedPassword(c); }}
+              />
+              <PasswordChecklist
+                  rules={['length', 'specialChar', 'number', 'capital', 'match']}
+                  minLength={8}
+                  value={password}
+                  valueAgain={confirmedPassword}
+                  /* eslint-disable-next-line no-unused-vars */
+                  onChange={(isValid) => {}}
               />
               <Button
                 className="btn submit"

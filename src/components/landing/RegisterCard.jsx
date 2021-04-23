@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, message } from 'antd';
+import PasswordChecklist from 'react-password-checklist';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
@@ -11,6 +12,8 @@ function RegisterCard({ switchCard }) {
   const [isRegistered, setRegistered] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   function isTrimmedEmpty(str) {
     if (str.trim() === '') return true;
@@ -86,14 +89,24 @@ function RegisterCard({ switchCard }) {
         placeHolder="Password"
         type="password"
         name="password"
+        onChange={e => setPassword(e.target.value)}
         required
       />
       <TextInput
         placeHolder="Confirm password"
         type="password"
         name="confirmPassword"
+        onChange={e => setConfirmPassword(e.target.value)}
         required
       />
+      <PasswordChecklist
+          rules={['length', 'specialChar', 'number', 'capital', 'match']}
+          minLength={8}
+          value={password}
+          valueAgain={confirmPassword}
+          /* eslint-disable-next-line no-unused-vars */
+          onChange={(isValid) => {}}
+          />
       <Button className="btn-submit" type="submit" disabled={isLoading}>
         Register
       </Button>
