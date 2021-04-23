@@ -65,12 +65,17 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
           </p>
         }
         loading={groupsLoading}
+        // Don't show the empty text if the user is a member of at least on
+        // public group or one private group.
         locale={{
-          emptyText: `
+          emptyText:
+            publicGroups.length === 0 && privateGroups.length === 0
+              ? `
             Looks like you’re not a member of any groups yet. Click the
             "Create Group" button to create a new group or click the
             "Join Group" button to join a group.
-          `,
+          `
+              : ' ',
         }}
         renderItem={renderListItem}
       />
