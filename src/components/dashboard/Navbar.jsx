@@ -1,6 +1,6 @@
 import '../../scss/navbar.scss';
 import React, { useContext, useEffect, useState } from 'react';
-import { Avatar, Layout } from 'antd';
+import { Avatar, Layout, Tooltip } from 'antd';
 import UserMenu from './UserMenu.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
 
@@ -34,14 +34,20 @@ function Navbar() {
       <Header className="navbar">
         <h1 className="title">ImageUs</h1>
         <UserMenu>
-          <Avatar
-            size={40}
-            src={imgURL}
-            alt={initials}
-            className="avatar-button"
+          <Tooltip
+            title={(user && `Signed in as ${user.username}`) || ''}
+            placement="left"
+            mouseEnterDelay={0.4}
           >
-            {initials}
-          </Avatar>
+            <Avatar
+              size={40}
+              src={imgURL}
+              alt={initials}
+              className="avatar-button"
+            >
+              {initials}
+            </Avatar>
+          </Tooltip>
         </UserMenu>
       </Header>
     </div>

@@ -21,18 +21,70 @@
   }
 
   .ant-avatar-string {
-    font-size: 32px;
+    font-size: 40px;
+    font-weight: 500;
   }
 
   .ant-btn.ant-btn-link {
     background-color: white;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     color: hsl(0, 0%, 43%);
     transition: color 500ms ease-in-out;
+    color: map-get($variant-colors, 'primary');
+  }
+
+  .ant-modal-body {
+    overflow: auto;
+    max-height: 550px;
+    padding-bottom: 0;
+  }
+
+  .ant-modal-footer {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .ant-btn {
+    font-size: 16px !important;
+  }
+
+  .cancel-btn:focus {
+    color: unset;
+  }
+
+  .delete-account-btn,
+  .reset-password-btn {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    padding: 10px 15px;
+    height: unset;
+    font-size: 16px;
+    border: 1px solid transparent;
+  }
+
+  .delete-account-btn {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .reset-password-btn {
+    margin-top: 12px;
+    margin-bottom: 6px;
+  }
+
+  .ant-btn-dangerous {
+    background-color: lighten(map-get($variant-colors, 'danger'), 45%);
+    color: darken(map-get($variant-colors, 'danger'), 10%);
 
     &:hover {
-      color: map-get($variant-colors, 'primary');
+      color: white;
+      background-color: darken(map-get($variant-colors, 'danger'), 10%);
     }
+  }
+
+  .upload {
+    margin-top: 8px;
   }
 }

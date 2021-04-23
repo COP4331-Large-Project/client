@@ -5,7 +5,7 @@ import {
   Menu,
   notification,
   Dropdown,
-  Popconfirm,
+  Modal,
 } from 'antd';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -27,6 +27,21 @@ function UserMenu({ children }) {
     history.replace('/');
   };
 
+  const openLogoutWarning = () => {
+    setMenuVisible(true);
+
+    Modal.confirm({
+      content: 'Are you sure you want to log out',
+      cancelText: 'Cancel',
+      okText: 'Log out',
+      maskClosable: true,
+      onOk: () => {
+        // Need to wait a bit for the modal to close
+        setTimeout(logout, 250);
+      },
+    });
+  };
+
   const sendResetEmail = async () => {
     try {
       await API.passwordRecovery(email);
@@ -42,13 +57,7 @@ function UserMenu({ children }) {
     }
   };
 
-  const onMenuClick = event => {
-    if (event.key === 'logout') {
-      setMenuVisible(true);
-    } else {
-      setMenuVisible(false);
-    }
-  };
+  const onMenuClick = () => setMenuVisible(false);
 
   const onMenuVisibleChange = visible => {
     setMenuVisible(visible);
@@ -58,18 +67,7 @@ function UserMenu({ children }) {
     <Menu onClick={onMenuClick}>
       <Menu.Item onClick={openAccountModal}>Edit Account</Menu.Item>
       <Menu.Item onClick={sendResetEmail}>Reset Password</Menu.Item>
-      <Menu.Item key="logout" className="logout-menu-option">
-        <Popconfirm
-          className="logout-confirm-popup"
-          title="Are you sure you want to log out?"
-          okText="Log out"
-          cancelText="Cancel"
-          placement="left"
-          onConfirm={logout}
-        >
-          Logout
-        </Popconfirm>
-      </Menu.Item>
+      <Menu.Item onClick={openLogoutWarning}>Logout</Menu.Item>
     </Menu>
   );
 
