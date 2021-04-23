@@ -157,6 +157,32 @@ function MainPage() {
     });
   }, []);
 
+  function onImageUploaded(image, groupId) {
+    const { groups, index } = groupData;
+
+    console.log('Image uploaded', groupData.index);
+
+    if (groups[index].id === groupId && image.creator !== user.id) {
+      dispatch({
+        type: 'addImage',
+        payload: image,
+      });
+    }
+  }
+
+  function onGroupMemberJoin(joinCount, groupId) {
+    const { groups } = groupData;
+    const updatedGroup = groups.find(group => group.id === groupId);
+    updatedGroup.memberCount += joinCount;
+
+    dispatch({
+      type: 'updateGroupMemberCount',
+      payload: updatedGroup,
+    });
+
+    console.log(`${joinCount} users joined group ${groupId}`);
+  }
+
   useEffect(() => {
     if (!didLoad) {
       return;
@@ -172,22 +198,9 @@ function MainPage() {
       socket.emit('join', groupIds);
     });
 
-    socket.on('image uploaded', (image, groupId) => {
-      const { groups, index } = groupData;
-
-      console.log('Image uploaded', index);
-
-      if (groups[index].id === groupId && image.creator !== user.id) {
-        dispatch({
-          type: 'addImage',
-          payload: image,
-        });
-      }
-    });
-
-    socket.on('users joined', (joinCount, groupId) => {
-      console.log(`${joinCount} users joined group ${groupId}`);
-    });
+    // socket.on('users joined', (joinCount, groupId) => {
+    //   console.log(`${joinCount} users joined group ${groupId}`);
+    // });
 
     // return () => {
     //   console.log('Disconnected from socket');
@@ -201,10 +214,13 @@ function MainPage() {
   useEffect(async () => {
     const { groups, index } = groupData;
 
-    console.log('On index change', index);
-
     if (groups.length > 0) {
       setDidLoad(true);
+
+      socket.off('image uploaded');
+      socket.off('users joined');
+      socket.on('image uploaded', onImageUploaded);
+      socket.on('users joined', onGroupMemberJoin);
 
       const group = groups[index];
 
