@@ -1,20 +1,10 @@
-/* eslint-disable */
-import React, { useContext, useState } from 'react';
-// prettier-ignore
-import {
-  Menu,
-  notification,
-  Dropdown,
-  Modal,
-} from 'antd';
+import React, { useState } from 'react';
+import { Menu, Dropdown, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import UserContext from '../../contexts/UserContext.jsx';
-import API from '../../api/API';
 import EditAccountModal from '../EditAccountModal.jsx';
 
 function UserMenu({ children }) {
-  const { email } = useContext(UserContext);
   const history = useHistory();
   const [isModalVisible, setModalVisible] = useState(false);
   const [isMenuVisible, setMenuVisible] = useState(false);
@@ -42,21 +32,6 @@ function UserMenu({ children }) {
     });
   };
 
-  const sendResetEmail = async () => {
-    try {
-      await API.passwordRecovery(email);
-      notification.warning({
-        message:
-          'You have been logged out. Please check your email for a link to reset your password.',
-      });
-      logout();
-    } catch (err) {
-      notification.error({
-        message: err.message,
-      });
-    }
-  };
-
   const onMenuClick = () => setMenuVisible(false);
 
   const onMenuVisibleChange = visible => {
@@ -66,7 +41,6 @@ function UserMenu({ children }) {
   const menu = (
     <Menu onClick={onMenuClick}>
       <Menu.Item onClick={openAccountModal}>Edit Account</Menu.Item>
-      <Menu.Item onClick={sendResetEmail}>Reset Password</Menu.Item>
       <Menu.Item onClick={openLogoutWarning}>Logout</Menu.Item>
     </Menu>
   );

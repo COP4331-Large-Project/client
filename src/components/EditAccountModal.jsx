@@ -1,4 +1,3 @@
-/* eslint-disable */
 import '../scss/edit-account-modal.scss';
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -49,7 +48,7 @@ function EditAccountModal({ visible, onClose }) {
       loading={isLoading}
       disabled={isLoading || (isDeletingAccount && !password.trim())}
     >
-      {isDeletingAccount ? 'Yes, Delete' : 'Update Profile'}
+      {isDeletingAccount ? 'Yes, Delete' : 'Save Changes'}
     </Button>,
   ];
 
@@ -67,6 +66,7 @@ function EditAccountModal({ visible, onClose }) {
 
   useEffect(() => {
     if (!visible) {
+      // Release the image to clean up resources
       URL.revokeObjectURL(objectURL);
       setDeletingAccount(false);
       setProfileImageFile(null);
@@ -80,9 +80,13 @@ function EditAccountModal({ visible, onClose }) {
     setProfileImageFile(file);
     setObjectURL(url);
 
+    // Returning false prevents ant from automatically uploading the
+    // image right after the user selects an image
     return false;
   };
 
+  // Returning false if the image is too large prevents the image
+  // crop modal from appearing
   const verifyFileSize = file => {
     if (file.size >= MAX_FILE_SIZE) {
       notification.error({
@@ -106,6 +110,7 @@ function EditAccountModal({ visible, onClose }) {
       await API.passwordRecovery(user.email);
 
       notification.info({
+        message: 'Email Sent',
         description:
           'Please check your email for a link to reset your password.',
       });
@@ -126,6 +131,7 @@ function EditAccountModal({ visible, onClose }) {
     const payload = Object.fromEntries(formData);
     const values = Object.values(payload);
 
+    // Don't submit the form if every input field is empty
     if (values.every(key => !key.trim())) {
       return;
     }
@@ -147,7 +153,7 @@ function EditAccountModal({ visible, onClose }) {
         key: 'update-success',
         message: 'Success',
         description: 'Your account was updated.',
-        duration: 3,
+        duration: 2.5,
       });
 
       onClose();
@@ -169,10 +175,10 @@ function EditAccountModal({ visible, onClose }) {
             {initials}
           </Avatar>
           <ImgCrop
+            grid
+            rotate
             modalTitle="Edit Image"
             shape="round"
-            rotate
-            grid
             beforeCrop={verifyFileSize}
           >
             <Upload
@@ -239,7 +245,6 @@ function EditAccountModal({ visible, onClose }) {
   return (
     <Modal
       centered
-      destroyOnClose
       maskClosable={false}
       onCancel={onClose}
       visible={visible}
