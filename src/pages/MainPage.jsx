@@ -31,6 +31,7 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
   const history = useHistory();
 
   const loadingStates = {
@@ -134,6 +135,18 @@ function MainPage() {
       setLoadingImages(false);
     }
 
+    // Each group in groups contains a creator field. Problem is that creator is
+    // stored in an array of size one. So for each group in groups, we lift the
+    // creator object out of the array and also rename the id field from _id to id.
+    groups.forEach(group => {
+      const { creator } = group;
+
+      // eslint-disable-next-line
+      group.creator.id = creator[0]._id;
+      // eslint-disable-next-line prefer-destructuring, no-param-reassign
+      group.creator = creator[0];
+    });
+
     // Set the index to -1 if there are no groups to load so
     // that it can be updated once the first new group is added
     groupDispatch({
@@ -152,26 +165,35 @@ function MainPage() {
   useEffect(async () => {
     const { groups, index } = groupData;
 
-    if (groups.length > 0) {
-      const group = groups[index];
+    try {
+      if (groups.length > 0) {
+        const group = groups[index];
 
-      setGroupTitle(group.name);
-      setLoadingImages(true);
+        setGroupTitle(group.name);
+        setLoadingImages(true);
+        /* eslint no-underscore-dangle: */
+        setGroupTitle(group.name);
+        setLoadingImages(true);
+        setIsOwner(group.creator._id === user.id);
+        const images = await getGroupImages(group.id);
 
-      const images = await getGroupImages(group.id);
+        setTimeout(() => {
+          // Delaying this set state call makes the photo
+          // grid mount animation a little bit smoother
+          setLoadingImages(false);
+        }, 500);
 
-      setTimeout(() => {
-        // Delaying this set state call makes the photo
-        // grid mount animation a little bit smoother
-        setLoadingImages(false);
-      }, 500);
-
-      groupDispatch({
-        type: 'setImages',
-        payload: images,
+        groupDispatch({
+          type: 'setImages',
+          payload: images,
+        });
+      }
+    } catch (e) {
+      notification.error({
+        description: e.message,
       });
     }
-  }, [groupData.index]);
+  }, [groupData.groups, groupData.index]);
 
   return (
     <UserContext.Provider value={user}>
@@ -195,7 +217,7 @@ function MainPage() {
                           {groupTitle}
                         </h1>
                         {groupData.groups.length > 0 && (
-                          <GroupMenuButton className="group-action-btn" />
+                          <GroupMenuButton className="group-action-btn" isOwner={isOwner}/>
                         )}
                       </div>
                     </Skeleton>

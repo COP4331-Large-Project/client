@@ -266,6 +266,21 @@ const API = {
   },
 
   /**
+   * Removes a user from a group for each given user ID.
+   *
+   * @param {string} groupId
+   * @param {string[]} userIds
+   *
+   * @returns {Promise}
+   * @throws {APIError} On server error.
+   */
+  async removeUsers(groupId, userIds) {
+    return axios
+      .delete(`/groups/${groupId}/removeUsers`, { data: { users: userIds } })
+      .then(response => response.data);
+  },
+
+  /**
    * Sends password reset email to entered email.
    *
    * @param {String} email
