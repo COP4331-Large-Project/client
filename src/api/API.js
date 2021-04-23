@@ -292,4 +292,4 @@ const API = {
   },
 };
 
-export default API;
+export { API as default, BASE_URL };

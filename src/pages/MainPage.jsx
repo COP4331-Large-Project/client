@@ -1,12 +1,14 @@
+/* eslint-disable */
 import React, { useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
 import { notification, Skeleton } from 'antd';
+import { io } from 'socket.io-client';
 import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
-import API from '../api/API';
+import API, { BASE_URL } from '../api/API';
 import UserContext from '../contexts/UserContext.jsx';
 import GroupDispatchContext, {
   groupReducer,
@@ -14,6 +16,11 @@ import GroupDispatchContext, {
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
+
+const socket = io(BASE_URL, {
+  transports: ['websocket'],
+  upgrade: false,
+});
 
 function MainPage() {
   const [user, setUser] = useState({});
@@ -28,6 +35,7 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
+  const [didLoad, setDidLoad] = useState(false);
   const history = useHistory();
 
   const loadingStates = {
@@ -106,6 +114,8 @@ function MainPage() {
 
   // Only want this to trigger once to grab user token and id.
   useEffect(async () => {
+    socket.disconnect();
+
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
 
@@ -133,6 +143,8 @@ function MainPage() {
       setLoadingImages(false);
     }
 
+    // console.log('Main content loaded');
+
     // Set the index to -1 if there are no groups to load so
     // that it can be updated once the first new group is added
     dispatch({
@@ -145,13 +157,55 @@ function MainPage() {
     });
   }, []);
 
+  useEffect(() => {
+    if (!didLoad) {
+      return;
+    }
+
+    socket.connect();
+    // console.log('After content load', { connected: socket.connected });
+
+    const groupIds = groupData.groups.map(group => group.id);
+
+    socket.on('connect', () => {
+      console.log('Connected to socket');
+      socket.emit('join', groupIds);
+    });
+
+    socket.on('image uploaded', (image, groupId) => {
+      const { groups, index } = groupData;
+
+      console.log('Image uploaded', index);
+
+      if (groups[index].id === groupId && image.creator !== user.id) {
+        dispatch({
+          type: 'addImage',
+          payload: image,
+        });
+      }
+    });
+
+    socket.on('users joined', (joinCount, groupId) => {
+      console.log(`${joinCount} users joined group ${groupId}`);
+    });
+
+    // return () => {
+    //   console.log('Disconnected from socket');
+    //   socket.disconnect();
+    // };
+  }, [didLoad]);
+
   // Triggers only when the selected group index changes.
   // In this case we'll set the group title and load the
   // images from this group.
   useEffect(async () => {
     const { groups, index } = groupData;
 
+    console.log('On index change', index);
+
     if (groups.length > 0) {
+      setDidLoad(true);
+
       const group = groups[index];
 
       setGroupTitle(group.name);
