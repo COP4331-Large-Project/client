@@ -134,6 +134,18 @@ function MainPage() {
       setLoadingImages(false);
     }
 
+    // Each group in groups contains a creator field. Problem is that creator is
+    // stored in an array of size one. So for each group in groups, we lift the
+    // creator object out of the array and also rename the id field from _id to id.
+    groups.forEach(group => {
+      const { creator } = group;
+
+      // eslint-disable-next-line
+      group.creator.id = creator[0]._id;
+      // eslint-disable-next-line prefer-destructuring, no-param-reassign
+      group.creator = creator[0];
+    });
+
     // Set the index to -1 if there are no groups to load so
     // that it can be updated once the first new group is added
     dispatch({
@@ -157,15 +169,9 @@ function MainPage() {
         const group = groups[index];
 
         /* eslint no-underscore-dangle: */
-        // console.log(`Creator of selected group (index is ${index} ) is ${group.creator[0]._id}`);
-        // console.log(`Current user id is ${user.id}`);
-        // console.log(`Is owner? ${group.creator[0]._id === user.id}`);
-        console.log(groups[index]);
-        setIsOwner(group.creator[0]._id === user.id);
-
         setGroupTitle(group.name);
         setLoadingImages(true);
-
+        setIsOwner(group.creator._id === user.id);
         const images = await getGroupImages(group.id);
 
         setTimeout(() => {
