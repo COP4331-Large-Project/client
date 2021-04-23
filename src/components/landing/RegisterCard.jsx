@@ -98,11 +98,11 @@ function RegisterCard({ switchCard }) {
         required
       />
       <PasswordChecklist
+          className="password-checklist"
           rules={['length', 'specialChar', 'number', 'capital', 'match']}
           minLength={8}
           value={password}
           valueAgain={confirmPassword}
-          /* eslint-disable-next-line no-unused-vars */
           onChange={(isValid) => { setValid(isValid); }}
           />
       <Button className="btn-submit" type="submit" disabled={isLoading}>
