@@ -290,6 +290,93 @@ const API = {
     const payload = { userId, verificationCode, password };
     return (await axios.post('/users/resetPassword', payload)).data;
   },
+
+  /**
+   * Updates a user's information
+   *
+   * @typedef {Object} AccountParams
+   * @property {string} firstName
+   * @property {boolean} lastName
+   * @property {string} email
+   * @property {string} username
+   * @property {string} token
+   * @property {string} userId
+   *
+   * @param {AccountParams} payload
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async updateAccount(payload) {
+    // prettier-ignore
+    const {
+      firstName,
+      lastName,
+      email,
+      username,
+      userId,
+      token,
+    } = payload;
+
+    const putOptions = {
+      firstName,
+      lastName,
+      email,
+      username,
+    };
+
+    return axios
+      .put(`/users/${userId}`, putOptions, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Updates a user's profile picture. Accepts either JPG, PNG, or GIF.
+   *
+   * @param {string} userId
+   * @param {string} token
+   * @param {File} image
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async updateProfilePicture(userId, token, image) {
+    const formData = new FormData();
+
+    formData.set('avatar', image);
+
+    return axios
+      .put(`/users/${userId}/profile`, formData, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
+  },
+
+  /**
+   * Permanently deletes a user's account
+   *
+   * @param {string} userId
+   * @param {string} password
+   * @param {string} token
+   * @throws {APIError} On server error
+   * @returns {Promise}
+   */
+  async deleteAccount(userId, token, password) {
+    return axios
+      .delete(`/users/${userId}`, {
+        data: {
+          password,
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => response.data);
+  },
 };
 
 export default API;

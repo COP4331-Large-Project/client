@@ -38,7 +38,7 @@ function groupReducer(state, action) {
         index: action.payload.index,
       };
     default:
-      throw new Error('Invalid Group reducer action.');
+      throw new Error(`Invalid Group reducer action ${action}.`);
   }
 }
 
