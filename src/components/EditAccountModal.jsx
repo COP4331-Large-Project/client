@@ -142,13 +142,13 @@ function EditAccountModal({ visible, onClose }) {
       if (err.status === 403) {
         notification.error({
           message: 'Invalid Password',
-          description: 'Your password was incorrect, please try again.',
+          description: 'Your password is incorrect.',
         });
       } else {
         notification.error({
           message: 'Error Deleting Account',
           description:
-            'An error occurred while deleting your account. Please try again',
+            'An error occurred while deleting your account, please try again',
         });
       }
     }
