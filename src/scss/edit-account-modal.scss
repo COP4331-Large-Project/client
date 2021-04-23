@@ -1,0 +1,38 @@
+@import 'variables';
+
+.edit-account-modal {
+  .input-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    text-transform: capitalize;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+  }
+
+  .profile-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .ant-avatar-string {
+    font-size: 32px;
+  }
+
+  .ant-btn.ant-btn-link {
+    background-color: white;
+    font-size: 15px;
+    font-weight: 500;
+    color: hsl(0, 0%, 43%);
+    transition: color 500ms ease-in-out;
+
+    &:hover {
+      color: map-get($variant-colors, 'primary');
+    }
+  }
+}

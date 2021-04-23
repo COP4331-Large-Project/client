@@ -39,3 +39,15 @@
 .invisible-backing {
   height: $navbar-height;
 }
+
+// Small hack: The text in <Popconfirm /> doesn't take up the full width
+// of the menu so we need to disable that option's  and add padding to
+// the text in <Popconfirm />
+.logout-menu-option{
+  padding: 0 !important;
+
+  .logout-confirm-popup {
+    display: block;
+    padding: 8px 12px;
+  }
+}

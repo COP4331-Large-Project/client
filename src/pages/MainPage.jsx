@@ -35,11 +35,6 @@ function MainPage() {
     imagesLoading: isLoadingImages,
   };
 
-  function logout() {
-    localStorage.clear();
-    history.replace('/');
-  }
-
   async function getUser(token, userId) {
     try {
       return await API.getInfo(token, userId);
@@ -178,7 +173,7 @@ function MainPage() {
         <GroupsStateContext.Provider value={groupData}>
           <LoadingContext.Provider value={loadingStates}>
             <div className="main-page-body">
-              <Navbar onLogout={logout} />
+              <Navbar />
               <div className="body-content">
                 <Sidebar />
                 <div className="main-content">
