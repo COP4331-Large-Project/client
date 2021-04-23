@@ -43,6 +43,7 @@ function GroupMenu({ className, isOwner }) {
       }
     });
 
+    // Setting new index to 0 for safety
     dispatch({
       type: 'replaceGroups',
       payload: {
