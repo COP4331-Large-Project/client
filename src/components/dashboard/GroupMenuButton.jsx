@@ -113,7 +113,6 @@ GroupMenu.propTypes = {
 GroupMenu.defaultProps = {
   className: '',
   isOwner: false,
-  groupId: '',
 };
 
 export default GroupMenu;
