@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, message } from 'antd';
+import PasswordChecklist from 'react-password-checklist';
 import LandingCard from './LandingCard.jsx';
 import TextInput from '../TextInput.jsx';
 import Button from '../Button.jsx';
@@ -11,7 +12,9 @@ function RegisterCard({ switchCard }) {
   const [isRegistered, setRegistered] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [valid, setValid] = useState('');
   function isTrimmedEmpty(str) {
     if (str.trim() === '') return true;
     return false;
@@ -37,9 +40,7 @@ function RegisterCard({ switchCard }) {
       if (isTrimmedEmpty(data.email)) throw (new Error('Email input required.'));
       if (isTrimmedEmpty(data.password)) throw (new Error('Password input required.'));
       if (isTrimmedEmpty(data.confirmPassword)) throw (new Error('Confirm password input required.'));
-      if (!data.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g)) {
-        throw (new Error('Your password must be at least 8 characters long, include a lowercase letter, uppercase letter, a number, and a special character.'));
-      }
+      if (!valid) throw new Error('Password is not valid');
       setUserEmail(data.email);
 
       // Calling register API
@@ -86,14 +87,25 @@ function RegisterCard({ switchCard }) {
         placeHolder="Password"
         type="password"
         name="password"
+        onChange={c => setPassword(c)}
         required
       />
       <TextInput
         placeHolder="Confirm password"
         type="password"
         name="confirmPassword"
+        onChange={c => setConfirmPassword(c)}
         required
       />
+      <PasswordChecklist
+          className="password-checklist"
+          rules={['length', 'specialChar', 'number', 'capital', 'match']}
+          minLength={8}
+          value={password}
+          valueAgain={confirmPassword}
+          /* eslint-disable-next-line no-unused-vars */
+          onChange={(isValid) => { setValid(isValid); }}
+          />
       <Button className="btn-submit" type="submit" disabled={isLoading}>
         Register
       </Button>

@@ -1,44 +1,71 @@
-import React, { useContext } from 'react';
-import { Menu, notification } from 'antd';
+import React, { useState } from 'react';
+import { Menu, Dropdown, Modal } from 'antd';
 import PropTypes from 'prop-types';
-import UserContext from '../../contexts/UserContext.jsx';
-import API from '../../api/API';
+import { useHistory } from 'react-router-dom';
+import EditAccountModal from '../EditAccountModal.jsx';
 
-function UserMenu({ onLogout }) {
-  const { email } = useContext(UserContext);
+function UserMenu({ children }) {
+  const history = useHistory();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isMenuVisible, setMenuVisible] = useState(false);
 
-  async function sendResetEmail() {
-    try {
-      await API.passwordRecovery(email);
-      notification.warning({
-        message: 'You have been logged out. Please check your email for a link to reset your password.',
-      });
-      onLogout();
-    } catch (err) {
-      notification.error({
-        message: err.message,
-      });
-    }
-  }
+  const closeAccountModal = () => setModalVisible(false);
+  const openAccountModal = () => setModalVisible(true);
+
+  const logout = () => {
+    localStorage.clear();
+    history.replace('/');
+  };
+
+  const openLogoutWarning = () => {
+    setMenuVisible(true);
+
+    Modal.confirm({
+      content: 'Are you sure you want to log out',
+      cancelText: 'Cancel',
+      okText: 'Log out',
+      maskClosable: true,
+      onOk: () => {
+        // Need to wait a bit for the modal to close
+        setTimeout(logout, 250);
+      },
+    });
+  };
+
+  const onMenuClick = () => setMenuVisible(false);
+
+  const onMenuVisibleChange = visible => {
+    setMenuVisible(visible);
+  };
+
+  const menu = (
+    <Menu onClick={onMenuClick}>
+      <Menu.Item onClick={openAccountModal}>Edit Account</Menu.Item>
+      <Menu.Item onClick={openLogoutWarning}>Logout</Menu.Item>
+    </Menu>
+  );
 
   return (
-    <Menu>
-      <Menu.Item key="0" onClick={sendResetEmail}>
-          Reset Password
-      </Menu.Item>
-      <Menu.Item key="1" onClick={onLogout}>
-          Logout
-      </Menu.Item>
-    </Menu>
+    <>
+      <Dropdown
+        overlay={menu}
+        visible={isMenuVisible}
+        trigger={['click']}
+        onVisibleChange={onMenuVisibleChange}
+      >
+        {children}
+      </Dropdown>
+      <EditAccountModal visible={isModalVisible} onClose={closeAccountModal} />
+    </>
   );
 }
 
 UserMenu.propTypes = {
-  onLogout: PropTypes.func,
+  children: PropTypes.node,
 };
 
 UserMenu.defaultProps = {
-  onLogout: () => {},
+  children: null,
 };
 
 export default UserMenu;

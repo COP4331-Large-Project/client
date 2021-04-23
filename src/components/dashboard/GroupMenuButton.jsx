@@ -10,7 +10,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import MemberInviteModal from '../MemberInviteModal.jsx';
 import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
-import UserContext from '../../contexts/UserContext.jsx';
+import UserStateContext from '../../contexts/UserStateContext.jsx';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
 
@@ -20,7 +20,7 @@ function GroupMenu({ className, isOwner }) {
   const closeInviteModal = () => setInviteModalOpen(false);
   const [loggedInUser, setLoggedInUser] = useState({});
   const { groups, index } = useContext(GroupsStateContext);
-  const user = useContext(UserContext);
+  const user = useContext(UserStateContext);
   const dispatch = useContext(GroupContextDispatch);
   const groupName = groups[index].name;
 
