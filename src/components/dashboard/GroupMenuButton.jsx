@@ -12,7 +12,7 @@ import MemberInviteModal from '../MemberInviteModal.jsx';
 import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
 import UserContext from '../../contexts/UserContext.jsx';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
-import API from '../../api/API';
+// import API from '../../api/API';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
@@ -33,31 +33,30 @@ function GroupMenu({ className, isOwner }) {
     });
   }
 
+  function removeCurGroup() {
+    const newGroups = [];
+
+    groups.forEach(group => {
+      if (group.id !== groups[index].id) {
+        newGroups.push(group);
+      }
+    });
+
+    dispatch({
+      type: 'replaceGroups',
+      payload: {
+        groups: newGroups,
+        index: newGroups.length === 0 ? -1 : index,
+      },
+    });
+  }
+
   async function leaveGroup() {
     const groupName = groups[index].name;
     try {
-      const users = [];
-      users.push(loggedInUser.id);
-      // console.log(`Removing ${users} from ${groups[index].id}`);
-      // Crashes in backend, says users is undefined.
-      await API.removeUsers(groups[index].id, users);
+      // await API.removeUsers(groups[index].id, [loggedInUser.id]);
       // Updating groups
-      const newGroups = [];
-
-      groups.forEach(group => {
-        if (group.id !== groups[index].id) {
-          newGroups.push(group);
-        }
-      });
-
-      dispatch({
-        type: 'replaceGroups',
-        payload: {
-          groups: newGroups,
-          index: newGroups.length === 0 ? -1 : index,
-        },
-      });
-
+      removeCurGroup();
       notification.success({
         description: `Successfully left ${groupName}.`,
         duration: 2,
