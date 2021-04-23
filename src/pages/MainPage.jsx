@@ -152,26 +152,36 @@ function MainPage() {
   useEffect(async () => {
     const { groups, index } = groupData;
 
-    if (groups.length > 0) {
-      const group = groups[index];
+    try {
+      if (groups.length > 0) {
+        const group = groups[index];
 
-      /* eslint no-underscore-dangle: */
-      setIsOwner(group.creator[0]._id === user.id);
+        /* eslint no-underscore-dangle: */
+        // console.log(`Creator of selected group (index is ${index} ) is ${group.creator[0]._id}`);
+        // console.log(`Current user id is ${user.id}`);
+        // console.log(`Is owner? ${group.creator[0]._id === user.id}`);
+        console.log(groups[index]);
+        setIsOwner(group.creator[0]._id === user.id);
 
-      setGroupTitle(group.name);
-      setLoadingImages(true);
+        setGroupTitle(group.name);
+        setLoadingImages(true);
 
-      const images = await getGroupImages(group.id);
+        const images = await getGroupImages(group.id);
 
-      setTimeout(() => {
-        // Delaying this set state call makes the photo
-        // grid mount animation a little bit smoother
-        setLoadingImages(false);
-      }, 500);
+        setTimeout(() => {
+          // Delaying this set state call makes the photo
+          // grid mount animation a little bit smoother
+          setLoadingImages(false);
+        }, 500);
 
-      dispatch({
-        type: 'setImages',
-        payload: images,
+        dispatch({
+          type: 'setImages',
+          payload: images,
+        });
+      }
+    } catch (e) {
+      notification.error({
+        description: e.message,
       });
     }
   }, [groupData.groups, groupData.index]);

@@ -22,6 +22,7 @@ function GroupMenu({ className, isOwner }) {
   const { groups, index } = useContext(GroupsStateContext);
   const user = useContext(UserContext);
   const dispatch = useContext(GroupContextDispatch);
+  const groupName = groups[index].name;
 
   useEffect(() => {
     setLoggedInUser(user);
@@ -29,7 +30,7 @@ function GroupMenu({ className, isOwner }) {
 
   function amITheOwner() {
     notification.success({
-      description: `${loggedInUser.firstName} is owner of ${groups[index].name}? ${isOwner}`,
+      description: `${loggedInUser.firstName} is owner of ${groupName}? ${isOwner}`,
     });
   }
 
@@ -46,13 +47,12 @@ function GroupMenu({ className, isOwner }) {
       type: 'replaceGroups',
       payload: {
         groups: newGroups,
-        index: newGroups.length === 0 ? -1 : index,
+        index: newGroups.length === 0 ? -1 : 0,
       },
     });
   }
 
   async function leaveGroup() {
-    const groupName = groups[index].name;
     try {
       await API.removeUsers(groups[index].id, [loggedInUser.id]);
       // Updating groups
@@ -77,7 +77,7 @@ function GroupMenu({ className, isOwner }) {
       <Menu.Item onClick={openInviteModal}>Invite members</Menu.Item>
       <Menu.Item disabled = {isOwner}>
         <Popconfirm
-          title={`Are you sure you want to leave ${groups[index].name}?`}
+          title={`Are you sure you want to leave ${groupName}?`}
           okText="Yes"
           cancelText="No"
           onConfirm={leaveGroup}
