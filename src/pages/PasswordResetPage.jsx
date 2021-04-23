@@ -32,6 +32,7 @@ function PasswordResetPage({ userId }) {
   const [submitted, setSubmitted] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
+  const [valid, setValid] = useState('');
   const history = useHistory();
 
   function isTrimmedEmpty(str) {
@@ -48,9 +49,7 @@ function PasswordResetPage({ userId }) {
     event.preventDefault();
 
     try {
-      if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g)) {
-        throw (new Error('Your password does not meet the requirements.'));
-      }
+      if(!valid) throw new Error('The password does not meet the requirements');
 
       if (password !== confirmedPassword) {
         notification.error({
@@ -106,8 +105,7 @@ function PasswordResetPage({ userId }) {
                   minLength={8}
                   value={password}
                   valueAgain={confirmedPassword}
-                  /* eslint-disable-next-line no-unused-vars */
-                  onChange={(isValid) => {}}
+                  onChange={(isValid) => { setValid(isValid); }}
               />
               <Button
                 className="btn submit"
