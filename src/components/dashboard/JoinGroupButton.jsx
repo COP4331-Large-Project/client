@@ -126,6 +126,7 @@ function JoinGroupButton() {
         <form onSubmit={submitCode}>
           <p>Enter a group invite link or an invite code.</p>
           <Input
+            autoFocus
             className="group-code-input"
             onChange={event => setGroupCode(event.target.value)}
             value={groupCode}
