@@ -154,6 +154,7 @@ function ImageUploadModal({ visible, onClose }) {
 
     setHasError(false);
     setIsUploading(true);
+    setUploadProgress(0);
 
     try {
       const image = await API.uploadGroupImage(
@@ -209,7 +210,7 @@ function ImageUploadModal({ visible, onClose }) {
     if (uploadProgress === 100) {
       setTimeout(() => {
         notification.close(PROGRESS_NOTIFICATION_KEY);
-      }, 3000);
+      }, 200);
     }
   }, [uploadProgress]);
 
