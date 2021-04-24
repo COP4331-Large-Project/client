@@ -17,13 +17,14 @@ import API from '../../api/API';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
-  const openInviteModal = () => setInviteModalOpen(true);
-  const closeInviteModal = () => setInviteModalOpen(false);
+  const [groupName, setGroupName] = useState('');
   const [loggedInUser, setLoggedInUser] = useState({});
   const { groups, index } = useContext(GroupsStateContext);
   const user = useContext(UserStateContext);
   const dispatch = useContext(GroupContextDispatch);
-  const [groupName, setGroupName] = useState('');
+
+  const openInviteModal = () => setInviteModalOpen(true);
+  const closeInviteModal = () => setInviteModalOpen(false);
 
   useEffect(() => {
     setLoggedInUser(user);
