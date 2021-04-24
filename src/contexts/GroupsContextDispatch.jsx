@@ -46,7 +46,7 @@ function groupReducer(state, action) {
     case 'updateGroupMemberCount':
       return {
         ...state,
-        groups: [...state.groups, action.payload],
+        groups: action.payload,
       };
     default:
       throw new Error(`Invalid Group reducer action ${action}.`);

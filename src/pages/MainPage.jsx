@@ -25,6 +25,11 @@ const socket = io(BASE_URL, {
   upgrade: false,
 });
 
+if (module.hot) {
+  socket.disconnect();
+  console.log('Disconnected from socket');
+}
+
 function MainPage() {
   // Using an initial value of -1 here so that groupData can
   // trigger updates when its value is set to 0 on mount.
@@ -38,7 +43,6 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
-  const [didLoad, setDidLoad] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const history = useHistory();
 
@@ -111,6 +115,59 @@ function MainPage() {
     }
   }
 
+  const onImageUploaded = (image, groupId) => {
+    const { groups, index } = groupData;
+
+    console.log('Image uploaded', groupData.index);
+
+    // Ensures that we don't dispatch an add image event if the user isn't
+    // currently viewing the group where the image was added or if the
+    // person who uploaded the image is the current user
+    if (groups[index].id === groupId && image.creator !== user.id) {
+      groupDispatch({
+        type: 'addImage',
+        payload: image,
+      });
+
+      console.log(image);
+
+      notification.info({
+        key: 'image-upload-notification',
+        duration: 3,
+        description: 'A new image was added.',
+      });
+    }
+  };
+
+  const onGroupMemberJoin = (username, groupId) => {
+    console.log(`${username} users joined group ${groupId}`);
+
+    const groups = [...groupData.groups];
+    const updatedIndex = groups.findIndex(group => group.id === groupId);
+
+    if (updatedIndex === -1) {
+      return;
+    }
+
+    // Only show the notification if the group the new user joined is the
+    // same group the user has currently selected
+    if (updatedIndex === groupData.index) {
+      notification.info({
+        key: 'user-join-notification',
+        duration: 3,
+        message: 'New Member',
+        description: `${username} joined your group.`,
+      });
+    }
+
+    groups[updatedIndex].memberCount += 1;
+
+    groupDispatch({
+      type: 'updateGroupMemberCount',
+      payload: groups,
+    });
+  };
+
   // Only want this to trigger once to grab user token and id.
   useEffect(async () => {
     socket.disconnect();
@@ -151,12 +208,22 @@ function MainPage() {
     groups.forEach(group => {
       const { creator } = group;
 
-     if (creator[0]) {
+      if (creator[0]) {
         // eslint-disable-next-line
-      group.creator.id = creator[0]._id;
-      // eslint-disable-next-line prefer-destructuring, no-param-reassign
-      group.creator = creator[0];
-     }
+        group.creator.id = creator[0]._id;
+        // eslint-disable-next-line prefer-destructuring, no-param-reassign
+        group.creator = creator[0];
+      }
+    });
+
+    socket.connect();
+
+    socket.on('connect', () => {
+      console.log('Connected to socket');
+      socket.emit(
+        'join',
+        groups.map(group => group.id),
+      );
     });
 
     // Set the index to -1 if there are no groups to load so
@@ -171,57 +238,6 @@ function MainPage() {
     });
   }, []);
 
-  function onImageUploaded(image, groupId) {
-    const { groups, index } = groupData;
-
-    console.log('Image uploaded', groupData.index);
-
-    if (groups[index].id === groupId && image.creator !== user.id) {
-      groupDispatch({
-        type: 'addImage',
-        payload: image,
-      });
-    }
-  }
-
-  function onGroupMemberJoin(joinCount, groupId) {
-    const { groups } = groupData;
-    const updatedGroup = groups.find(group => group.id === groupId);
-    updatedGroup.memberCount += joinCount;
-
-    groupDispatch({
-      type: 'updateGroupMemberCount',
-      payload: updatedGroup,
-    });
-
-    console.log(`${joinCount} users joined group ${groupId}`);
-  }
-
-  useEffect(() => {
-    if (!didLoad) {
-      return;
-    }
-
-    socket.connect();
-    // console.log('After content load', { connected: socket.connected });
-
-    const groupIds = groupData.groups.map(group => group.id);
-
-    socket.on('connect', () => {
-      console.log('Connected to socket');
-      socket.emit('join', groupIds);
-    });
-
-    // socket.on('users joined', (joinCount, groupId) => {
-    //   console.log(`${joinCount} users joined group ${groupId}`);
-    // });
-
-    // return () => {
-    //   console.log('Disconnected from socket');
-    //   socket.disconnect();
-    // };
-  }, [didLoad]);
-
   // Triggers only when the selected group index changes.
   // In this case we'll set the group title and load the
   // images from this group.
@@ -229,12 +245,10 @@ function MainPage() {
     const { groups, index } = groupData;
 
     if (groups.length > 0) {
-      setDidLoad(true);
-
       socket.off('image uploaded');
-      socket.off('users joined');
+      socket.off('user joined');
       socket.on('image uploaded', onImageUploaded);
-      socket.on('users joined', onGroupMemberJoin);
+      socket.on('user joined', onGroupMemberJoin);
 
       const group = groups[index];
 
@@ -255,7 +269,7 @@ function MainPage() {
         payload: images,
       });
     }
-  }, [groupData.groups, groupData.index]);
+  }, [groupData.index]);
 
   return (
     <UserContext.Provider value={user}>
@@ -279,7 +293,10 @@ function MainPage() {
                           {groupTitle}
                         </h1>
                         {groupData.groups.length > 0 && (
-                          <GroupMenuButton className="group-action-btn" isOwner={isOwner}/>
+                          <GroupMenuButton
+                            className="group-action-btn"
+                            isOwner={isOwner}
+                          />
                         )}
                       </div>
                     </Skeleton>
