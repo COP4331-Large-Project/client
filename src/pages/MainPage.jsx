@@ -170,9 +170,6 @@ function MainPage() {
     try {
       if (groups.length > 0) {
         const group = groups[index];
-
-        setGroupTitle(group.name);
-        setLoadingImages(true);
         /* eslint no-underscore-dangle: */
         setGroupTitle(group.name);
         setLoadingImages(true);
@@ -188,6 +185,13 @@ function MainPage() {
         groupDispatch({
           type: 'setImages',
           payload: images,
+        });
+      } else {
+        setGroupTitle('');
+        setIsOwner(false);
+        groupDispatch({
+          type: 'setImages',
+          payload: [],
         });
       }
     } catch (e) {
@@ -223,6 +227,7 @@ function MainPage() {
                         )}
                       </div>
                     </Skeleton>
+{/* NEED TO MAKE PHOTOGRID REVERT TO THE EMPTY SCREEN WHEN GROUP LIST IS SIZE 0 AFTER DELETION. */}
                     <PhotoGrid photos={groupData.images} />
                   </div>
                 </div>
