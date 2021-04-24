@@ -33,13 +33,7 @@ function GroupMenu({ className, isOwner }) {
     setGroupName(index === -1 ? '' : groups[index].name);
   }, [groups, index]);
 
-  function amITheOwner() {
-    notification.success({
-      description: `${loggedInUser.firstName} is owner of ${groupName}? ${isOwner}`,
-    });
-  }
-
-  function removeCurGroup() {
+  const removeCurrentGroup = () => {
     const newGroups = [];
 
     groups.forEach(group => {
@@ -56,27 +50,58 @@ function GroupMenu({ className, isOwner }) {
         index: newGroups.length === 0 ? -1 : 0,
       },
     });
-  }
+  };
 
-  async function leaveGroup() {
+  const deleteGroup = async () => {
+    try {
+      await API.deleteGroup(groups[index].id, loggedInUser.id);
+      removeCurrentGroup();
+
+      notification.error({
+        description: `You deleted ${groupName}.`,
+        duration: 2,
+      });
+    } catch (err) {
+      notification.error({
+        description:
+          'An error occurred while deleting this group, please try again',
+      });
+    }
+  };
+
+  const leaveGroup = async () => {
     try {
       await API.removeUser(groups[index].id, loggedInUser.id);
       // Updating groups
-      removeCurGroup();
+      removeCurrentGroup();
       notification.success({
         description: `You left ${groupName}.`,
         duration: 2,
       });
     } catch (err) {
       notification.error({
-        message: `Could not delete ${groupName}`,
-        description: err,
+        message: 'An error occurred while leaving this group, please try again',
       });
     }
-  }
+  };
+
+  const openDeleteGroupWarning = () => {
+    Modal.confirm({
+      title: 'Delete Group',
+      content: `
+        Are you sure you want to delete ${groupName}?
+        There's no going back!
+      `,
+      cancelText: 'Cancel',
+      okText: 'Delete Group',
+      maskClosable: true,
+      onOk: deleteGroup,
+    });
+  };
 
   const openLeaveGroupWarning = () => {
     Modal.confirm({
+      title: 'Leave Group',
       content: `Are you sure you want to leave ${groupName}?`,
       cancelText: 'Cancel',
       okText: 'Leave Group',
@@ -94,7 +119,7 @@ function GroupMenu({ className, isOwner }) {
       <Menu.Item onClick={openLeaveGroupWarning} disabled={isOwner}>
         Leave Group
       </Menu.Item>
-      <Menu.Item onClick={amITheOwner} disabled={!isOwner}>
+      <Menu.Item onClick={openDeleteGroupWarning} disabled={!isOwner}>
         Delete Group
       </Menu.Item>
       <MemberInviteModal
