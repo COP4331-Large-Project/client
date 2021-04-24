@@ -4,8 +4,8 @@ import {
   Dropdown,
   Menu,
   Button,
-  Popconfirm,
   notification,
+  Modal,
 } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
 import PropTypes from 'prop-types';
@@ -31,7 +31,7 @@ function GroupMenu({ className, isOwner }) {
 
   useEffect(() => {
     setGroupName(index === -1 ? '' : groups[index].name);
-  }, [index]);
+  }, [groups, index]);
 
   function amITheOwner() {
     notification.success({
@@ -64,16 +64,26 @@ function GroupMenu({ className, isOwner }) {
       // Updating groups
       removeCurGroup();
       notification.success({
-        description: `Successfully left ${groupName}.`,
+        description: `You left ${groupName}.`,
         duration: 2,
       });
     } catch (err) {
       notification.error({
-        title: `Could not delete ${groupName}`,
+        message: `Could not delete ${groupName}`,
         description: err,
       });
     }
   }
+
+  const openLeaveGroupWarning = () => {
+    Modal.confirm({
+      content: `Are you sure you want to leave ${groupName}?`,
+      cancelText: 'Cancel',
+      okText: 'Leave Group',
+      maskClosable: true,
+      onOk: leaveGroup,
+    });
+  };
 
   // The menu needs to be passed to ant as a variable and not
   // a render function. Doing overlay={<Element />} causes the menu to
@@ -81,16 +91,8 @@ function GroupMenu({ className, isOwner }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={openInviteModal}>Invite members</Menu.Item>
-      <Menu.Item disabled={isOwner}>
-        <Popconfirm
-          title={`Are you sure you want to leave ${groupName}?`}
-          okText="Yes"
-          cancelText="No"
-          onConfirm={leaveGroup}
-          disabled={isOwner}
-        >
-          Leave Group
-        </Popconfirm>
+      <Menu.Item onClick={openLeaveGroupWarning} disabled={isOwner}>
+        Leave Group
       </Menu.Item>
       <Menu.Item onClick={amITheOwner} disabled={!isOwner}>
         Delete Group

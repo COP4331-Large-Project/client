@@ -31,6 +31,7 @@ const socket = io(BASE_URL, {
   upgrade: false,
 });
 
+// Used to get the previous value of state.
 const usePrevious = value => {
   const ref = useRef();
 
@@ -272,9 +273,10 @@ function MainPage() {
     });
   }, []);
 
-  // Triggers only when the selected group index changes.
-  // In this case we'll set the group title and load the
-  // images from this group.
+  // We only want this to trigger when the selected group index changes.
+  // In this case we'll set the group title and load the images
+  // from this group. Any other dependencies here would cause
+  // the page to fetch images on every change.
   useEffect(async () => {
     const { groups } = groupData;
 
@@ -313,8 +315,9 @@ function MainPage() {
 
     const { groups, index } = groupData;
 
-    // This is an edge cause. Sometimes deleting a group doesn't change the index
-    // so we need to manually update the photo list in that case
+    // This is an edge case. Sometimes deleting a group
+    // doesn't change the index so we need to manually update
+    // the photo list in that case.
     if (
       // prettier-ignore
       prevGroupData.groups.length > groups.length
