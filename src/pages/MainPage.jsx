@@ -115,7 +115,7 @@ function MainPage() {
     }
   }
 
-  const onImageUploaded = (image, groupId) => {
+  const onImageUploaded = (image, username, groupId) => {
     const { groups, index } = groupData;
 
     console.log('Image uploaded', groupData.index);
@@ -129,12 +129,10 @@ function MainPage() {
         payload: image,
       });
 
-      console.log(image);
-
       notification.info({
         key: 'image-upload-notification',
         duration: 3,
-        description: 'A new image was added.',
+        description: `${username} uploaded an image`,
       });
     }
   };
