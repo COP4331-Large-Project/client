@@ -15,6 +15,7 @@ import UserStateContext from '../contexts/UserStateContext.jsx';
 import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import SocketContext from '../contexts/SocketContext.jsx';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -25,6 +26,7 @@ function CreateGroupModal({ visible, onClose }) {
   const { groups } = useContext(GroupsStateContext);
   const dispatch = useContext(GroupsContextDispatch);
   const user = useContext(UserStateContext);
+  const socket = useContext(SocketContext);
 
   const addMember = event => {
     event.preventDefault();
@@ -78,10 +80,16 @@ function CreateGroupModal({ visible, onClose }) {
       dispatch({
         type: 'addGroup',
         payload: {
-          group,
+          group: {
+            ...group,
+            // TODO: Remove this. This should be handled by the server
+            memberCount: 1,
+          },
           index: groups.length,
         },
       });
+
+      socket.emit('join', [group.id]);
     } catch (err) {
       notification.error({
         message: 'Error creating group',

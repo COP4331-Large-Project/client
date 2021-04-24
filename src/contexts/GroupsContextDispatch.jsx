@@ -43,6 +43,11 @@ function groupReducer(state, action) {
         images: action.payload.images,
         index: action.payload.index,
       };
+    case 'updateGroupMemberCount':
+      return {
+        ...state,
+        groups: action.payload,
+      };
     default:
       throw new Error(`Invalid Group reducer action ${action}.`);
   }

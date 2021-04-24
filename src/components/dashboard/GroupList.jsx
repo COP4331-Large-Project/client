@@ -33,7 +33,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
   };
 
   const renderGroupImage = (thumbnail, title) => (
-    <Avatar src={thumbnail && thumbnail.URL} size={54} alt={title}>
+    <Avatar src={thumbnail && thumbnail.URL} size={54}>
       {title[0]}
     </Avatar>
   );
