@@ -269,7 +269,7 @@ const API = {
    * Removes a user from a group for each given user ID.
    *
    * @param {string} groupId
-   * @param {string[]} userIds
+   * @param {string} userId
    *
    * @returns {Promise}
    * @throws {APIError} On server error.
