@@ -89,10 +89,12 @@ function GroupMenu({ className, isOwner }) {
   const openDeleteGroupWarning = () => {
     Modal.confirm({
       title: 'Delete Group',
-      content: `
-        Are you sure you want to delete ${groupName}?
-        There's no going back!
-      `,
+      content: (
+        <span>
+          Are you sure you want to delete <b>{groupName}</b> There&apos;s no
+          going back!
+        </span>
+      ),
       cancelText: 'Cancel',
       okText: 'Delete Group',
       maskClosable: true,
@@ -103,7 +105,11 @@ function GroupMenu({ className, isOwner }) {
   const openLeaveGroupWarning = () => {
     Modal.confirm({
       title: 'Leave Group',
-      content: `Are you sure you want to leave ${groupName}?`,
+      content: (
+        <span>
+          Are you sure you want to leave <b>{groupName}</b>?
+        </span>
+      ),
       cancelText: 'Cancel',
       okText: 'Leave Group',
       maskClosable: true,

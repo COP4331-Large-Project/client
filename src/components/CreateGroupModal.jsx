@@ -192,6 +192,7 @@ function CreateGroupModal({ visible, onClose }) {
     >
       <p className="input-title">Group Name</p>
       <Input
+        onPressEnter={createGroup}
         onInput={event => setGroupName(event.target.value)}
         disabled={isLoading}
         autoFocus

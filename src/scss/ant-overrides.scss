@@ -51,8 +51,9 @@
 }
 
 // The title for ant's Alert component
+.ant-modal-confirm-title,
 .ant-alert-message {
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 // The body of ant's Alert component
