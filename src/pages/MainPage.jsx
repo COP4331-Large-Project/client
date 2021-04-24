@@ -137,8 +137,10 @@ function MainPage() {
     }
   };
 
-  const onGroupMemberJoin = (username, groupId) => {
-    console.log(`${username} users joined group ${groupId}`);
+  const onMemberCountChange = (username, groupId, hasJoined) => {
+    console.log(
+      `${username} ${hasJoined ? 'joined' : 'left'} joined group ${groupId}`,
+    );
 
     const groups = [...groupData.groups];
     const updatedIndex = groups.findIndex(group => group.id === groupId);
@@ -151,14 +153,17 @@ function MainPage() {
     // same group the user has currently selected
     if (updatedIndex === groupData.index) {
       notification.info({
-        key: 'user-join-notification',
+        key: 'member-change-notification',
         duration: 3,
-        message: 'New Member',
-        description: `${username} joined your group.`,
+        description: `${username} ${hasJoined ? 'joined' : 'left'} your group.`,
       });
     }
 
-    groups[updatedIndex].memberCount += 1;
+    if (hasJoined) {
+      groups[updatedIndex].memberCount += 1;
+    } else {
+      groups[updatedIndex].memberCount -= 1;
+    }
 
     groupDispatch({
       type: 'updateGroupMemberCount',
@@ -207,7 +212,7 @@ function MainPage() {
       const { creator } = group;
 
       if (creator[0]) {
-        // eslint-disable-next-line
+        // eslint-disable-next-line no-param-reassign
         group.creator.id = creator[0]._id;
         // eslint-disable-next-line prefer-destructuring, no-param-reassign
         group.creator = creator[0];
@@ -242,11 +247,29 @@ function MainPage() {
   useEffect(async () => {
     const { groups, index } = groupData;
 
+    if (groups.length === 0) {
+      setGroupTitle('');
+      setIsOwner(false);
+      groupDispatch({
+        type: 'setImages',
+        payload: [],
+      });
+
+      return;
+    }
+
     if (groups.length > 0) {
       socket.off('image uploaded');
       socket.off('user joined');
+      socket.off('user removed');
+
       socket.on('image uploaded', onImageUploaded);
-      socket.on('user joined', onGroupMemberJoin);
+      socket.on('user joined', (username, groupId) => {
+        onMemberCountChange(username, groupId, true);
+      });
+      socket.on('user removed', (username, groupId) => {
+        onMemberCountChange(username, groupId, false);
+      });
 
       const group = groups[index];
 
