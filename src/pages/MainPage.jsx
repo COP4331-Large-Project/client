@@ -1,5 +1,10 @@
-/* eslint-disable */
-import React, { useState, useEffect, useReducer } from 'react';
+// prettier-ignore
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
@@ -26,10 +31,15 @@ const socket = io(BASE_URL, {
   upgrade: false,
 });
 
-if (module.hot) {
-  socket.disconnect();
-  console.log('Disconnected from socket');
-}
+const usePrevious = value => {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref.current;
+};
 
 function MainPage() {
   // Using an initial value of -1 here so that groupData can
@@ -46,6 +56,7 @@ function MainPage() {
   const [isLoadingImages, setLoadingImages] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const history = useHistory();
+  const prevGroupData = usePrevious(groupData);
 
   const loadingStates = {
     groupsLoading: isLoadingGroups,
@@ -119,8 +130,6 @@ function MainPage() {
   const onImageUploaded = (image, username, groupId) => {
     const { groups, index } = groupData;
 
-    console.log('Image uploaded', groupData.index);
-
     // Ensures that we don't dispatch an add image event if the user isn't
     // currently viewing the group where the image was added or if the
     // person who uploaded the image is the current user
@@ -139,8 +148,6 @@ function MainPage() {
   };
 
   const onMemberCountChange = (username, groupId, hasJoined) => {
-    console.log(`${username} ${hasJoined ? 'joined' : 'left'} joined`);
-
     const groups = [...groupData.groups];
     const updatedIndex = groups.findIndex(group => group.id === groupId);
 
@@ -150,7 +157,7 @@ function MainPage() {
 
     // Only show the notification if the group the new user joined is the
     // same group the user has currently selected
-    if (updatedIndex === groupData.index) {
+    if (updatedIndex === groupData.index && user.username !== username) {
       notification.info({
         key: 'member-change-notification',
         duration: 3,
@@ -164,9 +171,35 @@ function MainPage() {
       groups[updatedIndex].memberCount -= 1;
     }
 
+    if (user.username !== username) {
+      groupDispatch({
+        type: 'updateGroupMemberCount',
+        payload: groups,
+      });
+    }
+  };
+
+  const updatePage = async () => {
+    const { groups, index } = groupData;
+    const group = groups[index];
+    // eslint-disable-next-line no-underscore-dangle
+    const creatorId = group.creator.id || group.creator._id;
+
+    setIsOwner(creatorId === user.id);
+    setGroupTitle(group.name);
+    setLoadingImages(true);
+
+    const images = await getGroupImages(group.id);
+
+    setTimeout(() => {
+      // Delaying this set state call makes the photo
+      // grid mount animation a little bit smoother
+      setLoadingImages(false);
+    }, 500);
+
     groupDispatch({
-      type: 'updateGroupMemberCount',
-      payload: groups,
+      type: 'setImages',
+      payload: images,
     });
   };
 
@@ -211,7 +244,7 @@ function MainPage() {
       const { creator } = group;
 
       if (creator[0]) {
-        // eslint-disable-next-line no-param-reassign
+        // eslint-disable-next-line no-param-reassign, no-underscore-dangle
         group.creator.id = creator[0]._id;
         // eslint-disable-next-line prefer-destructuring, no-param-reassign
         group.creator = creator[0];
@@ -221,7 +254,6 @@ function MainPage() {
     socket.connect();
 
     socket.on('connect', () => {
-      console.log('Connected to socket');
       socket.emit(
         'join',
         groups.map(group => group.id),
@@ -244,7 +276,7 @@ function MainPage() {
   // In this case we'll set the group title and load the
   // images from this group.
   useEffect(async () => {
-    const { groups, index } = groupData;
+    const { groups } = groupData;
 
     if (groups.length === 0) {
       setGroupTitle('');
@@ -270,26 +302,27 @@ function MainPage() {
         onMemberCountChange(username, groupId, false);
       });
 
-      const group = groups[index];
-
-      setGroupTitle(group.name);
-      setLoadingImages(true);
-      setIsOwner(group.creator._id === user.id);
-
-      const images = await getGroupImages(group.id);
-
-      setTimeout(() => {
-        // Delaying this set state call makes the photo
-        // grid mount animation a little bit smoother
-        setLoadingImages(false);
-      }, 500);
-
-      groupDispatch({
-        type: 'setImages',
-        payload: images,
-      });
+      updatePage();
     }
   }, [groupData.index]);
+
+  useEffect(async () => {
+    if (!groupData.groups || !prevGroupData) {
+      return;
+    }
+
+    const { groups, index } = groupData;
+
+    // This is an edge cause. Sometimes deleting a group doesn't change the index
+    // so we need to manually update the photo list in that case
+    if (
+      // prettier-ignore
+      prevGroupData.groups.length > groups.length
+      && prevGroupData.index === index
+    ) {
+      updatePage();
+    }
+  }, [groupData.groups]);
 
   return (
     <SocketContext.Provider value={socket}>

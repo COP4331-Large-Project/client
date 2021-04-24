@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+// prettier-ignore
 import {
   Dropdown,
   Menu,
@@ -22,11 +23,15 @@ function GroupMenu({ className, isOwner }) {
   const { groups, index } = useContext(GroupsStateContext);
   const user = useContext(UserStateContext);
   const dispatch = useContext(GroupContextDispatch);
-  const groupName = groups[index].name;
+  const [groupName, setGroupName] = useState('');
 
   useEffect(() => {
     setLoggedInUser(user);
   }, [user]);
+
+  useEffect(() => {
+    setGroupName(index === -1 ? '' : groups[index].name);
+  }, [index]);
 
   function amITheOwner() {
     notification.success({
@@ -76,7 +81,7 @@ function GroupMenu({ className, isOwner }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={openInviteModal}>Invite members</Menu.Item>
-      <Menu.Item disabled = {isOwner}>
+      <Menu.Item disabled={isOwner}>
         <Popconfirm
           title={`Are you sure you want to leave ${groupName}?`}
           okText="Yes"
@@ -87,7 +92,7 @@ function GroupMenu({ className, isOwner }) {
           Leave Group
         </Popconfirm>
       </Menu.Item>
-      <Menu.Item onClick={amITheOwner} disabled = {!isOwner}>
+      <Menu.Item onClick={amITheOwner} disabled={!isOwner}>
         Delete Group
       </Menu.Item>
       <MemberInviteModal
