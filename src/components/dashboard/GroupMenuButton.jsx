@@ -55,7 +55,7 @@ function GroupMenu({ className, isOwner }) {
 
   async function leaveGroup() {
     try {
-      await API.removeUsers(groups[index].id, loggedInUser.id);
+      await API.removeUser(groups[index].id, loggedInUser.id);
       // Updating groups
       removeCurGroup();
       notification.success({
