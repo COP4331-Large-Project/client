@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const SocketContext = createContext(69);
+const SocketContext = createContext(null);
 
 export default SocketContext;

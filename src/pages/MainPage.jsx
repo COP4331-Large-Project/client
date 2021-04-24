@@ -19,6 +19,7 @@ import UserContextDispatch, {
   userReducer,
 } from '../contexts/UserContextDispatch.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
+import SocketContext from '../contexts/SocketContext.jsx';
 
 const socket = io(BASE_URL, {
   transports: ['websocket'],
@@ -138,9 +139,7 @@ function MainPage() {
   };
 
   const onMemberCountChange = (username, groupId, hasJoined) => {
-    console.log(
-      `${username} ${hasJoined ? 'joined' : 'left'} joined group ${groupId}`,
-    );
+    console.log(`${username} ${hasJoined ? 'joined' : 'left'} joined`);
 
     const groups = [...groupData.groups];
     const updatedIndex = groups.findIndex(group => group.id === groupId);
@@ -293,43 +292,45 @@ function MainPage() {
   }, [groupData.index]);
 
   return (
-    <UserContext.Provider value={user}>
-      <UserContextDispatch.Provider value={userDispatch}>
-        <GroupDispatchContext.Provider value={groupDispatch}>
-          <GroupsStateContext.Provider value={groupData}>
-            <LoadingContext.Provider value={loadingStates}>
-              <div className="main-page-body">
-                <Navbar />
-                <div className="body-content">
-                  <Sidebar />
-                  <div className="main-content">
-                    <Skeleton
-                      active
-                      className="title-skeleton"
-                      loading={isLoadingGroups}
-                      paragraph={{ rows: 0 }}
-                    >
-                      <div className="group-title-row">
-                        <h1 className="group-title" title={groupTitle}>
-                          {groupTitle}
-                        </h1>
-                        {groupData.groups.length > 0 && (
-                          <GroupMenuButton
-                            className="group-action-btn"
-                            isOwner={isOwner}
-                          />
-                        )}
-                      </div>
-                    </Skeleton>
-                    <PhotoGrid photos={groupData.images} />
+    <SocketContext.Provider value={socket}>
+      <UserContext.Provider value={user}>
+        <UserContextDispatch.Provider value={userDispatch}>
+          <GroupDispatchContext.Provider value={groupDispatch}>
+            <GroupsStateContext.Provider value={groupData}>
+              <LoadingContext.Provider value={loadingStates}>
+                <div className="main-page-body">
+                  <Navbar />
+                  <div className="body-content">
+                    <Sidebar />
+                    <div className="main-content">
+                      <Skeleton
+                        active
+                        className="title-skeleton"
+                        loading={isLoadingGroups}
+                        paragraph={{ rows: 0 }}
+                      >
+                        <div className="group-title-row">
+                          <h1 className="group-title" title={groupTitle}>
+                            {groupTitle}
+                          </h1>
+                          {groupData.groups.length > 0 && (
+                            <GroupMenuButton
+                              className="group-action-btn"
+                              isOwner={isOwner}
+                            />
+                          )}
+                        </div>
+                      </Skeleton>
+                      <PhotoGrid photos={groupData.images} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </LoadingContext.Provider>
-          </GroupsStateContext.Provider>
-        </GroupDispatchContext.Provider>
-      </UserContextDispatch.Provider>
-    </UserContext.Provider>
+              </LoadingContext.Provider>
+            </GroupsStateContext.Provider>
+          </GroupDispatchContext.Provider>
+        </UserContextDispatch.Provider>
+      </UserContext.Provider>
+    </SocketContext.Provider>
   );
 }
 
