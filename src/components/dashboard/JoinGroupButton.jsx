@@ -1,9 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-  Modal,
-  Input,
-  notification,
-} from 'antd';
+import { Modal, Input, notification } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
 import API from '../../api/API';
@@ -14,18 +10,18 @@ import SocketContext from '../../contexts/SocketContext.jsx';
 function JoinGroupButton() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [input, setInput] = useState('');
+  const [groupCode, setGroupCode] = useState('');
   const dispatch = useContext(GroupContextDispatch);
   const { groups } = useContext(GroupsStateContext);
   const socket = useContext(SocketContext);
 
   function showModal() {
-    setInput('');
+    setGroupCode('');
     setVisible(true);
   }
 
   function handleCancel() {
-    setInput('');
+    setGroupCode('');
     setConfirmLoading(false);
     setVisible(false);
   }
@@ -39,7 +35,7 @@ function JoinGroupButton() {
 
   async function submitCode(event) {
     event.preventDefault();
-    let invite = input;
+    let invite = groupCode;
 
     if (confirmLoading === true) {
       return;
@@ -51,7 +47,7 @@ function JoinGroupButton() {
       // Extracting the invite code from url if given a url
       if (invite.length < 36) {
         // potential invite is empty or too short to be an actual invite code
-        throw (new Error('Code cannot be empty or is too short to be an invite code.'));
+        throw new Error('Invalid invite code');
       } else if (invite.length > 36) {
         // Need to parse invite code out
         invite = parseInvite(invite);
@@ -72,12 +68,31 @@ function JoinGroupButton() {
       // for incoming socket events.
       socket.emit('join', [group.id]);
     } catch (e) {
-      setConfirmLoading(false);
+      let message;
+
+      switch (e.status) {
+        case 418:
+          message = "You're already a member of this group.";
+          break;
+        case 403:
+        case 404:
+          message = 'The group you’re looking for doesn’t exist.';
+          break;
+        default:
+          message = 'An unknown error occurred, please try again.';
+      }
+
+      if (!e.status) {
+        message = e.message;
+      }
+
       notification.error({
         message: 'Error Joining Group',
-        description: e.message,
+        description: message,
         key: 'group-join-error',
       });
+
+      setConfirmLoading(false);
       return;
     }
 
@@ -85,31 +100,37 @@ function JoinGroupButton() {
       message: 'Joined Group',
       key: 'join-group-success',
     });
-    setInput('');
+
+    setGroupCode('');
     setVisible(false);
     setConfirmLoading(false);
   }
 
   return (
-    <div className='center'>
-      <Button className='joinButton' onClick={showModal}>Join Group</Button>
+    <div className="center">
+      <Button className="joinButton" onClick={showModal}>
+        Join Group
+      </Button>
       <Modal
         centered
-        title='Join group'
+        title="Join group"
         visible={visible}
         onOk={submitCode}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        okText='Join'
+        okButtonProps={{
+          disabled: confirmLoading || !groupCode.trim(),
+        }}
+        okText="Join"
       >
         <form onSubmit={submitCode}>
-            <p>Enter a group invite link or an invite code.</p>
-            <Input
-              className="group-code-input"
-              placeHolder='Example: xJwY394p'
-              onChange={event => setInput(event.target.value)}
-              value={input}
-            />
+          <p>Enter a group invite link or an invite code.</p>
+          <Input
+            autoFocus
+            className="group-code-input"
+            onChange={event => setGroupCode(event.target.value)}
+            value={groupCode}
+          />
         </form>
       </Modal>
     </div>

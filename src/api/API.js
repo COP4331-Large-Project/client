@@ -392,6 +392,22 @@ const API = {
       })
       .then(response => response.data);
   },
+
+  /**
+   * Deletes a group with the given id.
+   *
+   * @param {string} groupId
+   * @param {string} userId
+   */
+  async deleteGroup(groupId, userId) {
+    return axios
+      .delete(`/groups/${groupId}`, {
+        data: {
+          user: userId,
+        },
+      })
+      .then(response => response.data);
+  },
 };
 
 export { API as default, BASE_URL };

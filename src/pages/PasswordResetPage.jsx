@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useHistory } from 'react-router-dom';
-import { notification } from 'antd';
+import { notification, Alert } from 'antd';
 import PropTypes from 'prop-types';
 import PasswordChecklist from 'react-password-checklist';
 import Card from '../components/Card.jsx';
@@ -27,13 +27,13 @@ const animationOpts = {
 };
 
 function PasswordResetPage({ userId }) {
-  const params = new URLSearchParams(window.location.search);
-  const verificationCode = params.get('verificationCode');
   const [submitted, setSubmitted] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [valid, setValid] = useState('');
   const history = useHistory();
+  const params = new URLSearchParams(window.location.search);
+  const verificationCode = params.get('verificationCode');
 
   function isTrimmedEmpty(str) {
     if (str.trim() === '') return true;
@@ -49,27 +49,94 @@ function PasswordResetPage({ userId }) {
     event.preventDefault();
 
     try {
-      if (!valid) throw new Error('The password does not meet the requirements');
-
-      if (password !== confirmedPassword) {
-        notification.error({
-          description: 'Passwords do not match',
-        });
-
-        return;
-      }
       await API.passwordReset(userId, verificationCode, password);
 
       setSubmitted(true);
+
       notification.success({
-        description: 'Password has been reset. Please click the "Back to login" button to log in.',
+        message: 'Success',
+        description: `
+          Password has been reset. Please click the
+          "Back to login" button to log in.
+        `,
       });
     } catch (err) {
       notification.error({
-        description: 'Password was not reset.',
+        message: 'Error Resetting Password',
+        description: `
+          An error occurred while resetting
+          your password, please try again.
+        `,
       });
     }
   }
+
+  const passwordResetForm = (
+    <form onSubmit={changePassword}>
+      <Card className="reset-card">
+        <h1 className="card-title">Reset Password</h1>
+        <p className="card-text">
+          Please enter your new password. Your password must be at least 8
+          characters long, include a lowercase letter, uppercase letter, a
+          number, and a special character.
+        </p>
+        <TextInput
+          className="textbox"
+          type="password"
+          placeHolder="Enter a password"
+          onChange={setPassword}
+        />
+        <TextInput
+          className="textbox"
+          type="password"
+          placeHolder="Confirm your password"
+          onChange={setConfirmedPassword}
+        />
+        <PasswordChecklist
+          className="password-checklist"
+          rules={['length', 'specialChar', 'number', 'capital', 'match']}
+          minLength={8}
+          value={password}
+          valueAgain={confirmedPassword}
+          onChange={setValid}
+        />
+        <Button
+          className="btn submit"
+          type="submit"
+          disabled={
+            // prettier-ignore
+            submitted
+            || !valid
+            || isTrimmedEmpty(password)
+            || isTrimmedEmpty(confirmedPassword)
+          }
+        >
+          Reset Password
+        </Button>
+        <Button onClick={goBack} className="btn-link">
+          Back to login
+        </Button>
+      </Card>
+    </form>
+  );
+
+  const invalidLinkAlert = (
+    <Card className="reset-card">
+      <h1 className="card-title">Invalid Link</h1>
+      <Alert
+        type="error"
+        className="invalid-link-alert"
+        message="Invalid Link"
+        description={`
+          This link is invalid. Make sure the
+          URL matches the link from you email.
+        `}
+      />
+      <Button variant="link" onClick={goBack}>
+        Back to login
+      </Button>
+    </Card>
+  );
 
   return (
     <div className="password-reset-page">
@@ -81,47 +148,7 @@ function PasswordResetPage({ userId }) {
           transition={animationOpts}
           variants={animationVariants}
         >
-          <form onSubmit={changePassword}>
-            <Card className="reset-card">
-              <h1 className="card-title">Reset Password</h1>
-              <p className="card-text">
-                Please enter your new password. Your password must be at least 8 characters long,
-                 include a lowercase letter, uppercase letter, a number, and a special character.
-              </p>
-              <TextInput
-                className="textbox"
-                type="password"
-                placeHolder="Enter a password"
-                onChange={(c) => { setPassword(c); }}
-              />
-              <TextInput
-                className="textbox"
-                type="password"
-                placeHolder="Confirm your password"
-                onChange={(c) => { setConfirmedPassword(c); }}
-              />
-              <PasswordChecklist
-                  className="password-checklist"
-                  rules={['length', 'specialChar', 'number', 'capital', 'match']}
-                  minLength={8}
-                  value={password}
-                  valueAgain={confirmedPassword}
-                  onChange={(isValid) => { setValid(isValid); }}
-              />
-              <Button
-                className="btn submit"
-                type="submit"
-                disabled={
-                  submitted || isTrimmedEmpty(password) || isTrimmedEmpty(confirmedPassword)
-                }
-              >
-                Reset Password
-              </Button>
-              <Button onClick={goBack} className="btn-link">
-                Back to login
-              </Button>
-            </Card>
-          </form>
+          {!verificationCode ? invalidLinkAlert : passwordResetForm}
         </motion.div>
       </div>
     </div>
