@@ -421,7 +421,7 @@ const API = {
    */
   async deleteImages(groupId, images) {
     return axios
-      .post(`/groups/${groupId}/deleteImages`, images)
+      .post(`/groups/${groupId}/deleteImages`, { images })
       .then(response => response.data);
   },
 };

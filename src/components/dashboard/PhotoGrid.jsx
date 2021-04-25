@@ -43,7 +43,6 @@ function PhotoGrid({ photos, isGroupOwner }) {
     <Image.PreviewGroup>
       <AnimatePresence exitBeforeEnter>
         <motion.div
-          key={photos.length > 0 ? photos[0].URL : ''}
           initial={{
             opacity: 0,
             y: '25%',
