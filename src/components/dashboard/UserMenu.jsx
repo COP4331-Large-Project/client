@@ -14,7 +14,7 @@ function UserMenu({ children }) {
 
   const logout = () => {
     localStorage.clear();
-    history.replace('/');
+    history.replace('/landing');
   };
 
   const openLogoutWarning = () => {

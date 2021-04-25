@@ -41,7 +41,7 @@ function EditAccountModal({ visible, onClose }) {
       className="cancel-btn"
       disabled={isLoading}
     >
-      {isDeletingAccount ? 'Back' : 'Cancel'}
+      {isDeletingAccount ? 'Back' : 'Close'}
     </Button>,
     <Button
       form={isDeletingAccount ? 'delete-account-form' : 'profile-form'}
@@ -137,7 +137,7 @@ function EditAccountModal({ visible, onClose }) {
       await API.deleteAccount(user.id, authToken, password);
 
       onClose();
-      history.replace('/');
+      history.replace('/landing');
     } catch (err) {
       if (err.status === 403) {
         notification.error({
@@ -164,9 +164,16 @@ function EditAccountModal({ visible, onClose }) {
     const values = Object.values(payload);
 
     // Don't submit the form if every input field is empty
-    if (values.every(key => !key.trim())) {
+    if (values.every(value => !value.trim())) {
       return;
     }
+
+    // Filter out any empty values from the payload
+    Object.keys(payload).forEach(key => {
+      if (!payload[key].trim()) {
+        delete payload[key];
+      }
+    });
 
     setLoading(true);
 
@@ -234,7 +241,7 @@ function EditAccountModal({ visible, onClose }) {
         </div>
         <div className="input-group">
           <p className="input-title">Last name</p>
-          <TextInput value={user.lastName} name="lasName" />
+          <TextInput value={user.lastName} name="lastName" />
         </div>
         <div className="input-group">
           <p className="input-title">Username</p>
@@ -283,6 +290,7 @@ function EditAccountModal({ visible, onClose }) {
   return (
     <Modal
       centered
+      destroyOnClose
       maskClosable={false}
       onCancel={onClose}
       visible={visible}

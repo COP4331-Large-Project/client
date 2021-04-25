@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { useHistory } from 'react-router-dom';
 import LoginCard from '../components/landing/LoginCard.jsx';
 import ForgotPassword from '../components/landing/ForgotPassword.jsx';
 import RegisterCard from '../components/landing/RegisterCard.jsx';
@@ -10,12 +11,24 @@ import '../scss/landing.scss';
 function LandingPage() {
   const nodeRef = React.useRef(null);
   const [card, setCard] = useState('login');
+  const history = useHistory();
 
   const cards = {
     login: <LoginCard switchCard={setCard} />,
     register: <RegisterCard switchCard={setCard} />,
     forgotPassword: <ForgotPassword switchCard={setCard} />,
   };
+
+  useEffect(() => {
+    const userId = localStorage.getItem('id');
+    const token = localStorage.getItem('token');
+
+    // Automatically go to the main page if the user
+    // is already authenticated
+    if (userId && token) {
+      history.push('/');
+    }
+  }, []);
 
   return (
     <div className="landing-container">

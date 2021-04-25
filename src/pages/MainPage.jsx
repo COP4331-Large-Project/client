@@ -55,7 +55,7 @@ function MainPage() {
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
-  const [isOwner, setIsOwner] = useState(false);
+  const [isGroupOwner, setIsGroupOwner] = useState(false);
   const history = useHistory();
   const prevGroupData = usePrevious(groupData);
 
@@ -71,7 +71,7 @@ function MainPage() {
       if (err.status === 403) {
         // The user isn't authenticated, take them back
         // to the login page
-        history.replace('/');
+        history.replace('/landing');
       } else {
         notification.error({
           key: 'error-get-user',
@@ -186,7 +186,7 @@ function MainPage() {
     // eslint-disable-next-line no-underscore-dangle
     const creatorId = group.creator.id || group.creator._id;
 
-    setIsOwner(creatorId === user.id);
+    setIsGroupOwner(creatorId === user.id);
     setGroupTitle(group.name);
     setLoadingImages(true);
 
@@ -282,7 +282,7 @@ function MainPage() {
 
     if (groups.length === 0) {
       setGroupTitle('');
-      setIsOwner(false);
+      setIsGroupOwner(false);
       groupDispatch({
         type: 'setImages',
         payload: [],
@@ -352,12 +352,15 @@ function MainPage() {
                           {groupData.groups.length > 0 && (
                             <GroupMenuButton
                               className="group-action-btn"
-                              isOwner={isOwner}
+                              isOwner={isGroupOwner}
                             />
                           )}
                         </div>
                       </Skeleton>
-                      <PhotoGrid photos={groupData.images} />
+                      <PhotoGrid
+                        photos={groupData.images}
+                        isGroupOwner={isGroupOwner}
+                      />
                     </div>
                   </div>
                 </div>
