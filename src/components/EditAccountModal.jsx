@@ -41,7 +41,7 @@ function EditAccountModal({ visible, onClose }) {
       className="cancel-btn"
       disabled={isLoading}
     >
-      {isDeletingAccount ? 'Back' : 'Cancel'}
+      {isDeletingAccount ? 'Back' : 'Close'}
     </Button>,
     <Button
       form={isDeletingAccount ? 'delete-account-form' : 'profile-form'}
