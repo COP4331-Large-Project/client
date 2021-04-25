@@ -41,7 +41,7 @@ function PasswordResetPage({ userId }) {
   }
 
   function goBack() {
-    history.replace('/');
+    history.replace('/landing');
     setSubmitted(false);
   }
 

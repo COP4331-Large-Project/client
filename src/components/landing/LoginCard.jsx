@@ -45,7 +45,7 @@ function LoginCard({ switchCard }) {
     }
 
     // Move to next page
-    history.push('/main');
+    history.push('/');
   }
 
   return (

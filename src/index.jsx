@@ -19,10 +19,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/landing">
           <LandingPage />
         </Route>
-        <Route exact path="/main">
+        <Route exact path="/">
           <MainPage />
         </Route>
         <Route exact path="/verify">

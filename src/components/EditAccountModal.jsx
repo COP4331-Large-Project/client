@@ -137,7 +137,7 @@ function EditAccountModal({ visible, onClose }) {
       await API.deleteAccount(user.id, authToken, password);
 
       onClose();
-      history.replace('/');
+      history.replace('/landing');
     } catch (err) {
       if (err.status === 403) {
         notification.error({

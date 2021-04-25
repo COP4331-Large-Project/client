@@ -71,7 +71,7 @@ function MainPage() {
       if (err.status === 403) {
         // The user isn't authenticated, take them back
         // to the login page
-        history.replace('/');
+        history.replace('/landing');
       } else {
         notification.error({
           key: 'error-get-user',
