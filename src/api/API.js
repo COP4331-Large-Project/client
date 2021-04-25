@@ -120,9 +120,7 @@ const API = {
    * @returns {Promise<void>}
    */
   async requestEmailVerificationLink(email) {
-    return (await axios.post('/users/resendVerificationEmail', { email })).then(
-      response => response.data,
-    );
+    return axios.post('/users/resendVerificationEmail', { email });
   },
 
   /**

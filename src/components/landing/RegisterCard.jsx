@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, message } from 'antd';
@@ -69,7 +70,7 @@ function RegisterCard({ switchCard }) {
       await API.requestEmailVerificationLink(userEmail);
       message.success('An email was sent to your inbox');
     } catch (e) {
-      setError(e);
+      setError(e.message);
     }
 
     setLoading(false);
