@@ -398,6 +398,9 @@ const API = {
    *
    * @param {string} groupId
    * @param {string} userId
+   *
+   * @throws {APIError} On server error.
+   * @returns {Promise}
    */
   async deleteGroup(groupId, userId) {
     return axios
@@ -406,6 +409,19 @@ const API = {
           user: userId,
         },
       })
+      .then(response => response.data);
+  },
+
+  /**
+   * @param {string} groupId
+   * @param {string[]} images A list of image IDs to delete
+   *
+   * @throws {APIError} On server error.
+   * @returns {Promise}
+   */
+  async deleteImages(groupId, images) {
+    return axios
+      .post(`/groups/${groupId}/deleteImages`, images)
       .then(response => response.data);
   },
 };

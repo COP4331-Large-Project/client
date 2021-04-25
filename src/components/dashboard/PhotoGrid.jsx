@@ -16,7 +16,7 @@ const item = {
   show: { opacity: 1, scale: 1 },
 };
 
-function PhotoGrid({ photos }) {
+function PhotoGrid({ photos, isGroupOwner }) {
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
@@ -67,9 +67,12 @@ function PhotoGrid({ photos }) {
             {photos.map(photo => (
               <motion.div key={photo.URL} variants={item}>
                 <PhotoThumbnail
+                  isGroupOwner={isGroupOwner}
                   key={photo.URL}
                   src={photo.URL}
                   caption={photo.caption}
+                  creatorId={photo.creator}
+                  imageId={photo.id}
                 />
               </motion.div>
             ))}
@@ -108,8 +111,15 @@ PhotoGrid.propTypes = {
     PropTypes.shape({
       URL: PropTypes.string.isRequired,
       caption: PropTypes.string,
+      creator: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  isGroupOwner: PropTypes.bool,
+};
+
+PhotoGrid.defaultProps = {
+  isGroupOwner: false,
 };
 
 export default PhotoGrid;

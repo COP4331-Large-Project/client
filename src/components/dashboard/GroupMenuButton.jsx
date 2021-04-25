@@ -99,6 +99,7 @@ function GroupMenu({ className, isOwner }) {
       okText: 'Delete Group',
       maskClosable: true,
       onOk: deleteGroup,
+      okType: 'danger',
     });
   };
 
@@ -114,6 +115,7 @@ function GroupMenu({ className, isOwner }) {
       okText: 'Leave Group',
       maskClosable: true,
       onOk: leaveGroup,
+      okType: 'danger',
     });
   };
 
