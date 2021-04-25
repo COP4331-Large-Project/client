@@ -14,9 +14,11 @@ import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
 import UserStateContext from '../../contexts/UserStateContext.jsx';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
+import ImageUploadModal from '../ImageUploadModal.jsx';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
+  const [isUploadModalOpen, setUploadModalOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [loggedInUser, setLoggedInUser] = useState({});
   const { groups, index } = useContext(GroupsStateContext);
@@ -25,6 +27,9 @@ function GroupMenu({ className, isOwner }) {
 
   const openInviteModal = () => setInviteModalOpen(true);
   const closeInviteModal = () => setInviteModalOpen(false);
+
+  const openUploadModal = () => setUploadModalOpen(true);
+  const closeUploadModal = () => setUploadModalOpen(false);
 
   useEffect(() => {
     setLoggedInUser(user);
@@ -91,7 +96,7 @@ function GroupMenu({ className, isOwner }) {
       title: 'Delete Group',
       content: (
         <span>
-          Are you sure you want to delete <b>{groupName}</b> There&apos;s no
+          Are you sure you want to delete <b>{groupName}</b>? There&apos;s no
           going back!
         </span>
       ),
@@ -100,6 +105,7 @@ function GroupMenu({ className, isOwner }) {
       maskClosable: true,
       onOk: deleteGroup,
       okType: 'danger',
+      autoFocusButton: 'cancel',
     });
   };
 
@@ -116,6 +122,7 @@ function GroupMenu({ className, isOwner }) {
       maskClosable: true,
       onOk: leaveGroup,
       okType: 'danger',
+      autoFocusButton: 'cancel',
     });
   };
 
@@ -124,16 +131,29 @@ function GroupMenu({ className, isOwner }) {
   // stay open when an option is clicked.
   const menu = (
     <Menu>
-      <Menu.Item onClick={openInviteModal}>Invite members</Menu.Item>
-      <Menu.Item onClick={openLeaveGroupWarning} disabled={isOwner}>
+      <Menu.Item onClick={openInviteModal}>Invite Members</Menu.Item>
+      <Menu.Item onClick={openUploadModal}>Upload Image</Menu.Item>
+      <Menu.Item
+        onClick={openLeaveGroupWarning}
+        disabled={isOwner}
+        danger={!isOwner}
+      >
         Leave Group
       </Menu.Item>
-      <Menu.Item onClick={openDeleteGroupWarning} disabled={!isOwner}>
+      <Menu.Item
+        onClick={openDeleteGroupWarning}
+        disabled={!isOwner}
+        danger={isOwner}
+      >
         Delete Group
       </Menu.Item>
       <MemberInviteModal
         visible={isInviteModalOpen}
         onClose={closeInviteModal}
+      />
+      <ImageUploadModal
+        visible={isUploadModalOpen}
+        onClose={closeUploadModal}
       />
     </Menu>
   );

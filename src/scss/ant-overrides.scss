@@ -171,3 +171,9 @@ span.anticon.anticon-delete {
     color: $danger-color;
   }
 }
+
+// Removes the light blue color from ant's modal
+// confirm button
+.ant-modal-confirm-btns .ant-btn:focus {
+  color: unset;
+}

@@ -210,7 +210,7 @@ function ImageUploadModal({ visible, onClose }) {
     if (uploadProgress === 100) {
       setTimeout(() => {
         notification.close(PROGRESS_NOTIFICATION_KEY);
-      }, 200);
+      }, 2000);
     }
   }, [uploadProgress]);
 
