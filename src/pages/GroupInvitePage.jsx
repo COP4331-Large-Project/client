@@ -68,7 +68,7 @@ function GroupInvitePage({ inviteCode }) {
           <span>
             Well this is awkward. Looks like you&apos;re already a member of
             this group.{' '}
-            <Link to="/main" className="card-link">
+            <Link to="/" className="card-link">
               Click here
             </Link>{' '}
             to go back.
@@ -123,7 +123,7 @@ function GroupInvitePage({ inviteCode }) {
           description={
             <span>
               Welcome to your new group!{' '}
-              <Link to="/main" className="card-link" replace>
+              <Link to="/" className="card-link" replace>
                 Click here
               </Link>{' '}
               to go to the main page.
@@ -151,7 +151,7 @@ function GroupInvitePage({ inviteCode }) {
             message="Group Not Found"
             description="The group you’re looking for doesn’t exist."
           />
-          <Button variant="link" onClick={() => history.push('/main')}>
+          <Button variant="link" onClick={() => history.push('/')}>
             Take me back
           </Button>
         </>

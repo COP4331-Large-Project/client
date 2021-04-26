@@ -42,7 +42,7 @@ function NotFoundPage() {
               {"We couldn't find the page you were looking for..."}
             </p>
             <img src={gif} alt="Animated GIF" />
-            <Button className="back-btn" onClick={() => history.push('/main')}>
+            <Button className="back-btn" onClick={() => history.push('/')}>
               Back Home
             </Button>
           </Card>

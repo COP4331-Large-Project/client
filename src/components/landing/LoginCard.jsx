@@ -25,11 +25,18 @@ function LoginCard({ switchCard }) {
       return;
     }
 
-    setLoading(true);
     const data = new FormData(event.target);
+    const username = data.get('Username');
+    const password = data.get('Password');
+
+    if (!username.trim() || !password.trim()) {
+      return;
+    }
+
+    setLoading(true);
 
     try {
-      const res = await API.login(data.get('Username'), data.get('Password'));
+      const res = await API.login(username, password);
       const { token, id } = res;
 
       localStorage.setItem('token', token);
@@ -45,7 +52,7 @@ function LoginCard({ switchCard }) {
     }
 
     // Move to next page
-    history.push('/main');
+    history.push('/');
   }
 
   return (
