@@ -61,7 +61,7 @@ function GroupList({ groups, activeIndex, onGroupClick }) {
         dataSource={publicGroups}
         header={
           <p className="list-header">
-            {groupsLoading ? 'Loading groups...' : 'Your Groups'}
+            {groupsLoading ? 'Loading groups...' : 'Public Groups'}
           </p>
         }
         loading={groupsLoading}
