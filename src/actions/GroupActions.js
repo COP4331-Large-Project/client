@@ -27,8 +27,10 @@ const GroupActions = {
     return {
       type: 'addGroup',
       payload: {
-        ...group,
-        memberCount: 1,
+        group: {
+          ...group,
+          memberCount: 1,
+        },
       },
       index,
     };
