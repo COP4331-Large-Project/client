@@ -15,13 +15,9 @@ import GroupsContextDispatch from '../contexts/GroupsContextDispatch';
 import API from '../api/API';
 import GroupsStateContext from '../contexts/GroupStateContext';
 import SocketContext from '../contexts/SocketContext';
+import { ModalProps } from './modal-types';
 
-type CreateGroupModalProps = {
-  visible: boolean
-  onClose?: () => void,
-}
-
-function CreateGroupModal({ visible = false, onClose = undefined }: CreateGroupModalProps): JSX.Element {
+function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps): JSX.Element {
   const [groupName, setGroupName] = useState('');
   const [isPrivateChecked, setPrivateChecked] = useState(false);
   const [memberEmail, setMemberEmail] = useState('');

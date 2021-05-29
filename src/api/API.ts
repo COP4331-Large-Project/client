@@ -2,8 +2,9 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable implicit-arrow-linebreak */
 import axios, { CancelToken } from 'axios';
-import { Group, Image } from '../types';
+import { Group } from '../types';
 import APIError from './APIError';
+import { UserResponse, GroupOptions, GroupResponse, ImageObject, ImageUploadOptions, ImageUploadResponse, AccountParams, RegistrationOptions } from './types';
 
 const BASE_URL =
   process.env.NODE_ENV === 'production'
@@ -28,76 +29,6 @@ axios.interceptors.response.use(
 );
 
 
-type ImageUploadResponse = {
-  caption?: string
-  fileName: string,
-  creator: string,
-  groupId: string,
-  dateUploaded: string,
-  URL: string,
-  id: string,
-}
-
-type AccountParams = {
-  firstName: string,
-  lastName: string,
-  email: string,
-  username: string,
-  token: string,
-  userId: string,
-}
-
-type ImageObject = {
-  id: string,
-  fileName: string,
-  creator: string,
-  dateUploaded: string,
-  URL: string,
-}
-
-type UserResponse = {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  token?: string;
-}
-
-type GroupResponse = {
-  name: string;
-  id: string;
-  creator: UserResponse;
-  thumbnail: ImageObject;
-  memberCount: number;
-  publicGroup: boolean;
-  invitedUsers: UserResponse[];
-  images: Image[];
-  inviteCode: string;
-}
-
-type GroupOptions = {
-  name: string;
-  publicGroup: boolean;
-  creator: string;
-  emails: string[];
-}
-
-type ImageUploadOptions = {
-  image: File;
-  userId: string;
-  groupId: string;
-  caption?: string;
-}
-
-type RegistrationOptions = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  password: string;
-}
-
 const API = {
   /**
    * Logs user into account.
@@ -116,7 +47,8 @@ const API = {
    * @throws {APIError} On server error.
    */
   async register(payload: RegistrationOptions): Promise<UserResponse> {
-    return axios.post('/users/', payload).then(response => response.data);
+    const response = await axios.post('/users/', payload);
+    return response.data;
   },
 
   /**
@@ -126,11 +58,11 @@ const API = {
    * @returns {Promise<UserResponse>}
    */
   async getInfo(token: string, id: string): Promise<UserResponse> {
-    return axios
+    const response = await axios
       .get(`/users/${id}`, {
         headers: { Authorization: token },
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -140,7 +72,7 @@ const API = {
    * @param email
    * @throws {APIError} On server error
    */
-  async requestEmailVerificationLink(email: string): Promise<void> {
+  requestEmailVerificationLink(email: string): Promise<void> {
     return axios.post('/users/resendVerificationEmail', { email });
   },
 
@@ -151,9 +83,9 @@ const API = {
    * @throws {APIError} On server error
    */
   async verifyEmail(userId: string, verificationCode: string): Promise<void> {
-    return axios
-      .post(`/users/${userId}/verify`, { verificationCode })
-      .then(response => response.data);
+    const response = await axios
+      .post(`/users/${userId}/verify`, { verificationCode });
+    return response.data;
   },
 
   /**
@@ -164,9 +96,9 @@ const API = {
    * @throws {APIError} On server error
    */
   async joinGroup(userId: string, inviteCode: string): Promise<Group> {
-    return axios
-      .post(`/groups/${inviteCode}/join`, { user: userId })
-      .then(response => response.data);
+    const response = await axios
+      .post(`/groups/${inviteCode}/join`, { user: userId });
+    return response.data;
   },
 
   /**
@@ -176,7 +108,8 @@ const API = {
    * @returns {Promise<GroupResponse>} The group with the given ID
    */
   async getGroup(groupId: string): Promise<Group> {
-    return axios.get<Group>(`/groups/${groupId}`).then(response => response.data);
+    const response = await axios.get<Group>(`/groups/${groupId}`);
+    return response.data;
   },
 
   
@@ -187,7 +120,8 @@ const API = {
    * @throws {APIError} On server error
    */
   async createGroup(payload: GroupOptions): Promise<Group> {
-    return axios.post('/groups', payload).then(response => response.data);
+    const response = await axios.post('/groups', payload);
+    return response.data;
   },
 
   /**
@@ -195,8 +129,9 @@ const API = {
    *
    * @throws {APIError} On server error.
    */
-  async getGroups(userId: string): Promise<Array<GroupResponse>> {
-    return axios.get(`/users/${userId}/groups`).then(response => response.data);
+  async getGroups(userId: string): Promise<GroupResponse[]> {
+    const response = await axios.get(`/users/${userId}/groups`);
+    return response.data;
   },
 
   /**
@@ -213,15 +148,7 @@ const API = {
   /**
    * Uploads an image or GIF to the specified group.
    *
-   * @typedef {Object} ImageUploadOptions
-   * @property {File} image
-   * @property {string} userId
-   * @property {string} groupId
-   * @property {string?} caption
-   *
-   * @param {ImageUploadOptions} payload
-   * @param {ProgressEvent} onUploadProgress
-   * @param {import('axios').CancelToken} cancelToken - Specifies a cancel
+   * @param cancelToken - Specifies a cancel
    *  token that can be used to cancel the request
    *
    * @throws {APIError} On server error.
@@ -245,12 +172,12 @@ const API = {
     formData.append('userId', userId);
     formData.append('caption', caption);
 
-    return axios
+    const response = await axios
       .put(`/groups/${groupId}/uploadImage`, formData, {
         onUploadProgress,
         cancelToken,
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -259,12 +186,12 @@ const API = {
    * @throws {APIError} On server error.
    */
   async sendGroupInviteLink(groupId: string, emails: string[]): Promise<void> {
-    return axios
+    const response = await axios
       .post(`/groups/${groupId}/invite`, {
         groupId,
         emails,
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -274,9 +201,9 @@ const API = {
    * @throws {APIError} On server error.
    */
   async removeUser(groupId: string, userId: string): Promise<void> {
-    return axios
-      .delete(`/groups/${groupId}/removeUser`, { data: { user: userId } })
-      .then(response => response.data);
+    const response = await axios
+      .delete(`/groups/${groupId}/removeUser`, { data: { user: userId } });
+    return response.data;
   },
 
   /**
@@ -328,13 +255,13 @@ const API = {
       username,
     };
 
-    return axios
+    const response = await axios
       .put(`/users/${userId}`, putOptions, {
         headers: {
           Authorization: token,
         },
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -347,13 +274,13 @@ const API = {
 
     formData.set('avatar', image);
 
-    return axios
+    const response = await axios
       .put(`/users/${userId}/profile`, formData, {
         headers: {
           Authorization: token,
         },
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -362,7 +289,7 @@ const API = {
    * @throws {APIError} On server error
    */
   async deleteAccount(userId: string, token: string, password: string): Promise<void> {
-    return axios
+    const response = await axios
       .delete(`/users/${userId}`, {
         data: {
           password,
@@ -370,8 +297,8 @@ const API = {
         headers: {
           Authorization: token,
         },
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -380,13 +307,13 @@ const API = {
    * @throws {APIError} On server error.
    */
   async deleteGroup(groupId: string, userId: string): Promise<void> {
-    return axios
+    const response = await axios
       .delete(`/groups/${groupId}`, {
         data: {
           user: userId,
         },
-      })
-      .then(response => response.data);
+      });
+    return response.data;
   },
 
   /**
@@ -395,9 +322,9 @@ const API = {
    * @throws {APIError} On server error.
    */
   async deleteImages(groupId: string, images: string[]): Promise<void> {
-    return axios
-      .post(`/groups/${groupId}/deleteImages`, { images })
-      .then(response => response.data);
+    const response = await axios
+      .post(`/groups/${groupId}/deleteImages`, { images });
+    return response.data;
   },
 };
 

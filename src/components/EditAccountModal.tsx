@@ -14,16 +14,12 @@ import UserStateContext from '../contexts/UserStateContext';
 import TextInput from './TextInput';
 import API from '../api/API';
 import UserContextDispatch from '../contexts/UserContextDispatch';
+import { ModalProps } from './modal-types';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
 
-type EditAccountModalProps = {
-  visible: boolean,
-  onClose?: () => void
-}
-
-function EditAccountModal({ visible = false, onClose }: EditAccountModalProps): JSX.Element {
+function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element {
   const history = useHistory();
   const user = useContext(UserStateContext);
   const dispatch = useContext(UserContextDispatch);

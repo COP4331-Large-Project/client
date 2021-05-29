@@ -17,17 +17,13 @@ import UserStateContext from '../contexts/UserStateContext';
 import GroupContextDispatch from '../contexts/GroupsContextDispatch';
 import API from '../api/API';
 import { UploadFile } from 'antd/lib/upload/interface';
+import { ModalProps } from './modal-types';
 
 // 2 megabytes
 const MAX_FILE_SIZE = 2e6;
 const PROGRESS_NOTIFICATION_KEY = 'upload-progress';
 
-type ImageUploadModalProps = {
-  visible: boolean;
-  onClose?: () => void;
-}
-
-function ImageUploadModal({ visible = false, onClose = undefined }: ImageUploadModalProps): JSX.Element {
+function ImageUploadModal({ visible = false, onClose = undefined }: ModalProps): JSX.Element {
   const [imageCaption, setImageCaption] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);

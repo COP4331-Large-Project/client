@@ -11,13 +11,9 @@ import {
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import GroupsStateContext from '../contexts/GroupStateContext';
 import API from '../api/API';
+import { ModalProps } from './modal-types';
 
-type MemberInviteModalProps = {
-  visible: boolean,
-  onClose?: () => void
-}
-
-function MemberInviteModal({ visible = false, onClose }: MemberInviteModalProps): JSX.Element {
+function MemberInviteModal({ visible = false, onClose }: ModalProps): JSX.Element {
   const [memberEmail, setMemberEmail] = useState('');
   const [emails, setEmails] = useState(new Set<string>());
   const [isLoading, setLoading] = useState(false);
