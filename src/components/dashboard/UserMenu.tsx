@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Menu, Dropdown, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import EditAccountModal from '../EditAccountModal.jsx';
+import EditAccountModal from '../EditAccountModal';
 
 type UserMenuProps = {
   children: JSX.Element;

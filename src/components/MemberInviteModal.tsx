@@ -9,7 +9,7 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import GroupsStateContext from '../contexts/GroupStateContext';
 import API from '../api/API';
 
 type MemberInviteModalProps = {

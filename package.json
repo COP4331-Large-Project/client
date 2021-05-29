@@ -74,10 +74,10 @@
     }
   },
   "lint-staged": {
-    "./src/**/*{.js,.jsx}": [
+    "./src/**/*{.ts,.tsx}": [
       "npm run lint"
     ],
-    "./src/**/*{.scss,.js,.jsx}": [
+    "./src/**/*{.scss,.ts,.tsx}": [
       "prettier --write"
     ]
   }

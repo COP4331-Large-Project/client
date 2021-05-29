@@ -12,9 +12,9 @@ import {
 } from 'antd';
 import { AiOutlineDelete } from 'react-icons/ai';
 import fallback from '../../assets/errorimage.png';
-import UserStateContext from '../../contexts/UserStateContext.js';
-import GroupStateContext from '../../contexts/GroupStateContext.jsx';
-import GroupsContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
+import UserStateContext from '../../contexts/UserStateContext';
+import GroupStateContext from '../../contexts/GroupStateContext';
+import GroupsContextDispatch from '../../contexts/GroupsContextDispatch';
 import API from '../../api/API';
 
 type PhotoThumbnailProps = {

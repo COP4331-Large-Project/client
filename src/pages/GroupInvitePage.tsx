@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Alert, Avatar } from 'antd';
 import { motion } from 'framer-motion';
 import { useHistory, Link } from 'react-router-dom';
-import Card from '../components/Card.jsx';
-import Button from '../components/Button.jsx';
+import Card from '../components/Card';
+import Button from '../components/Button';
 import API from '../api/API';
 import { Group } from '../types';
 

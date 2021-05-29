@@ -1,8 +1,8 @@
 import '../../scss/navbar.scss';
 import { useContext, useEffect, useState } from 'react';
 import { Avatar, Layout, Tooltip } from 'antd';
-import UserMenu from './UserMenu.jsx';
-import UserStateContext from '../../contexts/UserStateContext.js';
+import UserMenu from './UserMenu';
+import UserStateContext from '../../contexts/UserStateContext';
 
 const { Header } = Layout;
 

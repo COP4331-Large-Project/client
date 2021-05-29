@@ -12,9 +12,9 @@ import {
 } from 'antd';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from 'axios';
-import GroupStateContext from '../contexts/GroupStateContext.jsx';
-import UserStateContext from '../contexts/UserStateContext.js';
-import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
+import GroupStateContext from '../contexts/GroupStateContext';
+import UserStateContext from '../contexts/UserStateContext';
+import GroupContextDispatch from '../contexts/GroupsContextDispatch';
 import API from '../api/API';
 import { UploadFile } from 'antd/lib/upload/interface';
 

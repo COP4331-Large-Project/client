@@ -1,14 +1,14 @@
 import '../../scss/sidebar.scss';
 import { useContext, useEffect, useState } from 'react';
 import { Layout } from 'antd';
-import Card from '../Card.jsx';
-import InviteArea from './InviteArea.jsx';
-import GroupList from './GroupList.jsx';
-import JoinGroupButton from './JoinGroupButton.jsx';
-import Button from '../Button.jsx';
-import CreateGroupModal from '../CreateGroupModal.jsx';
-import GroupDispatchContext from '../../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
+import Card from '../Card';
+import InviteArea from './InviteArea';
+import GroupList from './GroupList';
+import JoinGroupButton from './JoinGroupButton';
+import Button from '../Button';
+import CreateGroupModal from '../CreateGroupModal';
+import GroupDispatchContext from '../../contexts/GroupsContextDispatch';
+import GroupsStateContext from '../../contexts/GroupStateContext';
 
 const { Sider } = Layout;
 

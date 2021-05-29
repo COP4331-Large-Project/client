@@ -10,21 +10,21 @@ import '../scss/main-page.scss';
 import 'antd/dist/antd.css';
 import { notification, Skeleton } from 'antd';
 import { io } from 'socket.io-client';
-import Navbar from '../components/dashboard/Navbar.jsx';
-import Sidebar from '../components/dashboard/Sidebar.jsx';
-import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
+import Navbar from '../components/dashboard/Navbar';
+import Sidebar from '../components/dashboard/Sidebar';
+import PhotoGrid from '../components/dashboard/PhotoGrid';
 import API, { BASE_URL } from '../api/API';
-import UserContext from '../contexts/UserStateContext.jsx';
+import UserContext from '../contexts/UserStateContext';
 import GroupDispatchContext, {
   groupReducer,
-} from '../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
-import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
+} from '../contexts/GroupsContextDispatch';
+import GroupsStateContext from '../contexts/GroupStateContext';
+import GroupMenuButton from '../components/dashboard/GroupMenuButton';
 import UserContextDispatch, {
   userReducer,
-} from '../contexts/UserContextDispatch.jsx';
-import LoadingContext from '../contexts/LoadingContext.jsx';
-import SocketContext from '../contexts/SocketContext.jsx';
+} from '../contexts/UserContextDispatch';
+import LoadingContext from '../contexts/LoadingContext';
+import SocketContext from '../contexts/SocketContext';
 import { Image, User } from '../types';
 
 const socket = io(BASE_URL, {

@@ -8,12 +8,12 @@ import {
   Modal,
 } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
-import MemberInviteModal from '../MemberInviteModal.jsx';
-import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
-import UserStateContext from '../../contexts/UserStateContext.js';
-import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
+import MemberInviteModal from '../MemberInviteModal';
+import GroupsStateContext from '../../contexts/GroupStateContext';
+import UserStateContext from '../../contexts/UserStateContext';
+import GroupContextDispatch from '../../contexts/GroupsContextDispatch';
 import API from '../../api/API';
-import ImageUploadModal from '../ImageUploadModal.jsx';
+import ImageUploadModal from '../ImageUploadModal';
 import { Group, User } from '../../types.js';
 
 type GroupMenuProps = {

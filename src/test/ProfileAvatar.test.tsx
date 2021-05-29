@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import ProfileAvatar from '../components/ProfileAvatar.jsx';
+import ProfileAvatar from '../components/ProfileAvatar';
 
 type Avatar = {
   firstName: string;

@@ -1,11 +1,11 @@
 import { SyntheticEvent, useState, useContext } from 'react';
 import { Modal, Input, notification } from 'antd';
-import Button from '../Button.jsx';
+import Button from '../Button';
 import '../../scss/join-group-button.scss';
 import API from '../../api/API';
-import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
-import SocketContext from '../../contexts/SocketContext.jsx';
+import GroupContextDispatch from '../../contexts/GroupsContextDispatch';
+import GroupsStateContext from '../../contexts/GroupStateContext';
+import SocketContext from '../../contexts/SocketContext';
 
 function JoinGroupButton(): JSX.Element {
   const [visible, setVisible] = useState(false);

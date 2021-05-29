@@ -2,8 +2,8 @@ import '../scss/not-found-page.scss';
 import { motion } from 'framer-motion';
 import { useHistory } from 'react-router-dom';
 import gif from '../assets/404.gif';
-import Card from '../components/Card.jsx';
-import Button from '../components/Button.jsx';
+import Card from '../components/Card';
+import Button from '../components/Button';
 
 const animationVariants = {
   hidden: {

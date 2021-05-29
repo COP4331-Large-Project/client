@@ -2,7 +2,7 @@ import '../../scss/invite-area.scss';
 import { Button, message } from 'antd';
 import { IoClipboardOutline } from 'react-icons/io5';
 import PropTypes from 'prop-types';
-import TextInput from '../TextInput.jsx';
+import TextInput from '../TextInput';
 
 // prettier-ignore
 const copyToClipboard = (text: string) => new Promise((resolve: (value: void) => void, reject) => {

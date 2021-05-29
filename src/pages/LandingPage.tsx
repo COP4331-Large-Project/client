@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useHistory } from 'react-router-dom';
-import LoginCard from '../components/landing/LoginCard.jsx';
-import ForgotPassword from '../components/landing/ForgotPassword.jsx';
-import RegisterCard from '../components/landing/RegisterCard.jsx';
+import LoginCard from '../components/landing/LoginCard';
+import ForgotPassword from '../components/landing/ForgotPassword';
+import RegisterCard from '../components/landing/RegisterCard';
 
 import '../scss/animation.scss';
 import '../scss/landing.scss';

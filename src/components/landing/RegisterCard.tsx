@@ -3,9 +3,9 @@ import { SyntheticEvent, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, message } from 'antd';
 import PasswordChecklist from 'react-password-checklist';
-import LandingCard from './LandingCard.jsx';
-import TextInput from '../TextInput.jsx';
-import Button from '../Button.jsx';
+import LandingCard from './LandingCard';
+import TextInput from '../TextInput';
+import Button from '../Button';
 import API from '../../api/API';
 import { CardProps } from './types.js';
 

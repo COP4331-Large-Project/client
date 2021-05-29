@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { Divider } from 'antd';
-import LandingCard from './LandingCard.jsx';
-import TextInput from '../TextInput.jsx';
-import Button from '../Button.jsx';
+import LandingCard from './LandingCard';
+import TextInput from '../TextInput';
+import Button from '../Button';
 import '../../scss/landing.scss';
 import API from '../../api/API';
-import VerifyEmailModal from '../VerifyEmailModal.jsx';
+import VerifyEmailModal from '../VerifyEmailModal';
 import { CardProps } from './types.js';
 
 function LoginCard({ switchCard }: CardProps): JSX.Element {

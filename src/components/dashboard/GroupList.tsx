@@ -3,7 +3,7 @@
 import '../../scss/group-list.scss';
 import { useContext } from 'react';
 import { Avatar, List } from 'antd';
-import LoadingContext from '../../contexts/LoadingContext.jsx';
+import LoadingContext from '../../contexts/LoadingContext';
 import { Group, Image } from '../../types';
 
 // I don't know what the deal is with ants datasource types, I'll get to it later (TM)

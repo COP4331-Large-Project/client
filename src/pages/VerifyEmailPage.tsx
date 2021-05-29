@@ -4,7 +4,7 @@ import { Alert } from 'antd';
 import { Link } from 'react-router-dom';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { motion } from 'framer-motion';
-import Card from '../components/Card.jsx';
+import Card from '../components/Card';
 import API from '../api/API';
 
 const animationVariants = {

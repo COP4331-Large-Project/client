@@ -10,11 +10,11 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import UserStateContext from '../contexts/UserStateContext.jsx';
-import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
+import UserStateContext from '../contexts/UserStateContext';
+import GroupsContextDispatch from '../contexts/GroupsContextDispatch';
 import API from '../api/API';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
-import SocketContext from '../contexts/SocketContext.jsx';
+import GroupsStateContext from '../contexts/GroupStateContext';
+import SocketContext from '../contexts/SocketContext';
 
 type CreateGroupModalProps = {
   visible: boolean

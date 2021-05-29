@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Image as AntImage, Spin } from 'antd';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
-import PhotoThumbnail from './PhotoThumbnail.jsx';
-import FloatingButton from './FloatingButton.jsx';
-import ImageUploadModal from '../ImageUploadModal.jsx';
-import GroupStateContext from '../../contexts/GroupStateContext.jsx';
-import LoadingContext from '../../contexts/LoadingContext.jsx';
+import PhotoThumbnail from './PhotoThumbnail';
+import FloatingButton from './FloatingButton';
+import ImageUploadModal from '../ImageUploadModal';
+import GroupStateContext from '../../contexts/GroupStateContext';
+import LoadingContext from '../../contexts/LoadingContext';
 import emptySvg from '../../assets/no-photos.svg';
 import { Image } from '../../types';
 

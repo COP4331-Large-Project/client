@@ -4,9 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { notification, Alert } from 'antd';
 import PropTypes from 'prop-types';
 import PasswordChecklist from 'react-password-checklist';
-import Card from '../components/Card.jsx';
-import TextInput from '../components/TextInput.jsx';
-import Button from '../components/Button.jsx';
+import Card from '../components/Card';
+import TextInput from '../components/TextInput';
+import Button from '../components/Button';
 import '../scss/password-reset-page.scss';
 import API from '../api/API';
 
