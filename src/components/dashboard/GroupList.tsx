@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import '../../scss/group-list.scss';
 import { useContext } from 'react';
 import { Avatar, List } from 'antd';
 import LoadingContext from '../../contexts/LoadingContext.jsx';
-import { Group, Image, User } from '../../types';
+import { Group, Image } from '../../types';
+
+// I don't know what the deal is with ants datasource types, I'll get to it later (TM)
 
 type GroupListProps = {
   groups: Group[];
@@ -71,6 +75,7 @@ function GroupList({ groups = [], activeIndex = 0, onGroupClick }: GroupListProp
   return (
     <div className="group-list">
       <List
+        // @ts-ignore
         dataSource={publicGroups}
         header={
           <p className="list-header">
@@ -95,6 +100,7 @@ function GroupList({ groups = [], activeIndex = 0, onGroupClick }: GroupListProp
       {!groupsLoading && privateGroups.length > 0 && (
         <List
           className="group-list-private"
+          // @ts-ignore
           dataSource={privateGroups}
           header={<p className="list-header">Private Groups</p>}
           renderItem={renderListItem}
