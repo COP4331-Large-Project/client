@@ -188,7 +188,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
   };
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       if (!groupId) {
         setIsLinkInvalid(true);
         return;

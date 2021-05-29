@@ -55,7 +55,7 @@ function VerifyEmailPage(): JSX.Element {
       setLoading(false);
       return;
     }
-    verifyEmail();
+    void verifyEmail();
   }, []);
 
   const invalidLinkAlert = (

@@ -208,7 +208,7 @@ function MainPage(): JSX.Element {
 
   // Only want this to trigger once to grab user token and id.
   useEffect(() => {
-    (async () => {
+    void (async () => {
       socket.disconnect();
 
       const token = localStorage.getItem('token');
@@ -334,7 +334,7 @@ function MainPage(): JSX.Element {
       prevGroupData?.groups.length > groups.length
       && prevGroupData?.index === index
     ) {
-      updatePage();
+      void updatePage();
     }
   }, [groupData.groups]);
 
