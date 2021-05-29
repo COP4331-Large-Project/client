@@ -17,6 +17,7 @@ import GroupStateContext from '../contexts/GroupStateContext.jsx';
 import UserStateContext from '../contexts/UserStateContext.jsx';
 import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
+import GroupActions from '../actions/GroupActions';
 
 // 2 megabytes
 const MAX_FILE_SIZE = 2e6;
@@ -168,10 +169,7 @@ function ImageUploadModal({ visible, onClose }) {
         cancelTokenSource.token,
       );
 
-      dispatch({
-        type: 'addImage',
-        payload: image,
-      });
+      dispatch(GroupActions.addImage(image));
 
       // Reset the state of the modal when the image finishes uploading
       setIsUploading(false);

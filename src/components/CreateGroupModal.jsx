@@ -16,6 +16,7 @@ import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 import GroupsStateContext from '../contexts/GroupStateContext.jsx';
 import SocketContext from '../contexts/SocketContext.jsx';
+import GroupActions from '../actions/GroupActions';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -77,17 +78,7 @@ function CreateGroupModal({ visible, onClose }) {
       // Passing the length of the user's groups here so that the
       // currently selected group index  will always be the
       // newly created group index (essentially groups[groups.length - 1])
-      dispatch({
-        type: 'addGroup',
-        payload: {
-          group: {
-            ...group,
-            // TODO: Remove this. This should be handled by the server
-            memberCount: 1,
-          },
-          index: groups.length,
-        },
-      });
+      dispatch(GroupActions.addGroup(group, groups.length));
 
       socket.emit('join', [group.id]);
     } catch (err) {
