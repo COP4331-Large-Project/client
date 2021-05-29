@@ -11,6 +11,7 @@ environment = [
     "mongo",
     "browser"
 ]
+dialect = "typescript"
 module_system = "es-modules"
 plugins = ["react"]
 style_guide = "airbnb"
