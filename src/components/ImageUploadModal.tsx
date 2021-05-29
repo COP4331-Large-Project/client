@@ -114,7 +114,7 @@ function ImageUploadModal({ visible = false, onClose = undefined }: ImageUploadM
 
     const previewWindow = window.open(thumbUrl, '_blank');
 
-    if (previewWindow == null) {
+    if (previewWindow === null) {
       throw new Error('Could not open preview window.');
     }
 

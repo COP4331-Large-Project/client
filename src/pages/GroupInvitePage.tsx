@@ -168,7 +168,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
       );
     }
 
-    if (group != null) {
+    if (group !== null) {
       return (
         <>
           <Avatar src={group.thumbnail && group.thumbnail.URL} size={128}>
