@@ -1,3 +1,7 @@
+import { User } from "../types"
+
+type BaseUser = Omit<User, '_id' | 'id' | 'imgURL'>;
+
 export type ImageUploadResponse = {
     caption?: string
     fileName: string,
@@ -6,16 +10,12 @@ export type ImageUploadResponse = {
     dateUploaded: string,
     URL: string,
     id: string,
-}
+};
 
-export type AccountParams = {
-    firstName: string,
-    lastName: string,
-    email: string,
-    username: string,
+export type AccountParams = BaseUser & {
     token: string,
     userId: string,
-}
+};
 
 export type ImageObject = {
     id: string,
@@ -23,16 +23,12 @@ export type ImageObject = {
     creator: string,
     dateUploaded: string,
     URL: string,
-}
+};
 
-export type UserResponse = {
+export type UserResponse = BaseUser & {
     id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
     token?: string;
-}
+};
 
 export type GroupResponse = {
     name: string;
@@ -44,26 +40,19 @@ export type GroupResponse = {
     invitedUsers: UserResponse[];
     images: Image[];
     inviteCode: string;
-}
+};
 
 export type GroupOptions = {
     name: string;
     publicGroup: boolean;
     creator: string;
     emails: string[];
-}
-
+};
 export type ImageUploadOptions = {
     image: File;
     userId: string;
     groupId: string;
     caption?: string;
-}
+};
 
-export type RegistrationOptions = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    username: string;
-    password: string;
-}
+export type RegistrationOptions = UserBase &  { password: string };
