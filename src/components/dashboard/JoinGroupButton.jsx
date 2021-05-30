@@ -3,8 +3,7 @@ import { Modal, Input, notification } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
 import API from '../../api/API';
-import { useGroups } from '../../contexts/GroupsContextDispatch.jsx';
-import { useGroupState } from '../../contexts/GroupStateContext.jsx';
+import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
 import { useSocket } from '../../contexts/SocketContext.jsx';
 
 function JoinGroupButton() {
@@ -12,7 +11,7 @@ function JoinGroupButton() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [groupCode, setGroupCode] = useState('');
   const { dispatch } = useGroups;
-  const { groups } = useGroupState();
+  const { groups } = useGroupsState();
   const socket = useSocket();
 
   function showModal() {

@@ -11,10 +11,9 @@ import {
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useHistory } from 'react-router-dom';
-import { useUserState } from '../contexts/UserStateContext.jsx';
 import TextInput from './TextInput.jsx';
 import API from '../api/API';
-import { useUser } from '../contexts/UserContextDispatch.jsx';
+import { useUser, useUserState } from '../contexts/UserContextDispatch.jsx';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;

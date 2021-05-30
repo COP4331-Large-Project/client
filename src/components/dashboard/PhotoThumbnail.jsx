@@ -12,9 +12,8 @@ import {
 } from 'antd';
 import { AiOutlineDelete } from 'react-icons/ai';
 import fallback from '../../assets/errorimage.png';
-import { useUserState } from '../../contexts/UserStateContext.jsx';
-import { useGroupState } from '../../contexts/GroupStateContext.jsx';
-import { useGroups } from '../../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../../contexts/UserContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
 
 function PhotoThumbnail({
@@ -27,7 +26,7 @@ function PhotoThumbnail({
 }) {
   const [isLoading, setLoading] = useState(true);
   const user = useUserState();
-  const { groups, index, images } = useGroupState();
+  const { groups, index, images } = useGroupsState();
   const { dispatch } = useGroups();
 
   // prettier-ignore

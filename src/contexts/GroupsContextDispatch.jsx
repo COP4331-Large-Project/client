@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import GroupsStateContext from './GroupStateContext.jsx';
+import PropTypes from 'prop-types';
 
 const GroupsDispatchContext = createContext(undefined);
 
@@ -54,19 +54,25 @@ function groupReducer(state, action) {
 }
 
 function useGroups() {
-  const dispatch = useContext(GroupsDispatchContext);
+  const { dispatch, state } = useContext(GroupsDispatchContext);
 
-  if (!dispatch) {
+  if (!dispatch || !state) {
     throw new Error(
       'Invalid useGroup hook, hook is not within the correct context.',
     );
   }
 
-  return { dispatch };
+  return { dispatch, state };
 }
 
-// eslint-disable-next-line react/prop-types
+function useGroupsState() {
+  return useGroups().state;
+}
+
 function GroupsProvider({ children }) {
+  // Using an initial value of -1 here so that groupData can
+  // trigger updates when its value is set to 0 on mount.
+  // It'll be set to 0 if there is at least one group to load.
   const [state, dispatch] = useReducer(groupReducer, {
     groups: [],
     images: [],
@@ -74,17 +80,20 @@ function GroupsProvider({ children }) {
   });
 
   return (
-    <GroupsDispatchContext.Provider value={dispatch}>
-      <GroupsStateContext.Provider value={state}>
+    <GroupsDispatchContext.Provider value={{ state, dispatch }}>
         {children}
-      </GroupsStateContext.Provider>
     </GroupsDispatchContext.Provider>
   );
 }
+
+GroupsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export {
   GroupsDispatchContext as default,
   groupReducer,
   useGroups,
+  useGroupsState,
   GroupsProvider,
 };

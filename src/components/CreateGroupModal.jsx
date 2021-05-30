@@ -11,10 +11,9 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import { useUserState } from '../contexts/UserStateContext.jsx';
-import { useGroups } from '../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../contexts/UserContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
-import { useGroupState } from '../contexts/GroupStateContext.jsx';
 import { useSocket } from '../contexts/SocketContext.jsx';
 
 function CreateGroupModal({ visible, onClose }) {
@@ -23,7 +22,7 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
-  const { groups } = useGroupState();
+  const { groups } = useGroupsState();
   const { dispatch } = useGroups();
   const user = useUserState();
   const socket = useSocket();

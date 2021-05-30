@@ -7,7 +7,7 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
 import ImageUploadModal from '../ImageUploadModal.jsx';
-import { useGroupState } from '../../contexts/GroupStateContext.jsx';
+import { useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
 import { useLoading } from '../../contexts/LoadingContext.jsx';
 import emptySvg from '../../assets/no-photos.svg';
 
@@ -20,7 +20,7 @@ function PhotoGrid({ photos, isGroupOwner }) {
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
-  const { groups } = useGroupState();
+  const { groups } = useGroupsState();
   const { imagesLoading } = useLoading();
 
   const emptyContainer = (

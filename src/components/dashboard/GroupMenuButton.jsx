@@ -10,9 +10,8 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import MemberInviteModal from '../MemberInviteModal.jsx';
-import { useGroupState } from '../../contexts/GroupStateContext.jsx';
-import { useUserState } from '../../contexts/UserStateContext.jsx';
-import { useGroups } from '../../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../../contexts/UserContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
 import ImageUploadModal from '../ImageUploadModal.jsx';
 
@@ -21,7 +20,7 @@ function GroupMenu({ className, isOwner }) {
   const [isUploadModalOpen, setUploadModalOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [loggedInUser, setLoggedInUser] = useState({});
-  const { groups, index } = useGroupState();
+  const { groups, index } = useGroupsState();
   const user = useUserState();
   const { dispatch } = useGroups();
 

@@ -2,7 +2,7 @@ import '../../scss/navbar.scss';
 import React, { useEffect, useState } from 'react';
 import { Avatar, Layout, Tooltip } from 'antd';
 import UserMenu from './UserMenu.jsx';
-import { useUserState } from '../../contexts/UserStateContext.jsx';
+import { useUserState } from '../../contexts/UserContextDispatch.jsx';
 
 const { Header } = Layout;
 

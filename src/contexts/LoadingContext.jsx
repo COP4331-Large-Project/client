@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 const LoadingContext = createContext({
   groupLoading: false,
@@ -15,7 +16,6 @@ function useLoading() {
   return loading;
 }
 
-// eslint-disable-next-line react/prop-types
 function LoadingProvider({ value, children }) {
   return (
     <LoadingContext.Provider value={value}>
@@ -23,5 +23,13 @@ function LoadingProvider({ value, children }) {
     </LoadingContext.Provider>
   );
 }
+
+LoadingProvider.propTypes = {
+  value: PropTypes.shape({
+    groupsLoading: PropTypes.bool.isRequired,
+    imagesLoading: PropTypes.bool.isRequired,
+  }).isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export { LoadingContext as default, useLoading, LoadingProvider };

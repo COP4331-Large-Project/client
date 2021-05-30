@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import PropTypes from 'prop-types';
-import { useGroupState } from '../contexts/GroupStateContext.jsx';
+import { useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
 function MemberInviteModal({ visible, onClose }) {
@@ -18,7 +18,7 @@ function MemberInviteModal({ visible, onClose }) {
   const [emails, setEmails] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const { groups, index } = useGroupState();
+  const { groups, index } = useGroupsState();
 
   const addMember = event => {
     event.preventDefault();

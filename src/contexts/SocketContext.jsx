@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 const SocketContext = createContext(undefined);
 
@@ -14,11 +15,15 @@ function useSocket() {
   return socket;
 }
 
-// eslint-disable-next-line react/prop-types
 function SocketProvider({ value, children }) {
   return (
     <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );
 }
+
+SocketProvider.propTypes = {
+  value: PropTypes.instanceOf('Socket').isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export { SocketContext as default, useSocket, SocketProvider };

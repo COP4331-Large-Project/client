@@ -13,15 +13,11 @@ import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API, { BASE_URL } from '../api/API';
-import {
-  useGroups,
-} from '../contexts/GroupsContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
-import { useUser } from '../contexts/UserContextDispatch.jsx';
+import { useUser, useUserState } from '../contexts/UserContextDispatch.jsx';
 import { LoadingProvider } from '../contexts/LoadingContext.jsx';
 import { SocketProvider } from '../contexts/SocketContext.jsx';
-import { useGroupState } from '../contexts/GroupStateContext.jsx';
-import { useUserState } from '../contexts/UserStateContext.jsx';
 
 const socket = io(BASE_URL, {
   transports: ['websocket'],
@@ -40,10 +36,7 @@ const usePrevious = value => {
 };
 
 function MainPage() {
-  // Using an initial value of -1 here so that groupData can
-  // trigger updates when its value is set to 0 on mount.
-  // It'll be set to 0 if there is at least one group to load.
-  const groupData = useGroupState();
+  const groupData = useGroupsState();
   const groupDispatch = useGroups().dispatch;
   const user = useUserState();
   const userDispatch = useUser().dispatch;

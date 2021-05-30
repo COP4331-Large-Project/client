@@ -13,9 +13,8 @@ import {
 import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from 'axios';
-import { useGroupState } from '../contexts/GroupStateContext.jsx';
-import { useUserState } from '../contexts/UserStateContext.jsx';
-import { useGroups } from '../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../contexts/UserContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
 // 2 megabytes
@@ -36,7 +35,7 @@ function ImageUploadModal({ visible, onClose }) {
   // has selected a file, but hasn't uploaded it yet.
   const [shouldDestroyOnClose, setShouldDestroyOnClose] = useState(true);
 
-  const { groups, index } = useGroupState();
+  const { groups, index } = useGroupsState();
   const { dispatch } = useGroups();
   const user = useUserState();
 

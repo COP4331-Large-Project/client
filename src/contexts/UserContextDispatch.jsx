@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import UserStateContext from './UserStateContext.jsx';
+import PropTypes from 'prop-types';
 
 const UserDispatchContext = createContext(null);
 
@@ -14,29 +14,34 @@ function userReducer(state, action) {
   }
 }
 
-// eslint-disable-next-line react/prop-types
 function UserProvider({ children }) {
   const [state, dispatch] = useReducer(userReducer, {});
 
   return (
-    <UserDispatchContext.Provider value={dispatch}>
-      <UserStateContext.Provider value={state}>
-        {children}
-      </UserStateContext.Provider>
+    <UserDispatchContext.Provider value={{ state, dispatch }}>
+      {children}
     </UserDispatchContext.Provider>
   );
 }
 
-function useUser() {
-  const dispatch = useContext(UserDispatchContext);
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
-  if (!dispatch) {
+function useUser() {
+  const context = useContext(UserDispatchContext);
+
+  if (!context) {
     throw new Error('Invalid useUser hook, hook is not within the correct context.');
   }
 
-  return { dispatch };
+  return context;
+}
+
+function useUserState() {
+  return useUser().state;
 }
 
 export {
-  UserDispatchContext as default, userReducer, useUser, UserProvider,
+  UserDispatchContext as default, userReducer, useUser, useUserState, UserProvider,
 };
