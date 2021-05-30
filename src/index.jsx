@@ -12,6 +12,8 @@ import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css';
 import './scss/ant-overrides.scss';
 import './scss/index.scss';
+import { UserProvider } from './contexts/UserContextDispatch.jsx';
+import { GroupsProvider } from './contexts/GroupsContextDispatch.jsx';
 
 message.config({ maxCount: 1 });
 
@@ -23,7 +25,11 @@ ReactDOM.render(
           <LandingPage />
         </Route>
         <Route exact path="/">
-          <MainPage />
+          <UserProvider>
+            <GroupsProvider>
+              <MainPage />
+            </GroupsProvider>
+          </UserProvider>
         </Route>
         <Route exact path="/verify">
           <VerifyEmailPage />

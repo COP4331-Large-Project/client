@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 const GroupsStateContext = createContext(undefined);
 
@@ -12,13 +12,4 @@ function useGroupState() {
   return state;
 }
 
-// eslint-disable-next-line react/prop-types
-function GroupsStateProvider({ value, children }) {
-  return (
-        <GroupsStateContext.Provider value={value}>
-            {children}
-        </GroupsStateContext.Provider>
-  );
-}
-
-export { GroupsStateContext as default, useGroupState, GroupsStateProvider };
+export { GroupsStateContext as default, useGroupState };

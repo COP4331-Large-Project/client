@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
+import GroupsStateContext from './GroupStateContext.jsx';
 
 const GroupsDispatchContext = createContext(undefined);
 
@@ -65,10 +66,18 @@ function useGroups() {
 }
 
 // eslint-disable-next-line react/prop-types
-function GroupsProvider({ value, children }) {
+function GroupsProvider({ children }) {
+  const [state, dispatch] = useReducer(groupReducer, {
+    groups: [],
+    images: [],
+    index: -1,
+  });
+
   return (
-    <GroupsDispatchContext.Provider value={value}>
-      {children}
+    <GroupsDispatchContext.Provider value={dispatch}>
+      <GroupsStateContext.Provider value={state}>
+        {children}
+      </GroupsStateContext.Provider>
     </GroupsDispatchContext.Provider>
   );
 }

@@ -2,7 +2,6 @@
 import React, {
   useState,
   useEffect,
-  useReducer,
   useRef,
 } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -14,18 +13,15 @@ import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API, { BASE_URL } from '../api/API';
-import { UserStateProvider } from '../contexts/UserStateContext.jsx';
 import {
-  groupReducer, GroupsProvider,
+  useGroups,
 } from '../contexts/GroupsContextDispatch.jsx';
-import { GroupsStateProvider } from '../contexts/GroupStateContext.jsx';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
-import {
-  UserProvider,
-  userReducer,
-} from '../contexts/UserContextDispatch.jsx';
+import { useUser } from '../contexts/UserContextDispatch.jsx';
 import { LoadingProvider } from '../contexts/LoadingContext.jsx';
 import { SocketProvider } from '../contexts/SocketContext.jsx';
+import { useGroupState } from '../contexts/GroupStateContext.jsx';
+import { useUserState } from '../contexts/UserStateContext.jsx';
 
 const socket = io(BASE_URL, {
   transports: ['websocket'],
@@ -47,12 +43,10 @@ function MainPage() {
   // Using an initial value of -1 here so that groupData can
   // trigger updates when its value is set to 0 on mount.
   // It'll be set to 0 if there is at least one group to load.
-  const [groupData, groupDispatch] = useReducer(groupReducer, {
-    groups: [],
-    images: [],
-    index: -1,
-  });
-  const [user, userDispatch] = useReducer(userReducer, {});
+  const groupData = useGroupState();
+  const groupDispatch = useGroups().dispatch;
+  const user = useUserState();
+  const userDispatch = useUser().dispatch;
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
@@ -330,46 +324,38 @@ function MainPage() {
 
   return (
     <SocketProvider value={socket}>
-      <UserStateProvider value={user}>
-        <UserProvider value={userDispatch}>
-          <GroupsProvider value={groupDispatch}>
-            <GroupsStateProvider value={groupData}>
-              <LoadingProvider value={loadingStates}>
-                <div className="main-page-body">
-                  <Navbar />
-                  <div className="body-content">
-                    <Sidebar />
-                    <div className="main-content">
-                      <Skeleton
-                        active
-                        className="title-skeleton"
-                        loading={isLoadingGroups}
-                        paragraph={{ rows: 0 }}
-                      >
-                        <div className="group-title-row">
-                          <h1 className="group-title" title={groupTitle}>
-                            {groupTitle}
-                          </h1>
-                          {groupData.groups.length > 0 && (
-                            <GroupMenuButton
-                              className="group-action-btn"
-                              isOwner={isGroupOwner}
-                            />
-                          )}
-                        </div>
-                      </Skeleton>
-                      <PhotoGrid
-                        photos={groupData.images}
-                        isGroupOwner={isGroupOwner}
-                      />
-                    </div>
-                  </div>
+      <LoadingProvider value={loadingStates}>
+        <div className="main-page-body">
+          <Navbar />
+          <div className="body-content">
+            <Sidebar />
+            <div className="main-content">
+              <Skeleton
+                active
+                className="title-skeleton"
+                loading={isLoadingGroups}
+                paragraph={{ rows: 0 }}
+              >
+                <div className="group-title-row">
+                  <h1 className="group-title" title={groupTitle}>
+                    {groupTitle}
+                  </h1>
+                  {groupData.groups.length > 0 && (
+                    <GroupMenuButton
+                      className="group-action-btn"
+                      isOwner={isGroupOwner}
+                    />
+                  )}
                 </div>
-              </LoadingProvider>
-            </GroupsStateProvider>
-          </GroupsProvider>
-        </UserProvider>
-      </UserStateProvider>
+              </Skeleton>
+              <PhotoGrid
+                photos={groupData.images}
+                isGroupOwner={isGroupOwner}
+              />
+            </div>
+          </div>
+        </div>
+      </LoadingProvider>
     </SocketProvider>
   );
 }

@@ -1,15 +1,6 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 const UserStateContext = createContext(undefined);
-
-// eslint-disable-next-line react/prop-types
-function UserStateProvider({ value, children }) {
-  return (
-        <UserStateContext.Provider value={value}>
-            {children}
-        </UserStateContext.Provider>
-  );
-}
 
 function useUserState() {
   const userState = useContext(UserStateContext);
@@ -21,4 +12,4 @@ function useUserState() {
   return userState;
 }
 
-export { UserStateContext as default, useUserState, UserStateProvider };
+export { UserStateContext as default, useUserState };

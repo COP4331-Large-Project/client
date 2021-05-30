@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
+import UserStateContext from './UserStateContext.jsx';
 
 const UserDispatchContext = createContext(null);
 
@@ -14,10 +15,14 @@ function userReducer(state, action) {
 }
 
 // eslint-disable-next-line react/prop-types
-function UserProvider({ value, children }) {
+function UserProvider({ children }) {
+  const [state, dispatch] = useReducer(userReducer, {});
+
   return (
-    <UserDispatchContext.Provider value={value}>
-      {children}
+    <UserDispatchContext.Provider value={dispatch}>
+      <UserStateContext.Provider value={state}>
+        {children}
+      </UserStateContext.Provider>
     </UserDispatchContext.Provider>
   );
 }
