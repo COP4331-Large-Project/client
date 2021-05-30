@@ -1,6 +1,6 @@
-import { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
-const GroupsDispatchContext = createContext(null);
+const GroupsDispatchContext = createContext(undefined);
 
 function groupReducer(state, action) {
   const { index } = action.payload;
@@ -53,4 +53,30 @@ function groupReducer(state, action) {
   }
 }
 
-export { GroupsDispatchContext as default, groupReducer };
+function useGroups() {
+  const dispatch = useContext(GroupsDispatchContext);
+
+  if (!dispatch) {
+    throw new Error(
+      'Invalid useGroup hook, hook is not within the correct context.',
+    );
+  }
+
+  return dispatch;
+}
+
+// eslint-disable-next-line react/prop-types
+function GroupsProvider({ value, children }) {
+  return (
+    <GroupsDispatchContext.Provider value={value}>
+      {children}
+    </GroupsDispatchContext.Provider>
+  );
+}
+
+export {
+  GroupsDispatchContext as default,
+  groupReducer,
+  useGroups,
+  GroupsProvider,
+};
