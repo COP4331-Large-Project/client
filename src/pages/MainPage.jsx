@@ -14,17 +14,18 @@ import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API, { BASE_URL } from '../api/API';
-import UserContext from '../contexts/UserStateContext.jsx';
-import GroupDispatchContext, {
-  groupReducer,
+import { UserStateProvider } from '../contexts/UserStateContext.jsx';
+import {
+  groupReducer, GroupsProvider,
 } from '../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import { GroupsStateProvider } from '../contexts/GroupStateContext.jsx';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
-import UserContextDispatch, {
+import {
+  UserProvider,
   userReducer,
 } from '../contexts/UserContextDispatch.jsx';
-import LoadingContext from '../contexts/LoadingContext.jsx';
-import SocketContext from '../contexts/SocketContext.jsx';
+import { LoadingProvider } from '../contexts/LoadingContext.jsx';
+import { SocketProvider } from '../contexts/SocketContext.jsx';
 
 const socket = io(BASE_URL, {
   transports: ['websocket'],
@@ -328,12 +329,12 @@ function MainPage() {
   }, [groupData.groups]);
 
   return (
-    <SocketContext.Provider value={socket}>
-      <UserContext.Provider value={user}>
-        <UserContextDispatch.Provider value={userDispatch}>
-          <GroupDispatchContext.Provider value={groupDispatch}>
-            <GroupsStateContext.Provider value={groupData}>
-              <LoadingContext.Provider value={loadingStates}>
+    <SocketProvider value={socket}>
+      <UserStateProvider value={user}>
+        <UserProvider value={userDispatch}>
+          <GroupsProvider value={groupDispatch}>
+            <GroupsStateProvider value={groupData}>
+              <LoadingProvider value={loadingStates}>
                 <div className="main-page-body">
                   <Navbar />
                   <div className="body-content">
@@ -364,12 +365,12 @@ function MainPage() {
                     </div>
                   </div>
                 </div>
-              </LoadingContext.Provider>
-            </GroupsStateContext.Provider>
-          </GroupDispatchContext.Provider>
-        </UserContextDispatch.Provider>
-      </UserContext.Provider>
-    </SocketContext.Provider>
+              </LoadingProvider>
+            </GroupsStateProvider>
+          </GroupsProvider>
+        </UserProvider>
+      </UserStateProvider>
+    </SocketProvider>
   );
 }
 
