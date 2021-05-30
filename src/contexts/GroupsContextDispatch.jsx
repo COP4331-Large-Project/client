@@ -58,7 +58,7 @@ function useGroups() {
 
   if (!context) {
     throw new Error(
-      'Invalid useGroup hook, hook is not within the correct context.',
+      'Invalid useGroups hook, hook is not within the correct context.',
     );
   }
 
