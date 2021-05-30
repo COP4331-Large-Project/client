@@ -54,15 +54,15 @@ function groupReducer(state, action) {
 }
 
 function useGroups() {
-  const { dispatch, state } = useContext(GroupsDispatchContext);
+  const context = useContext(GroupsDispatchContext);
 
-  if (!dispatch || !state) {
+  if (!context) {
     throw new Error(
       'Invalid useGroup hook, hook is not within the correct context.',
     );
   }
 
-  return { dispatch, state };
+  return context;
 }
 
 function useGroupsState() {
