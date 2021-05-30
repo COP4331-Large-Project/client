@@ -53,6 +53,9 @@ function groupReducer(state, action) {
   }
 }
 
+/**
+ * Fetches the group dispatch and state from the context.
+ */
 function useGroups() {
   const context = useContext(GroupsDispatchContext);
 
@@ -65,6 +68,9 @@ function useGroups() {
   return context;
 }
 
+/**
+ * Fetches the group state from the context.
+ */
 function useGroupsState() {
   return useGroups().state;
 }

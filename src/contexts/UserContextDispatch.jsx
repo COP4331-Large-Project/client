@@ -28,6 +28,9 @@ UserProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+/**
+ * Fetches the user dispatch and state from the context.
+ */
 function useUser() {
   const context = useContext(UserDispatchContext);
 
@@ -38,6 +41,9 @@ function useUser() {
   return context;
 }
 
+/**
+ * Fetches the user state from the context.
+ */
 function useUserState() {
   return useUser().state;
 }
