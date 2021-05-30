@@ -1,5 +1,5 @@
 import '../../scss/sidebar.scss';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import Card from '../Card.jsx';
 import InviteArea from './InviteArea.jsx';
@@ -7,8 +7,8 @@ import GroupList from './GroupList.jsx';
 import JoinGroupButton from './JoinGroupButton.jsx';
 import Button from '../Button.jsx';
 import CreateGroupModal from '../CreateGroupModal.jsx';
-import GroupDispatchContext from '../../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
+import { useGroups } from '../../contexts/GroupsContextDispatch.jsx';
+import { useGroupState } from '../../contexts/GroupStateContext.jsx';
 
 const { Sider } = Layout;
 
@@ -16,8 +16,8 @@ function Sidebar() {
   const [isGroupModalVisible, setGroupModalVisible] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
   const [groupId, setGroupId] = useState('');
-  const dispatch = useContext(GroupDispatchContext);
-  const { groups, index } = useContext(GroupsStateContext);
+  const { dispatch } = useGroups();
+  const { groups, index } = useGroupState();
   const openGroupModal = () => setGroupModalVisible(true);
   const closeGroupModal = () => setGroupModalVisible(false);
 

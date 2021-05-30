@@ -1,5 +1,5 @@
 import '../scss/create-group-modal.scss';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // prettier-ignore
 import {
@@ -11,11 +11,11 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import UserStateContext from '../contexts/UserStateContext.jsx';
-import GroupsContextDispatch from '../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../contexts/UserStateContext.jsx';
+import { useGroups } from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
-import SocketContext from '../contexts/SocketContext.jsx';
+import { useGroupState } from '../contexts/GroupStateContext.jsx';
+import { useSocket } from '../contexts/SocketContext.jsx';
 
 function CreateGroupModal({ visible, onClose }) {
   const [groupName, setGroupName] = useState('');
@@ -23,10 +23,10 @@ function CreateGroupModal({ visible, onClose }) {
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
-  const { groups } = useContext(GroupsStateContext);
-  const dispatch = useContext(GroupsContextDispatch);
-  const user = useContext(UserStateContext);
-  const socket = useContext(SocketContext);
+  const { groups } = useGroupState();
+  const { dispatch } = useGroups();
+  const user = useUserState();
+  const socket = useSocket();
 
   const addMember = event => {
     event.preventDefault();

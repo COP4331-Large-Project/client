@@ -1,5 +1,5 @@
 import '../scss/image-upload-modal.scss';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -13,9 +13,9 @@ import {
 import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from 'axios';
-import GroupStateContext from '../contexts/GroupStateContext.jsx';
-import UserStateContext from '../contexts/UserStateContext.jsx';
-import GroupContextDispatch from '../contexts/GroupsContextDispatch.jsx';
+import { useGroupState } from '../contexts/GroupStateContext.jsx';
+import { useUserState } from '../contexts/UserStateContext.jsx';
+import { useGroups } from '../contexts/GroupsContextDispatch.jsx';
 import API from '../api/API';
 
 // 2 megabytes
@@ -36,9 +36,9 @@ function ImageUploadModal({ visible, onClose }) {
   // has selected a file, but hasn't uploaded it yet.
   const [shouldDestroyOnClose, setShouldDestroyOnClose] = useState(true);
 
-  const { groups, index } = useContext(GroupStateContext);
-  const dispatch = useContext(GroupContextDispatch);
-  const user = useContext(UserStateContext);
+  const { groups, index } = useGroupState();
+  const { dispatch } = useGroups();
+  const user = useUserState();
 
   // Adds a custom input below ant's list item component
   const renderListItem = originNode => (

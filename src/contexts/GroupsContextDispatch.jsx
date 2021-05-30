@@ -62,7 +62,7 @@ function useGroups() {
     );
   }
 
-  return dispatch;
+  return { dispatch };
 }
 
 // eslint-disable-next-line react/prop-types

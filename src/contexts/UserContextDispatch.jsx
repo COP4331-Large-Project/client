@@ -29,7 +29,7 @@ function useUser() {
     throw new Error('Invalid useUser hook, hook is not within the correct context.');
   }
 
-  return dispatch;
+  return { dispatch };
 }
 
 export {

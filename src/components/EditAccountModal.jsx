@@ -1,5 +1,5 @@
 import '../scss/edit-account-modal.scss';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // prettier-ignore
 import {
@@ -11,18 +11,18 @@ import {
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useHistory } from 'react-router-dom';
-import UserStateContext from '../contexts/UserStateContext.jsx';
+import { useUserState } from '../contexts/UserStateContext.jsx';
 import TextInput from './TextInput.jsx';
 import API from '../api/API';
-import UserContextDispatch from '../contexts/UserContextDispatch.jsx';
+import { useUser } from '../contexts/UserContextDispatch.jsx';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
 
 function EditAccountModal({ visible, onClose }) {
   const history = useHistory();
-  const user = useContext(UserStateContext);
-  const dispatch = useContext(UserContextDispatch);
+  const user = useUserState();
+  const { dispatch } = useUser();
   const [initials, setInitials] = useState('');
   const [profileImageSrc, setProfileImageSrc] = useState('');
   const [objectURL, setObjectURL] = useState('');

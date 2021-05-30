@@ -1,5 +1,5 @@
 import '../scss/member-invite-modal.scss';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import PropTypes from 'prop-types';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import { useGroupState } from '../contexts/GroupStateContext.jsx';
 import API from '../api/API';
 
 function MemberInviteModal({ visible, onClose }) {
@@ -18,7 +18,7 @@ function MemberInviteModal({ visible, onClose }) {
   const [emails, setEmails] = useState(new Set());
   const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const { groups, index } = useContext(GroupsStateContext);
+  const { groups, index } = useGroupState();
 
   const addMember = event => {
     event.preventDefault();

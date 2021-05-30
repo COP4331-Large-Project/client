@@ -1,5 +1,5 @@
 import '../../scss/photo-thumbnail.scss';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 // prettier-ignore
@@ -12,9 +12,9 @@ import {
 } from 'antd';
 import { AiOutlineDelete } from 'react-icons/ai';
 import fallback from '../../assets/errorimage.png';
-import UserStateContext from '../../contexts/UserStateContext.jsx';
-import GroupStateContext from '../../contexts/GroupStateContext.jsx';
-import GroupsContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../../contexts/UserStateContext.jsx';
+import { useGroupState } from '../../contexts/GroupStateContext.jsx';
+import { useGroups } from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
 
 function PhotoThumbnail({
@@ -26,9 +26,9 @@ function PhotoThumbnail({
   isGroupOwner,
 }) {
   const [isLoading, setLoading] = useState(true);
-  const user = useContext(UserStateContext);
-  const { groups, index, images } = useContext(GroupStateContext);
-  const dispatch = useContext(GroupsContextDispatch);
+  const user = useUserState();
+  const { groups, index, images } = useGroupState();
+  const { dispatch } = useGroups();
 
   // prettier-ignore
   const shouldShowDeleteButton = !isLoading && (isGroupOwner || user.id === creatorId);
