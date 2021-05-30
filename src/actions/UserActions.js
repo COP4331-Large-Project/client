@@ -1,3 +1,6 @@
+/**
+ * Mapped actions for the User state reducer.
+ */
 const UserActions = {
   /**
    * Updates the currently used user.

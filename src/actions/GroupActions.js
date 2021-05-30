@@ -1,3 +1,6 @@
+/**
+ * Mapped actions for the groups state reducer.
+ */
 const GroupActions = {
   /**
    * Sets the current selected group index.
