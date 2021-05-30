@@ -31,8 +31,8 @@ const GroupActions = {
           ...group,
           memberCount: 1,
         },
+        index,
       },
-      index,
     };
   },
 
