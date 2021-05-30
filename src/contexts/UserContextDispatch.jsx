@@ -14,9 +14,9 @@ function userReducer(state, action) {
 }
 
 // eslint-disable-next-line react/prop-types
-function UserProvider({ user, children }) {
+function UserProvider({ value, children }) {
   return (
-    <UserDispatchContext.Provider value={user}>
+    <UserDispatchContext.Provider value={value}>
       {children}
     </UserDispatchContext.Provider>
   );
