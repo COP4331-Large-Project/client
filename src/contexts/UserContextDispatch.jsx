@@ -1,18 +1,8 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import userReducer from '../reducers/user';
 
 const UserDispatchContext = createContext(null);
-
-function userReducer(state, action) {
-  switch (action.type) {
-    case 'updateUser':
-      return {
-        ...action.payload,
-      };
-    default:
-      throw new Error(`Invalid User reducer action ${action}`);
-  }
-}
 
 function UserProvider({ children }) {
   const [state, dispatch] = useReducer(userReducer, {});
@@ -28,26 +18,6 @@ UserProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-/**
- * Fetches the user dispatch and state from the context.
- */
-function useUser() {
-  const context = useContext(UserDispatchContext);
-
-  if (!context) {
-    throw new Error('Invalid useUser hook, hook is not within the correct context.');
-  }
-
-  return context;
-}
-
-/**
- * Fetches the user state from the context.
- */
-function useUserState() {
-  return useUser().state;
-}
-
 export {
-  UserDispatchContext as default, userReducer, useUser, useUserState, UserProvider,
+  UserDispatchContext as default, UserProvider,
 };

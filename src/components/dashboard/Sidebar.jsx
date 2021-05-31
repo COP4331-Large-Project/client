@@ -7,7 +7,7 @@ import GroupList from './GroupList.jsx';
 import JoinGroupButton from './JoinGroupButton.jsx';
 import Button from '../Button.jsx';
 import CreateGroupModal from '../CreateGroupModal.jsx';
-import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../../hooks/group';
 
 const { Sider } = Layout;
 

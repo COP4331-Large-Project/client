@@ -13,8 +13,8 @@ import {
 import PropTypes from 'prop-types';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from 'axios';
-import { useUserState } from '../contexts/UserContextDispatch.jsx';
-import { useGroups, useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../hooks/user';
+import { useGroups, useGroupsState } from '../hooks/group';
 import API from '../api/API';
 
 // 2 megabytes

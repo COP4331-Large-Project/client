@@ -12,8 +12,8 @@ import {
 } from 'antd';
 import { AiOutlineDelete } from 'react-icons/ai';
 import fallback from '../../assets/errorimage.png';
-import { useUserState } from '../../contexts/UserContextDispatch.jsx';
-import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../../hooks/user';
+import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
 
 function PhotoThumbnail({

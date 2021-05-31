@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
 import PropTypes from 'prop-types';
-import { useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
+import { useGroupsState } from '../hooks/group';
 import API from '../api/API';
 
 function MemberInviteModal({ visible, onClose }) {

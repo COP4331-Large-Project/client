@@ -7,8 +7,8 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail.jsx';
 import FloatingButton from './FloatingButton.jsx';
 import ImageUploadModal from '../ImageUploadModal.jsx';
-import { useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
-import { useLoading } from '../../contexts/LoadingContext.jsx';
+import { useGroupsState } from '../../hooks/group';
+import { useLoading } from '../../hooks/loading';
 import emptySvg from '../../assets/no-photos.svg';
 
 const item = {

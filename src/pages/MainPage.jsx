@@ -13,9 +13,9 @@ import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API, { BASE_URL } from '../api/API';
-import { useGroups, useGroupsState } from '../contexts/GroupsContextDispatch.jsx';
+import { useGroups, useGroupsState } from '../hooks/group';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
-import { useUser, useUserState } from '../contexts/UserContextDispatch.jsx';
+import { useUser, useUserState } from '../hooks/user';
 import { LoadingProvider } from '../contexts/LoadingContext.jsx';
 import { SocketProvider } from '../contexts/SocketContext.jsx';
 

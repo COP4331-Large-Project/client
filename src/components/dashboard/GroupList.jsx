@@ -2,7 +2,7 @@ import '../../scss/group-list.scss';
 import React from 'react';
 import { Avatar, List } from 'antd';
 import PropTypes from 'prop-types';
-import { useLoading } from '../../contexts/LoadingContext.jsx';
+import { useLoading } from '../../hooks/loading';
 
 function GroupList({ groups, activeIndex, onGroupClick }) {
   const { groupsLoading } = useLoading();

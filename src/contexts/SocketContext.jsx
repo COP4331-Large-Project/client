@@ -1,19 +1,7 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext } from 'react';
 import PropTypes from 'prop-types';
 
 const SocketContext = createContext(undefined);
-
-function useSocket() {
-  const socket = useContext(SocketContext);
-
-  if (!socket) {
-    throw new Error(
-      'Invalid useSocket hook, hook is not within the correct context.',
-    );
-  }
-
-  return socket;
-}
 
 function SocketProvider({ value, children }) {
   return (
@@ -26,4 +14,4 @@ SocketProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export { SocketContext as default, useSocket, SocketProvider };
+export { SocketContext as default, SocketProvider };

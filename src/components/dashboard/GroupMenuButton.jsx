@@ -10,8 +10,8 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import MemberInviteModal from '../MemberInviteModal.jsx';
-import { useUserState } from '../../contexts/UserContextDispatch.jsx';
-import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../../hooks/user';
+import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
 import ImageUploadModal from '../ImageUploadModal.jsx';
 

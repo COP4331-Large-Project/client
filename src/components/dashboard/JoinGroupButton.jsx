@@ -3,8 +3,8 @@ import { Modal, Input, notification } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
 import API from '../../api/API';
-import { useGroups, useGroupsState } from '../../contexts/GroupsContextDispatch.jsx';
-import { useSocket } from '../../contexts/SocketContext.jsx';
+import { useGroups, useGroupsState } from '../../hooks/group';
+import { useSocket } from '../../hooks/socket';
 
 function JoinGroupButton() {
   const [visible, setVisible] = useState(false);
