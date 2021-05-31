@@ -1,5 +1,6 @@
+<img align="left" width="70" alt="Screen Shot 2021-05-30 at 10 57 41 PM" src="https://user-images.githubusercontent.com/77477100/120133939-1157f200-c19b-11eb-9bea-3d9477118653.png">
 
-# ImageUs - Collabrotive Image Sharing Platform
+### ImageUs - Collaborative Image Sharing Platform
 
 <img width="1674" alt="Screen Shot 2021-05-30 at 10 57 41 PM" src="https://user-images.githubusercontent.com/77477100/120133720-ac040100-c19a-11eb-9013-c1d8b96de774.png">
 
