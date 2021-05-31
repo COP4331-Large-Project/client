@@ -29,7 +29,7 @@ type GroupState = {
 
 type GroupsProviderProps = { children: React.ReactNode }
 
-function GroupsProvider({ children }: GroupsProviderProps) {
+function GroupsProvider({ children }: GroupsProviderProps): JSX.Element {
   // Using an initial value of -1 here so that groupData can
   // trigger updates when its value is set to 0 on mount.
   // It'll be set to 0 if there is at least one group to load.

@@ -8,7 +8,7 @@ type SocketProviderTypes = {
     children: React.ReactNode
 }
 
-function SocketProvider({ value, children }: SocketProviderTypes) {
+function SocketProvider({ value, children }: SocketProviderTypes): JSX.Element {
     return (
         <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
     );

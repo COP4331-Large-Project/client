@@ -1,10 +1,11 @@
 import { useContext } from 'react';
-import UserDispatchContext from '../contexts/UserContextDispatch';
+import UserDispatchContext, { UserContextType } from '../contexts/UserContextDispatch';
+import { User } from '../types';
 
 /**
  * Fetches the user dispatch and state from the context.
  */
-function useUser() {
+function useUser(): UserContextType  {
   const context = useContext(UserDispatchContext);
 
   if (!context) {
@@ -17,7 +18,7 @@ function useUser() {
 /**
  * Fetches the user state from the context.
  */
-function useUserState() {
+function useUserState(): User {
   return useUser().state;
 }
 

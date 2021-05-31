@@ -70,7 +70,7 @@ function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps):
       const group = await API.createGroup({
         name: groupName,
         publicGroup: !isPrivateChecked,
-        creator: user!.id,
+        creator: user.id,
         emails: [...Array.from(members)],
       });
 
@@ -79,7 +79,7 @@ function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps):
       // newly created group index (essentially groups[groups.length - 1])
       dispatch(GroupActions.addGroup(group, groups.length));
 
-      socket!.emit('join', [group.id]);
+      socket.emit('join', [group.id]);
     } catch (err) {
       notification.error({
         message: 'Error creating group',

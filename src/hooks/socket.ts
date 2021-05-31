@@ -1,7 +1,8 @@
 import { useContext } from 'react';
+import { Socket } from 'socket.io-client';
 import SocketContext from '../contexts/SocketContext';
 
-function useSocket() {
+function useSocket(): Socket {
   const socket = useContext(SocketContext);
 
   if (!socket) {

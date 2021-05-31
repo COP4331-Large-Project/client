@@ -37,7 +37,7 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-function MainPage() {
+function MainPage(): JSX.Element {
   const groupData = useGroupsState();
   const { dispatch: groupDispatch } = useGroups();
   const user = useUserState();

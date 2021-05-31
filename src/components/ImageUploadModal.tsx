@@ -166,7 +166,7 @@ function ImageUploadModal({ visible = false, onClose = undefined }: ModalProps):
         {
           image: file,
           caption: imageCaption.trim(),
-          userId: user!.id,
+          userId: user.id,
           groupId: groups[index].id,
         },
         onUploadProgress,

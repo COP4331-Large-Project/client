@@ -37,7 +37,7 @@ function GroupMenu({ className, isOwner }: GroupMenuProps): JSX.Element {
   const closeUploadModal = () => setUploadModalOpen(false);
 
   useEffect(() => {
-    setLoggedInUser(user!);
+    setLoggedInUser(user);
   }, [user]);
 
   useEffect(() => {

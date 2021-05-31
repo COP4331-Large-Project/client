@@ -33,7 +33,7 @@ function Sidebar(): JSX.Element {
   }, [groups, index]);
 
   function changeGroup(toIndex: number) {
-    dispatch!({ type: 'setIndex', payload: toIndex });
+    dispatch({ type: 'setIndex', payload: toIndex });
   }
 
   return (

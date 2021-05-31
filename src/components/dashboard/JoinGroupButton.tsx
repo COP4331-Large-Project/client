@@ -60,7 +60,7 @@ function JoinGroupButton(): JSX.Element {
 
       // Need to join the room for this group so we can listen
       // for incoming socket events.
-      socket!.emit('join', [group.id]);
+      socket.emit('join', [group.id]);
     } catch (e) {
       let message: string;
 

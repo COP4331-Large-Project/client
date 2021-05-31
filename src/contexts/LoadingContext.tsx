@@ -13,7 +13,7 @@ type LoadingProviderProps = {
   children: React.ReactNode;
 }
 
-function LoadingProvider({ value, children }: LoadingProviderProps) {
+function LoadingProvider({ value, children }: LoadingProviderProps): JSX.Element {
   return (
     <LoadingContext.Provider value={value}>
       {children}

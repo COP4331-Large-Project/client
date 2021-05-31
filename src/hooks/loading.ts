@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import LoadingContext from '../contexts/LoadingContext';
 
-function useLoading() {
+function useLoading(): { groupsLoading: boolean, imagesLoading: boolean } {
   const loading = useContext(LoadingContext);
 
   if (!loading) {

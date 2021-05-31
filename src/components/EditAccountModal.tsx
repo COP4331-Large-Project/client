@@ -57,7 +57,7 @@ function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element
   ];
 
   useEffect(() => {
-    const { firstName, lastName, imgURL } = user!;
+    const { firstName, lastName, imgURL } = user;
 
     if (firstName && lastName) {
       setInitials(`${firstName[0]}${lastName[0]}`);
@@ -111,7 +111,7 @@ function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element
     setLoading(true);
 
     try {
-      await API.passwordRecovery(user!.email);
+      await API.passwordRecovery(user.email);
 
       notification.info({
         message: 'Email Sent',
@@ -134,7 +134,7 @@ function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element
     setLoading(true);
 
     try {
-      await API.deleteAccount(user!.id, authToken ?? '', password);
+      await API.deleteAccount(user.id, authToken ?? '', password);
 
       localStorage.clear();
       if (onClose) onClose();
@@ -180,12 +180,12 @@ function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element
 
     try {
       if (profileImageFile) {
-        await API.updateProfilePicture(user!.id, authToken ?? '', profileImageFile);
+        await API.updateProfilePicture(user.id, authToken ?? '', profileImageFile);
       }
 
       const userInfo = await API.updateAccount({
         ...payload,
-        userId: user!.id,
+        userId: user.id,
         token: authToken ?? '',
       });
 
@@ -235,19 +235,19 @@ function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element
         </div>
         <div className="input-group">
           <p className="input-title">First name</p>
-          <TextInput value={user!.firstName} name="firstName" />
+          <TextInput value={user.firstName} name="firstName" />
         </div>
         <div className="input-group">
           <p className="input-title">Last name</p>
-          <TextInput value={user!.lastName} name="lastName" />
+          <TextInput value={user.lastName} name="lastName" />
         </div>
         <div className="input-group">
           <p className="input-title">Username</p>
-          <TextInput value={user!.username} name="username" />
+          <TextInput value={user.username} name="username" />
         </div>
         <div className="input-group">
           <p className="input-title">Email</p>
-          <TextInput value={user!.email} name="email" type="email" />
+          <TextInput value={user.email} name="email" type="email" />
         </div>
       </form>
       <Button

@@ -39,7 +39,7 @@ function PhotoThumbnail({
   const { dispatch } = useGroups();
 
   // prettier-ignore
-  const shouldShowDeleteButton = !isLoading && (isGroupOwner || user!.id === creatorId);
+  const shouldShowDeleteButton = !isLoading && (isGroupOwner || user.id === creatorId);
 
   const deleteImage = async () => {
     try {

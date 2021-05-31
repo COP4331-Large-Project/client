@@ -12,9 +12,9 @@ function Navbar(): JSX.Element {
   const [imgURL, setImgURL] = useState('');
 
   useEffect(() => {
-    if (user!.firstName !== undefined) {
-      setImgURL(user!.imgURL as string);
-      setInitials(`${user!.firstName[0]}${user!.lastName[0]}`);
+    if (user.firstName !== undefined) {
+      setImgURL(user.imgURL as string);
+      setInitials(`${user.firstName[0]}${user.lastName[0]}`);
     }
   }, [user]);
 
