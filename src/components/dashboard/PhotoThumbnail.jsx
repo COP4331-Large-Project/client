@@ -16,6 +16,7 @@ import UserStateContext from '../../contexts/UserStateContext.jsx';
 import GroupStateContext from '../../contexts/GroupStateContext.jsx';
 import GroupsContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
+import GroupActions from '../../actions/GroupActions';
 
 function PhotoThumbnail({
   // prettier-ignore
@@ -39,10 +40,7 @@ function PhotoThumbnail({
 
       await API.deleteImages(groupId, [imageId]);
 
-      dispatch({
-        type: 'setImages',
-        payload: images.filter(image => image.id !== imageId),
-      });
+      dispatch(GroupActions.setImages(images.filter(image => image.id !== imageId)));
 
       notification.success({
         key: 'image-deleted',

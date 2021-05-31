@@ -25,6 +25,8 @@ import UserContextDispatch, {
 } from '../contexts/UserContextDispatch.jsx';
 import LoadingContext from '../contexts/LoadingContext.jsx';
 import SocketContext from '../contexts/SocketContext.jsx';
+import GroupActions from '../actions/GroupActions';
+import UserActions from '../actions/UserActions';
 
 const socket = io(BASE_URL, {
   transports: ['websocket'],
@@ -135,10 +137,7 @@ function MainPage() {
     // currently viewing the group where the image was added or if the
     // person who uploaded the image is the current user
     if (groups[index].id === groupId && image.creator !== user.id) {
-      groupDispatch({
-        type: 'addImage',
-        payload: image,
-      });
+      groupDispatch(GroupActions.addImage(image));
 
       notification.info({
         key: 'image-upload-notification',
@@ -173,10 +172,7 @@ function MainPage() {
     }
 
     if (user.username !== username) {
-      groupDispatch({
-        type: 'updateGroupMemberCount',
-        payload: groups,
-      });
+      groupDispatch(GroupActions.updateGroupMemberCount(groups));
     }
   };
 
@@ -198,10 +194,7 @@ function MainPage() {
       setLoadingImages(false);
     }, 500);
 
-    groupDispatch({
-      type: 'setImages',
-      payload: images,
-    });
+    groupDispatch(GroupActions.setImages(images));
   };
 
   // Only want this to trigger once to grab user token and id.
@@ -217,10 +210,7 @@ function MainPage() {
       return;
     }
 
-    userDispatch({
-      type: 'updateUser',
-      payload: userInfo,
-    });
+    userDispatch(UserActions.updateUser(userInfo));
 
     const groups = await getGroups(id);
 
@@ -263,14 +253,7 @@ function MainPage() {
 
     // Set the index to -1 if there are no groups to load so
     // that it can be updated once the first new group is added
-    groupDispatch({
-      type: 'init',
-      payload: {
-        index: groups.length === 0 ? -1 : 0,
-        groups,
-        images,
-      },
-    });
+    groupDispatch(GroupActions.init(groups, images, groups.length === 0 ? -1 : 0));
   }, []);
 
   // We only want this to trigger when the selected group index changes.
@@ -283,10 +266,8 @@ function MainPage() {
     if (groups.length === 0) {
       setGroupTitle('');
       setIsGroupOwner(false);
-      groupDispatch({
-        type: 'setImages',
-        payload: [],
-      });
+
+      groupDispatch(GroupActions.setImages([]));
 
       return;
     }

@@ -15,6 +15,7 @@ import UserStateContext from '../contexts/UserStateContext.jsx';
 import TextInput from './TextInput.jsx';
 import API from '../api/API';
 import UserContextDispatch from '../contexts/UserContextDispatch.jsx';
+import UserActions from '../actions/UserActions';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
@@ -189,10 +190,7 @@ function EditAccountModal({ visible, onClose }) {
         token: authToken,
       });
 
-      dispatch({
-        type: 'updateUser',
-        payload: userInfo,
-      });
+      dispatch(UserActions.updateUser(userInfo));
 
       notification.success({
         key: 'update-success',

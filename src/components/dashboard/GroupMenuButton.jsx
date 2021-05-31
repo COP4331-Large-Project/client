@@ -15,6 +15,7 @@ import UserStateContext from '../../contexts/UserStateContext.jsx';
 import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
 import API from '../../api/API';
 import ImageUploadModal from '../ImageUploadModal.jsx';
+import GroupActions from '../../actions/GroupActions';
 
 function GroupMenu({ className, isOwner }) {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
@@ -49,13 +50,7 @@ function GroupMenu({ className, isOwner }) {
     });
 
     // Setting new index to 0 for safety if groups list is not empty
-    dispatch({
-      type: 'replaceGroups',
-      payload: {
-        groups: newGroups,
-        index: newGroups.length === 0 ? -1 : 0,
-      },
-    });
+    dispatch(GroupActions.replaceGroups(newGroups, newGroups.length === 0 ? -1 : 0));
   };
 
   const deleteGroup = async () => {
