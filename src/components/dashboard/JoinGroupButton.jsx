@@ -5,6 +5,7 @@ import '../../scss/join-group-button.scss';
 import API from '../../api/API';
 import { useGroups, useGroupsState } from '../../hooks/group';
 import { useSocket } from '../../hooks/socket';
+import GroupActions from '../../actions/GroupActions';
 
 function JoinGroupButton() {
   const [visible, setVisible] = useState(false);
@@ -55,13 +56,7 @@ function JoinGroupButton() {
       const id = localStorage.getItem('id');
       const group = await API.joinGroup(id, invite);
 
-      dispatch({
-        type: 'addGroup',
-        payload: {
-          group,
-          index: groups.length,
-        },
-      });
+      dispatch(GroupActions.addGroup(group, groups.length));
 
       // Need to join the room for this group so we can listen
       // for incoming socket events.

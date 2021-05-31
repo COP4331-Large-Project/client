@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import TextInput from './TextInput.jsx';
 import API from '../api/API';
 import { useUser, useUserState } from '../hooks/user';
+import UserActions from '../actions/UserActions';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
@@ -188,10 +189,7 @@ function EditAccountModal({ visible, onClose }) {
         token: authToken,
       });
 
-      dispatch({
-        type: 'updateUser',
-        payload: userInfo,
-      });
+      dispatch(UserActions.updateUser(userInfo));
 
       notification.success({
         key: 'update-success',

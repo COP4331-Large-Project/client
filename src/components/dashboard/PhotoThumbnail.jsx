@@ -15,6 +15,7 @@ import fallback from '../../assets/errorimage.png';
 import { useUserState } from '../../hooks/user';
 import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
+import GroupActions from '../../actions/GroupActions';
 
 function PhotoThumbnail({
   // prettier-ignore
@@ -38,10 +39,7 @@ function PhotoThumbnail({
 
       await API.deleteImages(groupId, [imageId]);
 
-      dispatch({
-        type: 'setImages',
-        payload: images.filter(image => image.id !== imageId),
-      });
+      dispatch(GroupActions.setImages(images.filter(image => image.id !== imageId)));
 
       notification.success({
         key: 'image-deleted',

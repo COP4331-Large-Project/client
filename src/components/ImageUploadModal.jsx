@@ -16,6 +16,7 @@ import axios from 'axios';
 import { useUserState } from '../hooks/user';
 import { useGroups, useGroupsState } from '../hooks/group';
 import API from '../api/API';
+import GroupActions from '../actions/GroupActions';
 
 // 2 megabytes
 const MAX_FILE_SIZE = 2e6;
@@ -167,10 +168,7 @@ function ImageUploadModal({ visible, onClose }) {
         cancelTokenSource.token,
       );
 
-      dispatch({
-        type: 'addImage',
-        payload: image,
-      });
+      dispatch(GroupActions.addImage(image));
 
       // Reset the state of the modal when the image finishes uploading
       setIsUploading(false);
