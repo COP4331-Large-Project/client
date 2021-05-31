@@ -1,5 +1,5 @@
 import '../scss/edit-account-modal.scss';
-import { SyntheticEvent, useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -10,19 +10,18 @@ import {
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useHistory } from 'react-router-dom';
-import UserStateContext from '../contexts/UserStateContext';
-import TextInput from './TextInput';
+import TextInput from './TextInput.jsx';
 import API from '../api/API';
-import UserContextDispatch from '../contexts/UserContextDispatch';
-import { ModalProps } from './modal-types';
+import { useUser, useUserState } from '../hooks/user';
+import UserActions from '../actions/UserActions';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;
 
 function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element {
   const history = useHistory();
-  const user = useContext(UserStateContext);
-  const dispatch = useContext(UserContextDispatch);
+  const user = useUserState();
+  const { dispatch } = useUser();
   const [initials, setInitials] = useState('');
   const [profileImageSrc, setProfileImageSrc] = useState('');
   const [objectURL, setObjectURL] = useState('');
@@ -189,10 +188,7 @@ function EditAccountModal({ visible = false, onClose }: ModalProps): JSX.Element
         token: authToken ?? '',
       });
 
-      dispatch!({
-        type: 'updateUser',
-        payload: userInfo,
-      });
+      dispatch(UserActions.updateUser(userInfo));
 
       notification.success({
         key: 'update-success',

@@ -1,5 +1,5 @@
 import '../scss/create-group-modal.scss';
-import React, { useState, useContext, SyntheticEvent } from 'react';
+import React, { useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -10,12 +10,12 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import UserStateContext from '../contexts/UserStateContext';
-import GroupsContextDispatch from '../contexts/GroupsContextDispatch';
+import { useUserState } from '../hooks/user';
+import { useGroups, useGroupsState } from '../hooks/group';
 import API from '../api/API';
-import GroupsStateContext from '../contexts/GroupStateContext';
-import SocketContext from '../contexts/SocketContext';
+import { useSocket } from '../hooks/socket';
 import { ModalProps } from './modal-types';
+import GroupActions from '../actions/GroupActions';
 
 function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps): JSX.Element {
   const [groupName, setGroupName] = useState('');
@@ -23,10 +23,10 @@ function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps):
   const [memberEmail, setMemberEmail] = useState('');
   const [members, setMembers] = useState(new Set<string>());
   const [isLoading, setLoading] = useState(false);
-  const { groups } = useContext(GroupsStateContext);
-  const dispatch = useContext(GroupsContextDispatch);
-  const user = useContext(UserStateContext);
-  const socket = useContext(SocketContext);
+  const { groups } = useGroupsState();
+  const { dispatch } = useGroups();
+  const user = useUserState();
+  const socket = useSocket();
 
   const addMember = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -77,15 +77,7 @@ function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps):
       // Passing the length of the user's groups here so that the
       // currently selected group index  will always be the
       // newly created group index (essentially groups[groups.length - 1])
-      dispatch!({
-        type: 'addGroup',
-        payload: {
-          group: {
-            ...group,
-          },
-          index: groups.length,
-        },
-      });
+      dispatch(GroupActions.addGroup(group, groups.length));
 
       socket!.emit('join', [group.id]);
     } catch (err) {

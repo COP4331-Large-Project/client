@@ -1,22 +1,28 @@
-import { createContext } from 'react';
+import { createContext, useReducer } from 'react';
 import { User } from '../types';
+import userReducer from '../reducers/user';
 
 const UserDispatchContext = createContext<React.Dispatch<UserAction> | undefined>(undefined);
 
 type UserAction = {
   type: 'updateUser';
-  payload: User
+  payload: User;
+};
+
+function UserProvider({ children }) {
+  const [state, dispatch] = useReducer(userReducer, {});
+
+  return (
+    <UserDispatchContext.Provider value={{ state, dispatch }}>
+      {children}
+    </UserDispatchContext.Provider>
+  );
 }
 
-function userReducer(_state: User, action: UserAction): User {
-  switch (action.type) {
-    case 'updateUser':
-      return {
-        ...action.payload,
-      };
-    default:
-      throw new Error(`Invalid User reducer action ${action}`);
-  }
-}
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
-export { UserDispatchContext as default, userReducer };
+export {
+  UserDispatchContext as default, UserProvider,
+};

@@ -1,5 +1,5 @@
 import '../../scss/photo-thumbnail.scss';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 // prettier-ignore
@@ -12,10 +12,10 @@ import {
 } from 'antd';
 import { AiOutlineDelete } from 'react-icons/ai';
 import fallback from '../../assets/errorimage.png';
-import UserStateContext from '../../contexts/UserStateContext';
-import GroupStateContext from '../../contexts/GroupStateContext';
-import GroupsContextDispatch from '../../contexts/GroupsContextDispatch';
+import { useUserState } from '../../hooks/user';
+import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
+import GroupActions from '../../actions/GroupActions';
 
 type PhotoThumbnailProps = {
   src: string;
@@ -34,9 +34,9 @@ function PhotoThumbnail({
   isGroupOwner,
 }: PhotoThumbnailProps): JSX.Element {
   const [isLoading, setLoading] = useState(true);
-  const user = useContext(UserStateContext);
-  const { groups, index, images } = useContext(GroupStateContext);
-  const dispatch = useContext(GroupsContextDispatch);
+  const user = useUserState();
+  const { groups, index, images } = useGroupsState();
+  const { dispatch } = useGroups();
 
   // prettier-ignore
   const shouldShowDeleteButton = !isLoading && (isGroupOwner || user!.id === creatorId);
@@ -47,10 +47,7 @@ function PhotoThumbnail({
 
       await API.deleteImages(groupId, [imageId]);
 
-      dispatch!({
-        type: 'setImages',
-        payload: images.filter(image => image.id !== imageId),
-      });
+      dispatch(GroupActions.setImages(images.filter(image => image.id !== imageId)));
 
       notification.success({
         key: 'image-deleted',

@@ -7,8 +7,7 @@ import GroupList from './GroupList';
 import JoinGroupButton from './JoinGroupButton';
 import Button from '../Button';
 import CreateGroupModal from '../CreateGroupModal';
-import GroupDispatchContext from '../../contexts/GroupsContextDispatch';
-import GroupsStateContext from '../../contexts/GroupStateContext';
+import { useGroups, useGroupsState } from '../../hooks/group';
 
 const { Sider } = Layout;
 
@@ -16,8 +15,8 @@ function Sidebar(): JSX.Element {
   const [isGroupModalVisible, setGroupModalVisible] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
   const [groupId, setGroupId] = useState('');
-  const dispatch = useContext(GroupDispatchContext);
-  const { groups, index } = useContext(GroupsStateContext);
+  const { dispatch } = useGroups();
+  const { groups, index } = useGroupsState();
   const openGroupModal = () => setGroupModalVisible(true);
   const closeGroupModal = () => setGroupModalVisible(false);
 

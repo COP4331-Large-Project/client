@@ -1,5 +1,5 @@
 import '../../scss/photo-grid.scss';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Image as AntImage, Spin } from 'antd';
@@ -7,8 +7,8 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import PhotoThumbnail from './PhotoThumbnail';
 import FloatingButton from './FloatingButton';
 import ImageUploadModal from '../ImageUploadModal';
-import GroupStateContext from '../../contexts/GroupStateContext';
-import LoadingContext from '../../contexts/LoadingContext';
+import { useGroupsState } from '../../hooks/group';
+import { useLoading } from '../../hooks/loading';
 import emptySvg from '../../assets/no-photos.svg';
 import { Image } from '../../types';
 
@@ -26,8 +26,8 @@ function PhotoGrid({ photos = [], isGroupOwner = false } : PhotoGridProps): JSX.
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);
   const openUploadModal = () => setUploadModalVisible(true);
   const closeUploadModal = () => setUploadModalVisible(false);
-  const { groups } = useContext(GroupStateContext);
-  const { imagesLoading } = useContext(LoadingContext);
+  const { groups } = useGroupsState();
+  const { imagesLoading } = useLoading();
 
   const emptyContainer = (
     <div className="empty-overlay">

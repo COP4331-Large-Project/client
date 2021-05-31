@@ -2,7 +2,6 @@
 import {
   useState,
   useEffect,
-  useReducer,
   useRef,
 } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -14,17 +13,13 @@ import Navbar from '../components/dashboard/Navbar';
 import Sidebar from '../components/dashboard/Sidebar';
 import PhotoGrid from '../components/dashboard/PhotoGrid';
 import API, { BASE_URL } from '../api/API';
-import UserContext from '../contexts/UserStateContext';
-import GroupDispatchContext, {
-  groupReducer,
-} from '../contexts/GroupsContextDispatch';
-import GroupsStateContext from '../contexts/GroupStateContext';
+import { useGroups, useGroupsState } from '../hooks/group';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton';
-import UserContextDispatch, {
-  userReducer,
-} from '../contexts/UserContextDispatch';
-import LoadingContext from '../contexts/LoadingContext';
-import SocketContext from '../contexts/SocketContext';
+import { useUser, useUserState } from '../hooks/user';
+import { LoadingProvider } from '../contexts/LoadingContext';
+import { SocketProvider } from '../contexts/SocketContext';
+import GroupActions from '../actions/GroupActions';
+import UserActions from '../actions/UserActions';
 import { Image, User } from '../types';
 
 const socket = io(BASE_URL, {
@@ -42,16 +37,11 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-function MainPage(): JSX.Element {
-  // Using an initial value of -1 here so that groupData can
-  // trigger updates when its value is set to 0 on mount.
-  // It'll be set to 0 if there is at least one group to load.
-  const [groupData, groupDispatch] = useReducer(groupReducer, {
-    groups: [],
-    images: [],
-    index: -1,
-  });
-  const [user, userDispatch] = useReducer(userReducer, {} as User);
+function MainPage() {
+  const groupData = useGroupsState();
+  const { dispatch: groupDispatch } = useGroups();
+  const user = useUserState();
+  const { dispatch: userDispatch } = useUser();
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
@@ -135,10 +125,7 @@ function MainPage(): JSX.Element {
     // currently viewing the group where the image was added or if the
     // person who uploaded the image is the current user
     if (groups[index].id === groupId && image.creator !== user.id) {
-      groupDispatch({
-        type: 'addImage',
-        payload: image,
-      });
+      groupDispatch(GroupActions.addImage(image));
 
       notification.info({
         key: 'image-upload-notification',
@@ -175,10 +162,7 @@ function MainPage(): JSX.Element {
     }
 
     if (user.username !== username) {
-      groupDispatch({
-        type: 'updateGroupMemberCount',
-        payload: groups,
-      });
+      groupDispatch(GroupActions.updateGroupMemberCount(groups));
     }
   };
 
@@ -200,10 +184,7 @@ function MainPage(): JSX.Element {
       setLoadingImages(false);
     }, 500);
 
-    groupDispatch({
-      type: 'setImages',
-      payload: images,
-    });
+    groupDispatch(GroupActions.setImages(images));
   };
 
   // Only want this to trigger once to grab user token and id.
@@ -220,10 +201,7 @@ function MainPage(): JSX.Element {
         return;
       }
 
-      userDispatch({
-        type: 'updateUser',
-        payload: userInfo,
-      });
+    userDispatch(UserActions.updateUser(userInfo));
 
       const groups = await getGroups(id ?? '');
 
@@ -273,14 +251,7 @@ function MainPage(): JSX.Element {
 
       // Set the index to -1 if there are no groups to load so
       // that it can be updated once the first new group is added
-      groupDispatch({
-        type: 'init',
-        payload: {
-          index: groups.length === 0 ? -1 : 0,
-          groups,
-          images,
-        },
-      });
+      groupDispatch(GroupActions.init(groups, images, groups.length === 0 ? -1 : 0));
     })();
   }, []);
 
@@ -294,10 +265,8 @@ function MainPage(): JSX.Element {
     if (groups.length === 0) {
       setGroupTitle('');
       setIsGroupOwner(false);
-      groupDispatch({
-        type: 'setImages',
-        payload: [],
-      });
+
+      groupDispatch(GroupActions.setImages([]));
 
       return;
     }
@@ -339,48 +308,40 @@ function MainPage(): JSX.Element {
   }, [groupData.groups]);
 
   return (
-    <SocketContext.Provider value={socket}>
-      <UserContext.Provider value={user}>
-        <UserContextDispatch.Provider value={userDispatch}>
-          <GroupDispatchContext.Provider value={groupDispatch}>
-            <GroupsStateContext.Provider value={groupData}>
-              <LoadingContext.Provider value={loadingStates}>
-                <div className="main-page-body">
-                  <Navbar />
-                  <div className="body-content">
-                    <Sidebar />
-                    <div className="main-content">
-                      <Skeleton
-                        active
-                        className="title-skeleton"
-                        loading={isLoadingGroups}
-                        paragraph={{ rows: 0 }}
-                      >
-                        <div className="group-title-row">
-                          <h1 className="group-title" title={groupTitle}>
-                            {groupTitle}
-                          </h1>
-                          {groupData.groups.length > 0 && (
-                            <GroupMenuButton
-                              className="group-action-btn"
-                              isOwner={isGroupOwner}
-                            />
-                          )}
-                        </div>
-                      </Skeleton>
-                      <PhotoGrid
-                        photos={groupData.images}
-                        isGroupOwner={isGroupOwner}
-                      />
-                    </div>
-                  </div>
+    <SocketProvider value={socket}>
+      <LoadingProvider value={loadingStates}>
+        <div className="main-page-body">
+          <Navbar />
+          <div className="body-content">
+            <Sidebar />
+            <div className="main-content">
+              <Skeleton
+                active
+                className="title-skeleton"
+                loading={isLoadingGroups}
+                paragraph={{ rows: 0 }}
+              >
+                <div className="group-title-row">
+                  <h1 className="group-title" title={groupTitle}>
+                    {groupTitle}
+                  </h1>
+                  {groupData.groups.length > 0 && (
+                    <GroupMenuButton
+                      className="group-action-btn"
+                      isOwner={isGroupOwner}
+                    />
+                  )}
                 </div>
-              </LoadingContext.Provider>
-            </GroupsStateContext.Provider>
-          </GroupDispatchContext.Provider>
-        </UserContextDispatch.Provider>
-      </UserContext.Provider>
-    </SocketContext.Provider>
+              </Skeleton>
+              <PhotoGrid
+                photos={groupData.images}
+                isGroupOwner={isGroupOwner}
+              />
+            </div>
+          </div>
+        </div>
+      </LoadingProvider>
+    </SocketProvider>
   );
 }
 

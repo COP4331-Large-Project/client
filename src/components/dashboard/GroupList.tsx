@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import '../../scss/group-list.scss';
-import { useContext } from 'react';
 import { Avatar, List } from 'antd';
-import LoadingContext from '../../contexts/LoadingContext';
+import { useLoading } from '../../hooks/loading';
 import { Group, Image } from '../../types';
 
 // I don't know what the deal is with ants datasource types, I'll get to it later (TM)
@@ -22,7 +21,7 @@ type ListItem = {
 }
 
 function GroupList({ groups = [], activeIndex = 0, onGroupClick }: GroupListProps): JSX.Element {
-  const { groupsLoading } = useContext(LoadingContext);
+  const { groupsLoading } = useLoading();
   const publicGroups: Group[] = [];
   const privateGroups: Group[] = [];
 

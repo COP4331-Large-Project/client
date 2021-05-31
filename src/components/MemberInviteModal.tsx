@@ -1,5 +1,5 @@
 import '../scss/member-invite-modal.scss';
-import { SyntheticEvent, useContext, useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -9,7 +9,7 @@ import {
   notification,
 } from 'antd';
 import { AiOutlinePlus, AiOutlineUser, AiOutlineDelete } from 'react-icons/ai';
-import GroupsStateContext from '../contexts/GroupStateContext';
+import { useGroupsState } from '../hooks/group';
 import API from '../api/API';
 import { ModalProps } from './modal-types';
 
@@ -18,7 +18,7 @@ function MemberInviteModal({ visible = false, onClose }: ModalProps): JSX.Elemen
   const [emails, setEmails] = useState(new Set<string>());
   const [isLoading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const { groups, index } = useContext(GroupsStateContext);
+  const { groups, index } = useGroupsState();
 
   const addMember = (event: SyntheticEvent) => {
     event.preventDefault();

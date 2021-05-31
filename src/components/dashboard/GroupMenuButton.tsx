@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // prettier-ignore
 import {
   Dropdown,
@@ -8,12 +8,12 @@ import {
   Modal,
 } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
-import MemberInviteModal from '../MemberInviteModal';
-import GroupsStateContext from '../../contexts/GroupStateContext';
-import UserStateContext from '../../contexts/UserStateContext';
-import GroupContextDispatch from '../../contexts/GroupsContextDispatch';
+import MemberInviteModal from '../MemberInviteModal.jsx';
+import { useUserState } from '../../hooks/user';
+import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
-import ImageUploadModal from '../ImageUploadModal';
+import ImageUploadModal from '../ImageUploadModal.jsx';
+import GroupActions from '../../actions/GroupActions';
 import { Group, User } from '../../types.js';
 
 type GroupMenuProps = {
@@ -26,9 +26,9 @@ function GroupMenu({ className, isOwner }: GroupMenuProps): JSX.Element {
   const [isUploadModalOpen, setUploadModalOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [loggedInUser, setLoggedInUser] = useState<Partial<User>>({});
-  const { groups, index } = useContext(GroupsStateContext);
-  const user = useContext(UserStateContext);
-  const dispatch = useContext(GroupContextDispatch);
+  const { groups, index } = useGroupsState();
+  const user = useUserState();
+  const { dispatch } = useGroups();
 
   const openInviteModal = () => setInviteModalOpen(true);
   const closeInviteModal = () => setInviteModalOpen(false);
@@ -54,13 +54,7 @@ function GroupMenu({ className, isOwner }: GroupMenuProps): JSX.Element {
     });
 
     // Setting new index to 0 for safety if groups list is not empty
-    dispatch!({
-      type: 'replaceGroups',
-      payload: {
-        groups: newGroups,
-        index: newGroups.length === 0 ? -1 : 0,
-      },
-    });
+    dispatch(GroupActions.replaceGroups(newGroups, newGroups.length === 0 ? -1 : 0));
   };
 
   const deleteGroup = async () => {
