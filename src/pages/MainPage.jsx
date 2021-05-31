@@ -37,9 +37,9 @@ const usePrevious = value => {
 
 function MainPage() {
   const groupData = useGroupsState();
-  const groupDispatch = useGroups().dispatch;
+  const { dispatch: groupDispatch } = useGroups();
   const user = useUserState();
-  const userDispatch = useUser().dispatch;
+  const { dispatch: userDispatch } = useUser();
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
