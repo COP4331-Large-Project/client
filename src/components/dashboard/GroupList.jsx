@@ -1,11 +1,11 @@
 import '../../scss/group-list.scss';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Avatar, List } from 'antd';
 import PropTypes from 'prop-types';
-import LoadingContext from '../../contexts/LoadingContext.jsx';
+import { useLoading } from '../../hooks/loading';
 
 function GroupList({ groups, activeIndex, onGroupClick }) {
-  const { groupsLoading } = useContext(LoadingContext);
+  const { groupsLoading } = useLoading();
   const publicGroups = [];
   const privateGroups = [];
 

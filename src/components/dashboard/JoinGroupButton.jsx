@@ -1,20 +1,19 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Modal, Input, notification } from 'antd';
 import Button from '../Button.jsx';
 import '../../scss/join-group-button.scss';
 import API from '../../api/API';
-import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
-import SocketContext from '../../contexts/SocketContext.jsx';
+import { useGroups, useGroupsState } from '../../hooks/group';
+import { useSocket } from '../../hooks/socket';
 import GroupActions from '../../actions/GroupActions';
 
 function JoinGroupButton() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [groupCode, setGroupCode] = useState('');
-  const dispatch = useContext(GroupContextDispatch);
-  const { groups } = useContext(GroupsStateContext);
-  const socket = useContext(SocketContext);
+  const { dispatch } = useGroups;
+  const { groups } = useGroupsState();
+  const socket = useSocket();
 
   function showModal() {
     setGroupCode('');

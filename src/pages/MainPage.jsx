@@ -2,7 +2,6 @@
 import React, {
   useState,
   useEffect,
-  useReducer,
   useRef,
 } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -14,17 +13,11 @@ import Navbar from '../components/dashboard/Navbar.jsx';
 import Sidebar from '../components/dashboard/Sidebar.jsx';
 import PhotoGrid from '../components/dashboard/PhotoGrid.jsx';
 import API, { BASE_URL } from '../api/API';
-import UserContext from '../contexts/UserStateContext.jsx';
-import GroupDispatchContext, {
-  groupReducer,
-} from '../contexts/GroupsContextDispatch.jsx';
-import GroupsStateContext from '../contexts/GroupStateContext.jsx';
+import { useGroups, useGroupsState } from '../hooks/group';
 import GroupMenuButton from '../components/dashboard/GroupMenuButton.jsx';
-import UserContextDispatch, {
-  userReducer,
-} from '../contexts/UserContextDispatch.jsx';
-import LoadingContext from '../contexts/LoadingContext.jsx';
-import SocketContext from '../contexts/SocketContext.jsx';
+import { useUser, useUserState } from '../hooks/user';
+import { LoadingProvider } from '../contexts/LoadingContext.jsx';
+import { SocketProvider } from '../contexts/SocketContext.jsx';
 import GroupActions from '../actions/GroupActions';
 import UserActions from '../actions/UserActions';
 
@@ -45,15 +38,10 @@ const usePrevious = value => {
 };
 
 function MainPage() {
-  // Using an initial value of -1 here so that groupData can
-  // trigger updates when its value is set to 0 on mount.
-  // It'll be set to 0 if there is at least one group to load.
-  const [groupData, groupDispatch] = useReducer(groupReducer, {
-    groups: [],
-    images: [],
-    index: -1,
-  });
-  const [user, userDispatch] = useReducer(userReducer, {});
+  const groupData = useGroupsState();
+  const { dispatch: groupDispatch } = useGroups();
+  const user = useUserState();
+  const { dispatch: userDispatch } = useUser();
   const [groupTitle, setGroupTitle] = useState('');
   const [isLoadingGroups, setLoadingGroups] = useState(true);
   const [isLoadingImages, setLoadingImages] = useState(true);
@@ -309,48 +297,40 @@ function MainPage() {
   }, [groupData.groups]);
 
   return (
-    <SocketContext.Provider value={socket}>
-      <UserContext.Provider value={user}>
-        <UserContextDispatch.Provider value={userDispatch}>
-          <GroupDispatchContext.Provider value={groupDispatch}>
-            <GroupsStateContext.Provider value={groupData}>
-              <LoadingContext.Provider value={loadingStates}>
-                <div className="main-page-body">
-                  <Navbar />
-                  <div className="body-content">
-                    <Sidebar />
-                    <div className="main-content">
-                      <Skeleton
-                        active
-                        className="title-skeleton"
-                        loading={isLoadingGroups}
-                        paragraph={{ rows: 0 }}
-                      >
-                        <div className="group-title-row">
-                          <h1 className="group-title" title={groupTitle}>
-                            {groupTitle}
-                          </h1>
-                          {groupData.groups.length > 0 && (
-                            <GroupMenuButton
-                              className="group-action-btn"
-                              isOwner={isGroupOwner}
-                            />
-                          )}
-                        </div>
-                      </Skeleton>
-                      <PhotoGrid
-                        photos={groupData.images}
-                        isGroupOwner={isGroupOwner}
-                      />
-                    </div>
-                  </div>
+    <SocketProvider value={socket}>
+      <LoadingProvider value={loadingStates}>
+        <div className="main-page-body">
+          <Navbar />
+          <div className="body-content">
+            <Sidebar />
+            <div className="main-content">
+              <Skeleton
+                active
+                className="title-skeleton"
+                loading={isLoadingGroups}
+                paragraph={{ rows: 0 }}
+              >
+                <div className="group-title-row">
+                  <h1 className="group-title" title={groupTitle}>
+                    {groupTitle}
+                  </h1>
+                  {groupData.groups.length > 0 && (
+                    <GroupMenuButton
+                      className="group-action-btn"
+                      isOwner={isGroupOwner}
+                    />
+                  )}
                 </div>
-              </LoadingContext.Provider>
-            </GroupsStateContext.Provider>
-          </GroupDispatchContext.Provider>
-        </UserContextDispatch.Provider>
-      </UserContext.Provider>
-    </SocketContext.Provider>
+              </Skeleton>
+              <PhotoGrid
+                photos={groupData.images}
+                isGroupOwner={isGroupOwner}
+              />
+            </div>
+          </div>
+        </div>
+      </LoadingProvider>
+    </SocketProvider>
   );
 }
 

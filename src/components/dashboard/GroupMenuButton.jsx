@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // prettier-ignore
 import {
   Dropdown,
@@ -10,9 +10,8 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import MemberInviteModal from '../MemberInviteModal.jsx';
-import GroupsStateContext from '../../contexts/GroupStateContext.jsx';
-import UserStateContext from '../../contexts/UserStateContext.jsx';
-import GroupContextDispatch from '../../contexts/GroupsContextDispatch.jsx';
+import { useUserState } from '../../hooks/user';
+import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
 import ImageUploadModal from '../ImageUploadModal.jsx';
 import GroupActions from '../../actions/GroupActions';
@@ -22,9 +21,9 @@ function GroupMenu({ className, isOwner }) {
   const [isUploadModalOpen, setUploadModalOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [loggedInUser, setLoggedInUser] = useState({});
-  const { groups, index } = useContext(GroupsStateContext);
-  const user = useContext(UserStateContext);
-  const dispatch = useContext(GroupContextDispatch);
+  const { groups, index } = useGroupsState();
+  const user = useUserState();
+  const { dispatch } = useGroups();
 
   const openInviteModal = () => setInviteModalOpen(true);
   const closeInviteModal = () => setInviteModalOpen(false);
