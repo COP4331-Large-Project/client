@@ -1,3 +1,6 @@
+import { UserAction } from "../contexts/UserContextDispatch";
+import { User } from "../types";
+
 /**
  * Mapped actions for the User state reducer.
  */
@@ -7,7 +10,7 @@ const UserActions = {
    *
    * @param {*} user The user to update to.
    */
-  updateUser(user) {
+  updateUser(user: User): UserAction {
     return { type: 'updateUser', payload: user };
   },
 };

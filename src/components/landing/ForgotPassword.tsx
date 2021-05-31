@@ -6,7 +6,7 @@ import TextInput from '../TextInput';
 import Button from '../Button';
 import '../../scss/landing.scss';
 import API from '../../api/API';
-import { CardProps } from './types.js';
+import { CardProps } from './types';
 
 /// callBack should be passed from landing page. Used to re-render the landing page
 /// with the default landing page card, which should be the login card.

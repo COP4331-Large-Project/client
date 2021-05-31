@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // prettier-ignore
 import {
   Dropdown,
@@ -8,13 +8,13 @@ import {
   Modal,
 } from 'antd';
 import { BsThreeDots } from 'react-icons/bs';
-import MemberInviteModal from '../MemberInviteModal.jsx';
+import MemberInviteModal from '../MemberInviteModal';
 import { useUserState } from '../../hooks/user';
 import { useGroups, useGroupsState } from '../../hooks/group';
 import API from '../../api/API';
-import ImageUploadModal from '../ImageUploadModal.jsx';
+import ImageUploadModal from '../ImageUploadModal';
 import GroupActions from '../../actions/GroupActions';
-import { Group, User } from '../../types.js';
+import { Group, User } from '../../types';
 
 type GroupMenuProps = {
   className?: string;

@@ -1,5 +1,5 @@
 import '../scss/image-upload-modal.scss';
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 // prettier-ignore
 import {
   Modal,

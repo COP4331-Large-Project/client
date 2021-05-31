@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import GroupsDispatchContext from '../contexts/GroupsContextDispatch.jsx';
+import GroupsDispatchContext, { GroupContextType } from '../contexts/GroupsContextDispatch';
 
 /**
  * Fetches the group dispatch and state from the context.
  */
-function useGroups() {
+function useGroups(): GroupContextType {
   const context = useContext(GroupsDispatchContext);
 
   if (!context) {
@@ -19,7 +19,7 @@ function useGroups() {
 /**
  * Fetches the group state from the context.
  */
-function useGroupsState() {
+function useGroupsState(): GroupContextType["state"] {
   return useGroups().state;
 }
 

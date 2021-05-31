@@ -20,7 +20,7 @@ import { LoadingProvider } from '../contexts/LoadingContext';
 import { SocketProvider } from '../contexts/SocketContext';
 import GroupActions from '../actions/GroupActions';
 import UserActions from '../actions/UserActions';
-import { Image, User } from '../types';
+import { Image } from '../types';
 
 const socket = io(BASE_URL, {
   transports: ['websocket'],

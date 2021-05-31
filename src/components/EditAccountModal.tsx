@@ -1,5 +1,5 @@
 import '../scss/edit-account-modal.scss';
-import React, { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -10,10 +10,11 @@ import {
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useHistory } from 'react-router-dom';
-import TextInput from './TextInput.jsx';
+import TextInput from './TextInput';
 import API from '../api/API';
 import { useUser, useUserState } from '../hooks/user';
 import UserActions from '../actions/UserActions';
+import { ModalProps } from './modal-types';
 
 // 5 megabytes
 const MAX_FILE_SIZE = 5e6;

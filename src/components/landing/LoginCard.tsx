@@ -8,7 +8,7 @@ import Button from '../Button';
 import '../../scss/landing.scss';
 import API from '../../api/API';
 import VerifyEmailModal from '../VerifyEmailModal';
-import { CardProps } from './types.js';
+import { CardProps } from './types';
 
 function LoginCard({ switchCard }: CardProps): JSX.Element {
   const history = useHistory();

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import LoadingContext from '../contexts/LoadingContext.jsx';
+import LoadingContext from '../contexts/LoadingContext';
 
 function useLoading() {
   const loading = useContext(LoadingContext);
@@ -11,5 +11,4 @@ function useLoading() {
   return loading;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export { useLoading };

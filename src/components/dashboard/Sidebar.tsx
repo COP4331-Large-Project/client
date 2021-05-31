@@ -1,5 +1,5 @@
 import '../../scss/sidebar.scss';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import Card from '../Card';
 import InviteArea from './InviteArea';

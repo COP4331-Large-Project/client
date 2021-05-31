@@ -1,5 +1,5 @@
 import '../scss/member-invite-modal.scss';
-import React, { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 // prettier-ignore
 import {
   Modal,

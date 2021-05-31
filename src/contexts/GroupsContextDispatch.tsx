@@ -2,9 +2,14 @@ import { createContext, useReducer } from 'react';
 import { Group, Image } from '../types';
 import groupReducer from '../reducers/group';
 
-const GroupsDispatchContext = createContext<React.Dispatch<GroupAction> | undefined>(undefined);
+export type GroupContextType = {
+  dispatch: React.Dispatch<GroupAction>;
+  state: GroupState;
+}
 
-type GroupAction = { type: 'setIndex', payload: number }
+const GroupsDispatchContext = createContext<GroupContextType | undefined>(undefined);
+
+export type GroupAction = { type: 'setIndex', payload: number }
 | { type: 'setImages', payload: Image[] }
 | { type: 'addGroup', payload: { group: Group, index?: number }}
 | { type: 'replaceGroups', payload: { groups: Group[], index: number }} 
@@ -22,7 +27,9 @@ type GroupState = {
   index: number;
 }
 
-function GroupsProvider({ children }) {
+type GroupsProviderProps = { children: React.ReactNode }
+
+function GroupsProvider({ children }: GroupsProviderProps) {
   // Using an initial value of -1 here so that groupData can
   // trigger updates when its value is set to 0 on mount.
   // It'll be set to 0 if there is at least one group to load.
@@ -38,10 +45,6 @@ function GroupsProvider({ children }) {
     </GroupsDispatchContext.Provider>
   );
 }
-
-GroupsProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export {
   GroupsDispatchContext as default,

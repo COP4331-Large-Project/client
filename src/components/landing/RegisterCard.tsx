@@ -7,7 +7,7 @@ import LandingCard from './LandingCard';
 import TextInput from '../TextInput';
 import Button from '../Button';
 import API from '../../api/API';
-import { CardProps } from './types.js';
+import { CardProps } from './types';
 
 function RegisterCard({ switchCard }: CardProps ) {
   const [err, setError] = useState(null);

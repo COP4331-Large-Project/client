@@ -1,32 +1,33 @@
+import { GroupAction } from "../contexts/GroupsContextDispatch";
+import { Group, Image } from "../types";
+
 /**
  * Mapped actions for the groups state reducer.
  */
 const GroupActions = {
   /**
    * Sets the current selected group index.
-   *
-   * @param {number} index
    */
-  setIndex(index) {
+  setIndex(index: number): GroupAction {
     return { type: 'setIndex', payload: index };
   },
 
   /**
    * Sets the images currently viewed in the group.
    *
-   * @param {*} images The images to be set to.
+   * @param images The images to be set to.
    */
-  setImages(images) {
+  setImages(images: Image[]): GroupAction {
     return { type: 'setImages', payload: images };
   },
 
   /**
    * Adds the group to existing list of groups.
    *
-   * @param {*} group The group to be added.
-   * @param {number | undefined} index The index to update to.
+   * @param group The group to be added.
+   * @param index The index to update to.
    */
-  addGroup(group, index = undefined) {
+  addGroup(group: Group, index: number | undefined = undefined): GroupAction {
     return {
       type: 'addGroup',
       payload: {
@@ -42,10 +43,10 @@ const GroupActions = {
   /**
    * Replaces the groups at the given index.
    *
-   * @param {*} groups Groups to replace with.
-   * @param {number} index Index to replace at.
+   * @param groups Groups to replace with.
+   * @param index Index to replace at.
    */
-  replaceGroups(groups, index) {
+  replaceGroups(groups: Group[], index: number): GroupAction {
     return {
       type: 'replaceGroups',
       payload: {
@@ -58,9 +59,9 @@ const GroupActions = {
   /**
    * Adds an image to the current group.
    *
-   * @param {*} image The image to add.
+   * @param image The image to add.
    */
-  addImage(image) {
+  addImage(image: Image): GroupAction {
     return {
       type: 'addImage',
       payload: image,
@@ -70,11 +71,11 @@ const GroupActions = {
   /**
    * Initializes the default values for the groups state.
    *
-   * @param {*} groups The initial groups.
-   * @param {*} images The initial image.
-   * @param {number} index The initial index.
+   * @param groups The initial groups.
+   * @param images The initial image.
+   * @param index The initial index.
    */
-  init(groups, images, index) {
+  init(groups: Group[], images: Image[], index: number): GroupAction {
     return {
       type: 'init',
       payload: {
@@ -88,9 +89,9 @@ const GroupActions = {
   /**
    * Updates the group member count.
    *
-   * @param {*} groups The current list of groups.
+   * @param groups The current list of groups.
    */
-  updateGroupMemberCount(groups) {
+  updateGroupMemberCount(groups: Group[]): GroupAction {
     return { type: 'updateGroupMemberCount', payload: groups };
   },
 };

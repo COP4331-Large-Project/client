@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import UserDispatchContext from '../contexts/UserContextDispatch.jsx';
+import UserDispatchContext from '../contexts/UserContextDispatch';
 
 /**
  * Fetches the user dispatch and state from the context.

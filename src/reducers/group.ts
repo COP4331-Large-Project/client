@@ -1,5 +1,25 @@
-function groupReducer(state, action) {
-  const { index } = action.payload;
+import { Group, Image } from "../types";
+
+type GroupAction = { type: 'setIndex', payload: number }
+| { type: 'setImages', payload: Image[] }
+| { type: 'addGroup', payload: { group: Group, index?: number }}
+| { type: 'replaceGroups', payload: { groups: Group[], index: number }} 
+| { type: 'addImage', payload: Image }
+| { type: 'updateGroupMemberCount', payload: Group[] }
+| { type: 'init', payload: {
+  groups: Group[],
+  images: Image[],
+  index: number,
+}}
+
+type GroupState = {
+  groups: Group[];
+  images: Image[];
+  index: number;
+}
+
+function groupReducer(state: GroupState, action: GroupAction): GroupState {
+  const { index } = action.payload as { group: Group, index?: number };
   switch (action.type) {
     case 'setIndex':
       return {

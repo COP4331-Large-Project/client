@@ -1,5 +1,5 @@
 import '../../scss/navbar.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, Layout, Tooltip } from 'antd';
 import UserMenu from './UserMenu';
 import { useUserState } from '../../hooks/user';

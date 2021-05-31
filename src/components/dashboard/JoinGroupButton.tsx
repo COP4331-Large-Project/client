@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { Modal, Input, notification } from 'antd';
 import Button from '../Button';
 import '../../scss/join-group-button.scss';
@@ -11,7 +11,7 @@ function JoinGroupButton(): JSX.Element {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [groupCode, setGroupCode] = useState('');
-  const { dispatch } = useGroups;
+  const { dispatch } = useGroups();
   const { groups } = useGroupsState();
   const socket = useSocket();
 

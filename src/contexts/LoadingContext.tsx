@@ -1,25 +1,24 @@
 import React, { createContext } from 'react';
-import PropTypes from 'prop-types';
 
 const LoadingContext = createContext({
   groupsLoading: false,
   imagesLoading: false,
 });
 
-function LoadingProvider({ value, children }) {
+type LoadingProviderProps = {
+  value: {
+    groupsLoading: boolean;
+    imagesLoading: boolean;
+  };
+  children: React.ReactNode;
+}
+
+function LoadingProvider({ value, children }: LoadingProviderProps) {
   return (
     <LoadingContext.Provider value={value}>
       {children}
     </LoadingContext.Provider>
   );
 }
-
-LoadingProvider.propTypes = {
-  value: PropTypes.shape({
-    groupsLoading: PropTypes.bool.isRequired,
-    imagesLoading: PropTypes.bool.isRequired,
-  }).isRequired,
-  children: PropTypes.node.isRequired,
-};
 
 export { LoadingContext as default, LoadingProvider };

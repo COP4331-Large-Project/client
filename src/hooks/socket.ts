@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import SocketContext from '../contexts/SocketContext.jsx';
+import SocketContext from '../contexts/SocketContext';
 
 function useSocket() {
   const socket = useContext(SocketContext);
@@ -13,5 +13,4 @@ function useSocket() {
   return socket;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export { useSocket };

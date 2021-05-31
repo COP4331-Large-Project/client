@@ -1,5 +1,5 @@
 import '../scss/create-group-modal.scss';
-import React, { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 // prettier-ignore
 import {
   Modal,
@@ -28,7 +28,7 @@ function CreateGroupModal({ visible = false, onClose = undefined }: ModalProps):
   const user = useUserState();
   const socket = useSocket();
 
-  const addMember = (event: React.SyntheticEvent) => {
+  const addMember = (event: SyntheticEvent) => {
     event.preventDefault();
 
     const email = memberEmail.trim();
