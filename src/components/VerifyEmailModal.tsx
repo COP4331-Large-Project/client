@@ -10,9 +10,9 @@ import {
 import API from '../api/API';
 
 type VerifyEmailModalProps = {
-  visible: boolean,
-  onClose: () => void
-}
+  visible: boolean;
+  onClose: () => void;
+};
 
 function VerifyEmailModal({ visible = false, onClose }: VerifyEmailModalProps): JSX.Element {
   const [isLoading, setLoading] = useState(false);

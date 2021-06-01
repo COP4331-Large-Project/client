@@ -19,7 +19,7 @@ import { Group, User } from '../../types';
 type GroupMenuProps = {
   className?: string;
   isOwner: boolean; 
-}
+};
 
 function GroupMenu({ className, isOwner }: GroupMenuProps): JSX.Element {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);

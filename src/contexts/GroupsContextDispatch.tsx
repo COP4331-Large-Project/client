@@ -5,29 +5,29 @@ import groupReducer from '../reducers/group';
 export type GroupContextType = {
   dispatch: React.Dispatch<GroupAction>;
   state: GroupState;
-}
+};
 
 const GroupsDispatchContext = createContext<GroupContextType | undefined>(undefined);
 
-export type GroupAction = { type: 'setIndex', payload: number }
-| { type: 'setImages', payload: Image[] }
-| { type: 'addGroup', payload: { group: Group, index?: number }}
-| { type: 'replaceGroups', payload: { groups: Group[], index: number }} 
-| { type: 'addImage', payload: Image }
-| { type: 'updateGroupMemberCount', payload: Group[] }
-| { type: 'init', payload: {
-  groups: Group[],
-  images: Image[],
-  index: number,
-}}
+export type GroupAction = { type: 'setIndex'; payload: number }
+| { type: 'setImages'; payload: Image[] }
+| { type: 'addGroup'; payload: { group: Group; index?: number }}
+| { type: 'replaceGroups'; payload: { groups: Group[]; index: number }} 
+| { type: 'addImage'; payload: Image }
+| { type: 'updateGroupMemberCount'; payload: Group[] }
+| { type: 'init'; payload: {
+  groups: Group[];
+  images: Image[];
+  index: number;
+};};
 
 type GroupState = {
   groups: Group[];
   images: Image[];
   index: number;
-}
+};
 
-type GroupsProviderProps = { children: React.ReactNode }
+type GroupsProviderProps = { children: React.ReactNode };
 
 function GroupsProvider({ children }: GroupsProviderProps): JSX.Element {
   // Using an initial value of -1 here so that groupData can
@@ -41,7 +41,7 @@ function GroupsProvider({ children }: GroupsProviderProps): JSX.Element {
 
   return (
     <GroupsDispatchContext.Provider value={{ state, dispatch }}>
-        {children}
+      {children}
     </GroupsDispatchContext.Provider>
   );
 }

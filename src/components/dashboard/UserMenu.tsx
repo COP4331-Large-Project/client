@@ -6,7 +6,7 @@ import EditAccountModal from '../EditAccountModal';
 
 type UserMenuProps = {
   children: React.ReactNode;
-}
+};
 
 function UserMenu({ children }: UserMenuProps): JSX.Element {
   const history = useHistory();

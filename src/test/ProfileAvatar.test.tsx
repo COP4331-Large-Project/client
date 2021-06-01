@@ -7,7 +7,7 @@ type Avatar = {
   firstName: string;
   lastName: string;
   imgURL?: string;
-}
+};
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

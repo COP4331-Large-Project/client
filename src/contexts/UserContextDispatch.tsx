@@ -5,16 +5,16 @@ import userReducer from '../reducers/user';
 export type UserContextType = {
   dispatch: React.Dispatch<UserAction>;
   state: User;
-}
+};
 
 const UserDispatchContext = createContext<UserContextType | undefined>(undefined);
 
 export type UserAction = {
   type: 'updateUser';
   payload: User;
-}
+};
 
-type UserProviderProps = { children: React.ReactNode }
+type UserProviderProps = { children: React.ReactNode };
 
 function UserProvider({ children }: UserProviderProps): JSX.Element {
   const [state, dispatch] = useReducer(userReducer, {} as User);

@@ -1,4 +1,4 @@
 export type ModalProps = {
-    visible?: boolean,
-    onClose?: () => void,
-}
+  visible?: boolean;
+  onClose?: () => void;
+};

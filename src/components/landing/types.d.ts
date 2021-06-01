@@ -1,6 +1,6 @@
 
-type CardType = 'login' | 'register' | 'forgotPassword'
+type CardType = 'login' | 'register' | 'forgotPassword';
 
 export type CardProps = {
-    switchCard: (card: CardType) => void;
-}
+  switchCard: (card: CardType) => void;
+};

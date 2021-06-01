@@ -1,5 +1,5 @@
-import { GroupAction } from "../contexts/GroupsContextDispatch";
-import { Group, Image } from "../types";
+import { GroupAction } from '../contexts/GroupsContextDispatch';
+import { Group, Image } from '../types';
 
 /**
  * Mapped actions for the groups state reducer.

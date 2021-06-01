@@ -33,7 +33,7 @@ const copyToClipboard = (text: string) => new Promise((resolve: (value: void) =>
 type InviteAreaProps = {
   inviteCode: string;
   groupId: string;
-}
+};
 
 function InviteArea({ inviteCode = '', groupId = '' }: InviteAreaProps): JSX.Element {
   const inviteLink = `imageus.io/invite/${inviteCode}?groupId=${groupId}`;

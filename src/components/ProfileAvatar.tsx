@@ -2,12 +2,12 @@ import '../scss/profile-image.scss';
 
 type ProfileAvatarProps = {
   avatarData: {
-    firstName: string,
-    lastName: string,
-    imgURL?: string,
-    imgAlt?: string,
-  }
-}
+    firstName: string;
+    lastName: string;
+    imgURL?: string;
+    imgAlt?: string;
+  };
+};
 
 function ProfileAvatar({ avatarData }: ProfileAvatarProps): JSX.Element {
   const profileContent = avatarData.imgURL

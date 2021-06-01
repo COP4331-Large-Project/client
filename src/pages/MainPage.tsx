@@ -201,7 +201,7 @@ function MainPage(): JSX.Element {
         return;
       }
 
-    userDispatch(UserActions.updateUser(userInfo));
+      userDispatch(UserActions.updateUser(userInfo));
 
       const groups = await getGroups(id ?? '');
 

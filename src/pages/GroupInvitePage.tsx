@@ -26,8 +26,8 @@ const animationOpts = {
 };
 
 type GroupInvitePageProps = {
-  inviteCode: string
-}
+  inviteCode: string;
+};
 
 function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
   const [accepted, setAccepted] = useState(false);
@@ -51,9 +51,9 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
   };
 
   type Error = {
-    title: string,
-    description: string | JSX.Element
-  }
+    title: string;
+    description: string | JSX.Element;
+  };
 
   const acceptInvite = async () => {
     if (isAcceptingInvite) {
@@ -73,7 +73,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
       };
 
       if (err.status === 418) {
-        errorObj.title = "Couldn't Join Group";
+        errorObj.title = 'Couldn\'t Join Group';
         errorObj.description = (
           <span>
             Well this is awkward. Looks like you&apos;re already a member of
@@ -221,7 +221,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
       }
   
       setLoadingGroup(false);
-    })()
+    })();
   }, []);
 
   return (

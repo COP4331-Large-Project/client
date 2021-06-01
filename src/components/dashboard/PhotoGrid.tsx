@@ -20,7 +20,7 @@ const item = {
 type PhotoGridProps = {
   photos: Image[];
   isGroupOwner: boolean;
-}
+};
 
 function PhotoGrid({ photos = [], isGroupOwner = false } : PhotoGridProps): JSX.Element {
   const [isUploadModalVisible, setUploadModalVisible] = useState(false);

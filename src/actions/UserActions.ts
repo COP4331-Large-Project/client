@@ -1,5 +1,5 @@
-import { UserAction } from "../contexts/UserContextDispatch";
-import { User } from "../types";
+import { UserAction } from '../contexts/UserContextDispatch';
+import { User } from '../types';
 
 /**
  * Mapped actions for the User state reducer.

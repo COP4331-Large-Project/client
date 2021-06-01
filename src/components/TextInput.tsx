@@ -11,7 +11,7 @@ type TextInputProps = {
   name?: string;
   required?: boolean;
   readOnly?: boolean;
-}
+};
 
 function TextInput({
   className,

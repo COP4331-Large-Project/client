@@ -11,7 +11,7 @@ type LoadingProviderProps = {
     imagesLoading: boolean;
   };
   children: React.ReactNode;
-}
+};
 
 function LoadingProvider({ value, children }: LoadingProviderProps): JSX.Element {
   return (

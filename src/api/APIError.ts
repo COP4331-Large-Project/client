@@ -2,7 +2,7 @@ type JSONError = {
   title?: string;
   status?: number;
   description?: string;
-}
+};
 
 class APIError extends Error {
 

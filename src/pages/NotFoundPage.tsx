@@ -36,9 +36,9 @@ function NotFoundPage(): JSX.Element {
           variants={animationVariants}
         >
           <Card className="not-found-card">
-            <h1 className="card-title">{"I Think You're Lost"}</h1>
+            <h1 className="card-title">{'I Think You\'re Lost'}</h1>
             <p className="card-description">
-              {"We couldn't find the page you were looking for..."}
+              {'We couldn\'t find the page you were looking for...'}
             </p>
             <img src={gif} alt="Animated GIF" />
             <Button className="back-btn" onClick={() => history.push('/')}>

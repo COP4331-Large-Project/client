@@ -5,9 +5,9 @@ type ButtonProps = {
   variant?: 'primary' | 'danger' | 'success' | 'warning' | 'dark' | 'link';
   children?: JSX.Element | string;
   onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-}
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+};
 
 function Button({
   className,

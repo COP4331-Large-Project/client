@@ -23,7 +23,7 @@ type PhotoThumbnailProps = {
   creatorId: string;
   imageId: string;
   isGroupOwner: boolean;
-}
+};
 
 function PhotoThumbnail({
   // prettier-ignore

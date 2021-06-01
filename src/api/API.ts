@@ -141,7 +141,7 @@ const API = {
    * @throws {APIError} On server error.
    * @returns {Promise<{ images: ImageObject[] }>}
    */
-  async getGroupImages(groupId: string): Promise<{ images: ImageObject[]; }> {
+  async getGroupImages(groupId: string): Promise<{ images: ImageObject[] }> {
     return (await axios.get(`/groups/${groupId}/images`)).data;
   },
 

@@ -19,7 +19,7 @@ function useGroups(): GroupContextType {
 /**
  * Fetches the group state from the context.
  */
-function useGroupsState(): GroupContextType["state"] {
+function useGroupsState(): GroupContextType['state'] {
   return useGroups().state;
 }
 

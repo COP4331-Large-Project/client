@@ -65,15 +65,15 @@ function JoinGroupButton(): JSX.Element {
       let message: string;
 
       switch (e.status) {
-        case 418:
-          message = "You're already a member of this group.";
-          break;
-        case 403:
-        case 404:
-          message = 'The group you’re looking for doesn’t exist.';
-          break;
-        default:
-          message = 'An unknown error occurred, please try again.';
+      case 418:
+        message = 'You\'re already a member of this group.';
+        break;
+      case 403:
+      case 404:
+        message = 'The group you’re looking for doesn’t exist.';
+        break;
+      default:
+        message = 'An unknown error occurred, please try again.';
       }
 
       if (!e.status) {

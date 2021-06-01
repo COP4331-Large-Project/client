@@ -1,18 +1,18 @@
-import { User } from "../types";
+import { User } from '../types';
 
 type UserAction = {
   type: 'updateUser';
-  payload: User
-}
+  payload: User;
+};
 
 function userReducer(_state: User, action: UserAction): User {
   switch (action.type) {
-    case 'updateUser':
-      return {
-        ...action.payload,
-      };
-    default:
-      throw new Error(`Invalid User reducer action ${action}`);
+  case 'updateUser':
+    return {
+      ...action.payload,
+    };
+  default:
+    throw new Error(`Invalid User reducer action ${action}`);
   }
 }
 

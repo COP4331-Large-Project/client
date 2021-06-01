@@ -7,7 +7,7 @@ type LandingCardProps = {
   children: React.ReactNode;
   className?: string;
   error?: string; 
-}
+};
 
 function LandingCard({
   title, children, className, error,

@@ -11,14 +11,14 @@ type GroupListProps = {
   groups: Group[];
   activeIndex: number;
   onGroupClick(index: number): void;
-}
+};
 
 type ListItem = {
   name: string;
   thumbnail: Image;
   memberCount: number;
   groupIndex: number;
-}
+};
 
 function GroupList({ groups = [], activeIndex = 0, onGroupClick }: GroupListProps): JSX.Element {
   const { groupsLoading } = useLoading();
