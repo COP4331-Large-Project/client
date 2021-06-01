@@ -1,4 +1,4 @@
-import { GroupAction } from '../contexts/GroupsContextDispatch';
+import { GroupAction } from '../contexts/types';
 import { Group, Image } from '../types';
 
 /**

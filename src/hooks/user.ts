@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import UserDispatchContext, { UserContextType } from '../contexts/UserContextDispatch';
+import { UserContextType } from '../contexts/types';
+import UserDispatchContext from '../contexts/UserContextDispatch';
 import { User } from '../types';
 
 /**

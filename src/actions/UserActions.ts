@@ -1,4 +1,4 @@
-import { UserAction } from '../contexts/UserContextDispatch';
+import { UserAction } from '../contexts/types';
 import { User } from '../types';
 
 /**

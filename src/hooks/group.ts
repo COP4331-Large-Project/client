@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import GroupsDispatchContext, { GroupContextType } from '../contexts/GroupsContextDispatch';
+import GroupsDispatchContext from '../contexts/GroupsContextDispatch';
+import { GroupContextType } from '../contexts/types';
 
 /**
  * Fetches the group dispatch and state from the context.

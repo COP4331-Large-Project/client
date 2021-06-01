@@ -1,18 +1,9 @@
 import { createContext, useReducer } from 'react';
-import { User } from '../types';
 import userReducer from '../reducers/user';
-
-export type UserContextType = {
-  dispatch: React.Dispatch<UserAction>;
-  state: User;
-};
+import { User } from '../types';
+import { UserContextType } from './types';
 
 const UserDispatchContext = createContext<UserContextType | undefined>(undefined);
-
-export type UserAction = {
-  type: 'updateUser';
-  payload: User;
-};
 
 type UserProviderProps = { children: React.ReactNode };
 
