@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import EditAccountModal from '../EditAccountModal';
 
 type UserMenuProps = {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 function UserMenu({ children }: UserMenuProps): JSX.Element {

@@ -2,7 +2,7 @@ import '../../scss/floating-button.scss';
 
 type FloatingButtonProps = {
   onClick?: () => void,
-  children: JSX.Element,
+  children: React.ReactNode,
 }
 
 function FloatingButton({ onClick, children = <> </> }: FloatingButtonProps): JSX.Element {
