@@ -48,7 +48,7 @@ function GroupList({ groups = [], activeIndex = 0, onGroupClick }: GroupListProp
     return `${members.toLocaleString()} members`;
   };
 
-  const renderGroupImage = (thumbnail: Image, title: string) => (
+  const renderGroupImage = (title: string, thumbnail?: Image, ) => (
     <Avatar src={thumbnail && thumbnail.URL} size={54}>
       {title[0]}
     </Avatar>
@@ -64,7 +64,7 @@ function GroupList({ groups = [], activeIndex = 0, onGroupClick }: GroupListProp
     <List.Item onClick={() => onGroupClick(groupIndex)} title={name}>
       <List.Item.Meta
         className={groupIndex === activeIndex ? 'selected' : ''}
-        avatar={renderGroupImage(thumbnail, name)}
+        avatar={renderGroupImage(name, thumbnail)}
         title={name}
         description={getMemberText(memberCount || 1)}
       />

@@ -1,6 +1,7 @@
 import React, { createContext } from 'react';
+import { LoadingState } from './types';
 
-const LoadingContext = createContext({
+const LoadingContext = createContext<LoadingState | undefined>({
   groupsLoading: false,
   imagesLoading: false,
 });

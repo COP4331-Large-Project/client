@@ -8,6 +8,7 @@ import TextInput from '../TextInput';
 const copyToClipboard = (text: string) => new Promise((resolve: (value: void) => void, reject) => {
   // Fallback in case navigator.clipboard isn't available
   // for the current browser
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!navigator.clipboard) {
     const textArea = document.createElement('textarea');
     textArea.value = text;

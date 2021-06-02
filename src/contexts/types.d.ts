@@ -36,3 +36,8 @@ export type UserAction = {
   type: 'updateUser';
   payload: User;
 };
+
+export type LoadingState = {
+  groupsLoading: boolean;
+  imagesLoading: boolean;
+};

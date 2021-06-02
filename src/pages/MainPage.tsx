@@ -58,6 +58,7 @@ function MainPage(): JSX.Element {
     try {
       return await API.getInfo(token, userId);
     } catch (err) {
+      console.log(err);
       if (err.status === 403) {
         // The user isn't authenticated, take them back
         // to the login page
@@ -284,7 +285,7 @@ function MainPage(): JSX.Element {
         onMemberCountChange(username, groupId, false);
       });
 
-      updatePage();
+      void updatePage();
     }
   }, [groupData.index]);
 
