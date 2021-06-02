@@ -196,6 +196,11 @@ function MainPage(): JSX.Element {
       const token = localStorage.getItem('token');
       const id = localStorage.getItem('id');
 
+      if (!token || !id) {
+        history.replace('/landing');
+        return;
+      }
+
       const userInfo = await getUser(token ?? '', id ?? '');
 
       if (!userInfo) {
