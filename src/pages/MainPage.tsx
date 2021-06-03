@@ -201,7 +201,7 @@ function MainPage(): JSX.Element {
         return;
       }
 
-      const userInfo = await getUser(token ?? '', id ?? '');
+      const userInfo = await getUser(token, id);
 
       if (!userInfo) {
         return;

@@ -66,7 +66,7 @@ function JoinGroupButton(): JSX.Element {
 
       switch (e.status) {
       case 418:
-        message = 'You\'re already a member of this group.';
+        message = "You're already a member of this group.";
         break;
       case 403:
       case 404:

@@ -52,7 +52,7 @@ function RegisterCard({ switchCard }: CardProps ) {
         lastName: data.lastName as string,
         email: data.email as string,
         username: data.username as string,
-        password: data.passwor as string,
+        password: data.password as string,
       });
     } catch (e) {
       setError(e.message);

@@ -34,7 +34,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
   const [group, setGroup] = useState<Group | null>(null);
   const [isLoadingGroup, setLoadingGroup] = useState(false);
   const [isAcceptingInvite, setAcceptingInvite] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<GroupInviteError | null>(null);
   const [isLinkInvalid, setIsLinkInvalid] = useState(false);
 
   const history = useHistory();
@@ -50,7 +50,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
     return `${numUsers.toLocaleString()} members`;
   };
 
-  type Error = {
+  type GroupInviteError = {
     title: string;
     description: string | JSX.Element;
   };
@@ -65,7 +65,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
     try {
       await API.joinGroup(userId ?? '', inviteCode);
     } catch (err) {
-      const errorObj: Error = {
+      const errorObj: GroupInviteError = {
         title: 'Unexpected Error',
         description: `
           An error occurred while joining this group.
@@ -73,7 +73,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
       };
 
       if (err.status === 418) {
-        errorObj.title = 'Couldn\'t Join Group';
+        errorObj.title = "Couldn't Join Group";
         errorObj.description = (
           <span>
             Well this is awkward. Looks like you&apos;re already a member of

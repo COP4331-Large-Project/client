@@ -49,6 +49,6 @@
         "@typescript-eslint/no-floating-promises": ["error"],
         "@typescript-eslint/explicit-module-boundary-types": ["error"],
         "quotes": "off",
-        "@typescript-eslint/quotes": ["error", "single"]
+        "@typescript-eslint/quotes": ["error", "single", { "avoidEscape": true }]
     }
 }
