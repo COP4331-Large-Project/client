@@ -234,8 +234,7 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
             transition={animationOpts}
             variants={animationVariants}
           >
-            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-            <Card className="group-card">{renderCardContent()!}</Card>
+            <Card className="group-card">{renderCardContent()}</Card>
           </motion.div>
         )}
       </div>

@@ -2,7 +2,7 @@ import '../scss/card.scss';
 
 type CardProps = {
   className?: string;
-  children?: JSX.Element[] | JSX.Element;
+  children?: React.ReactNode;
 };
 
 function Card({ className, children }: CardProps): JSX.Element {

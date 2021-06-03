@@ -111,7 +111,12 @@ function ImageUploadModal({ visible = false, onClose = undefined }: ModalProps):
     const previewWindow = window.open(thumbUrl, '_blank');
 
     if (previewWindow === null) {
-      throw new Error('Could not open preview window.');
+      notification.error({
+        key: 'could-not-preview',
+        message: 'Could not open preview',
+        description: 'The preview window could not be opened please check if pop-ups are allowed.',
+      });
+      return;
     }
 
     // Opening a new window that's on a different domain prevents

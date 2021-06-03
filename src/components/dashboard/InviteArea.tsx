@@ -1,7 +1,6 @@
 import '../../scss/invite-area.scss';
 import { Button, message } from 'antd';
 import { IoClipboardOutline } from 'react-icons/io5';
-import PropTypes from 'prop-types';
 import TextInput from '../TextInput';
 
 // prettier-ignore
@@ -69,15 +68,5 @@ function InviteArea({ inviteCode = '', groupId = '' }: InviteAreaProps): JSX.Ele
     </div>
   );
 }
-
-InviteArea.propTypes = {
-  inviteCode: PropTypes.string,
-  groupId: PropTypes.string,
-};
-
-InviteArea.defaultProps = {
-  inviteCode: '',
-  groupId: '',
-};
 
 export default InviteArea;
