@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Menu, Dropdown, Modal } from 'antd';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import EditAccountModal from '../EditAccountModal';
 
@@ -63,13 +62,5 @@ function UserMenu({ children }: UserMenuProps): JSX.Element {
     </>
   );
 }
-
-UserMenu.propTypes = {
-  children: PropTypes.node,
-};
-
-UserMenu.defaultProps = {
-  children: null,
-};
 
 export default UserMenu;

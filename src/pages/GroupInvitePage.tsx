@@ -1,6 +1,5 @@
 import '../scss/group-invite-page.scss';
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Avatar } from 'antd';
 import { motion } from 'framer-motion';
 import { useHistory, Link } from 'react-router-dom';
@@ -243,9 +242,5 @@ function GroupInvitePage({ inviteCode } : GroupInvitePageProps): JSX.Element {
     </div>
   );
 }
-
-GroupInvitePage.propTypes = {
-  inviteCode: PropTypes.string.isRequired,
-};
 
 export default GroupInvitePage;

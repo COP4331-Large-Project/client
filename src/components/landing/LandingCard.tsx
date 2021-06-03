@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Alert } from 'antd';
 import '../../scss/landing.scss';
 
@@ -31,18 +30,5 @@ function LandingCard({
     </div>
   );
 }
-
-LandingCard.defaultProps = {
-  children: <div className="" />,
-  className: '',
-  error: null,
-};
-
-LandingCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node,
-  className: PropTypes.string,
-  error: PropTypes.string,
-};
 
 export default LandingCard;

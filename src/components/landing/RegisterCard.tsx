@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { SyntheticEvent, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Alert, message } from 'antd';
 import PasswordChecklist from 'react-password-checklist';
 import LandingCard from './LandingCard';
@@ -145,13 +144,5 @@ function RegisterCard({ switchCard }: CardProps ) {
     </LandingCard>
   );
 }
-
-RegisterCard.propTypes = {
-  switchCard: PropTypes.func,
-};
-
-RegisterCard.defaultProps = {
-  switchCard: () => {},
-};
 
 export default RegisterCard;

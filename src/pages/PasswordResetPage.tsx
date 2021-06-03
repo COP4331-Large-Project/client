@@ -2,7 +2,6 @@ import { SyntheticEvent, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useHistory } from 'react-router-dom';
 import { notification, Alert } from 'antd';
-import PropTypes from 'prop-types';
 import PasswordChecklist from 'react-password-checklist';
 import Card from '../components/Card';
 import TextInput from '../components/TextInput';
@@ -156,9 +155,5 @@ function PasswordResetPage({ userId }: PasswordResetProps): JSX.Element {
     </div>
   );
 }
-
-PasswordResetPage.propTypes = {
-  userId: PropTypes.string.isRequired,
-};
 
 export default PasswordResetPage;

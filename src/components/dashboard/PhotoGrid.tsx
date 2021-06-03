@@ -1,6 +1,5 @@
 import '../../scss/photo-grid.scss';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Image as AntImage, Spin } from 'antd';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -109,21 +108,5 @@ function PhotoGrid({ photos = [], isGroupOwner = false } : PhotoGridProps): JSX.
     </div>
   );
 }
-
-PhotoGrid.propTypes = {
-  photos: PropTypes.arrayOf(
-    PropTypes.shape({
-      URL: PropTypes.string.isRequired,
-      caption: PropTypes.string,
-      creator: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  isGroupOwner: PropTypes.bool,
-};
-
-PhotoGrid.defaultProps = {
-  isGroupOwner: false,
-};
 
 export default PhotoGrid;

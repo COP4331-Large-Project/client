@@ -1,6 +1,5 @@
 import '../../scss/photo-thumbnail.scss';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 // prettier-ignore
 import {
@@ -122,18 +121,5 @@ function PhotoThumbnail({
     </motion.div>
   );
 }
-
-PhotoThumbnail.propTypes = {
-  src: PropTypes.string.isRequired,
-  creatorId: PropTypes.string.isRequired,
-  imageId: PropTypes.string.isRequired,
-  caption: PropTypes.string,
-  isGroupOwner: PropTypes.bool,
-};
-
-PhotoThumbnail.defaultProps = {
-  caption: '',
-  isGroupOwner: false,
-};
 
 export default PhotoThumbnail;

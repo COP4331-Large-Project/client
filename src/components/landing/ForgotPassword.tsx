@@ -1,6 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
 import { notification } from 'antd';
-import PropTypes from 'prop-types';
 import LandingCard from './LandingCard';
 import TextInput from '../TextInput';
 import Button from '../Button';
@@ -53,9 +52,5 @@ function ForgotPassword({ switchCard }: CardProps): JSX.Element {
     </LandingCard>
   );
 }
-
-ForgotPassword.propTypes = {
-  switchCard: PropTypes.func.isRequired,
-};
 
 export default ForgotPassword;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { Divider } from 'antd';
 import LandingCard from './LandingCard';
@@ -84,9 +83,5 @@ function LoginCard({ switchCard }: CardProps): JSX.Element {
     </LandingCard>
   );
 }
-
-LoginCard.propTypes = {
-  switchCard: PropTypes.func.isRequired,
-};
 
 export default LoginCard;
